@@ -1,0 +1,12 @@
+/*
+sortableConnected.css 
+tjs 091015
+file version 1.01 
+release version 1.15
+*/
+p { position:relative; left:10px; }
+#likes, #dislikes { width:280px; border:1px solid #000; float:left; margin-left:10px; padding-bottom:5px; }
+#likes p, #dislikes p { margin:0px 0 5px; text-align:center; border-bottom:1px solid #000; font-weight:bold; color:#fff; left:0px;	 }
+#likes p { background-color:#66CC66; }
+#dislikes p { background-color:#FF9933; }
+#likes div, #dislikes div { margin-left:10px; }

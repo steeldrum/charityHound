@@ -1,0 +1,10 @@
+/* sliderTheme.css
+tjs 091006
+file version 1.01 
+release version 1.16
+from jquery plugin framework
+*/
+/* slider theme */
+.background-div { background:url(../images/sliderBackground3.jpg) no-repeat; height:50px; width:500px; padding:6px 0 0 4px; }
+.ui-slider, .ui-slider-1 { background:url(../images/sliderGrid3.jpg) no-repeat; width:425px; height:23px; position:relative; left:0px; top:14px; }
+.ui-slider-handle { background:url(../images/slider_handle.gif) no-repeat; width:14px; height:30px; top:-4px; }

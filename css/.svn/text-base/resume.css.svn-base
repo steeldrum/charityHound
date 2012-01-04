@@ -1,0 +1,9 @@
+/* resume.css
+tjs 091008
+file version 1.00 
+release version 1.06
+*/
+.homeLink a, .homeLink a:link, .homeLink a:visited { text-decoration: underline; background: white; color: blue;}
+
+table.striped th {background-color: #ccc;}
+.oddRow {background-color: #ccc;}

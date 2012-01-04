@@ -1,0 +1,22 @@
+/***************************************
+$Revision::                            $: Revision of last commit
+$LastChangedBy::                       $: Author of last commit
+$LastChangedDate::                     $: Date of last commit
+***************************************/
+/* 
+charityhound/
+index.css
+
+tjs 110110
+
+file version 1.00
+
+release version 1.00
+
+*/
+
+.error {color: red;}
+
+td { width: 50%; padding:0 40px 20px 0; }
+
+li { font:normal 12px Verdana; }

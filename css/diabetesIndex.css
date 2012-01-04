@@ -1,0 +1,38 @@
+/* 
+Collaborators/
+diabetesIndex.css
+tjs 101004
+file version 1.00 
+release version 1.04
+*/
+/*.ui-dialog { background-color:#a1d2f6; }*/
+/* #contentCol p { margin:20px 0 0 0; font:normal 11px Verdana; }*/
+
+/*#contentCol { width:610px; height:800px; float:left; background-color:#ffffff; padding:30px; border-left:1px solid #4e82b4; }*/
+/*h1 { margin:0px; font:bold 14px Verdana; }*/
+
+.ui-dialog { font-family: Verdana,Arial,sans-serif/*{ffDefault}*/; font-size: 11px/*{fsDefault}*/; background-color:#cccccc;}
+
+/*.ui-dialog-titlebar { background-color:#a1d2f6; }*/
+/*.ui-dialog-titlebar { border: 1px solid #aaaaaa; background: #cccccc; url(images/ui-bg_highlight-soft_75_cccccc_1x100.png); background-repeat: repeat-x; background-position: 50% 50%; background-attachment: scroll; opacity: 1; height 50px; color: #222222; font-weight: bold; }*/
+.ui-dialog-titlebar { border: 1px solid #aaaaaa; background: #cccccc; background-position: 50% 50%; background-attachment: scroll; opacity: 1; height 50px; color: #222222; font-weight: bold; }
+
+.ui-dialog-title { float: left; margin: .1em .1em .2em .5em; background-color:#cccccc; }
+
+/*.ui-dialog-titlebar-close { background-color:#a1d2f6; }*/
+/*.ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; url(delete_gray.gif); }*/
+/*.ui-dialog-titlebar-close { float: right; padding: 1px; height: 18px; url(delete_gray.gif); }*/
+.ui-dialog-titlebar-close { float: right; padding: 1px; height: 18px; margin: .1em .5em .2em .1em; }
+
+#licenseDialog hr {margin: 0; padding: 0;}
+
+/*.ui-dialog-content { background-color:#a1d2f6; }*/
+.ui-dialog-content { clear: both; margin: 1em 1em 1em 2em; background-color:#cccccc; }
+
+/*
+.plot {margin:0 0 0 20px;}
+
+p.scrumNoteOK {color: #006600; font-size: 12px; font-weight: bold;}
+p.scrumNoteCaution {color: #CC3300; font-size: 12px; font-weight: bold;}
+p.scrumNoteAlert {color: #FF0000; font-size: 12px; font-weight: bold;}
+*/

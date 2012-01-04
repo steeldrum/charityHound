@@ -1,0 +1,54 @@
+/* 
+charityhound/
+navAccordianTheme.css
+
+tjs 110110
+
+file version 1.00
+
+release version 1.00
+
+*/
+
+#clear { clear:both; }
+
+#container { border:1px solid #85d791; width:1101px;}
+
+#navCol { width:170px; height:387px; float:left; background-color:#85d791; }
+
+#contentCol { width:870px; height:1300px; float:left; background-color:#ffffff; padding:30px; border-left:1px solid #85d791; }
+
+h1 { margin:0px; font:bold 14px Verdana; }
+
+#contentCol p { margin:20px 0 0 0; font:normal 12px Verdana; }
+
+/* accordion  */
+
+#navAccordion { list-style-type:none; padding-left:0; text-align:right; margin:20px 0 0 0; width:170px; position:relative; left:0; }
+
+#navAccordion a { display:block; text-decoration:none; font:bold 11px Verdana; color:#000000; padding:0 40px 0 0; padding-bottom:5px; }
+
+#navAccordion a.even { color:#85d791; }
+
+#navAccordion a:hover { text-decoration:underline; }
+
+/* chocolate brown #473d3b */
+#navAccordion a.heading { font:bold 18px Verdana; color:#473d3b; border-bottom:1px dashed #4e82b4; padding:0 30px 10px 0; }
+
+#navAccordion a.heading:hover { text-decoration:none; }
+
+.selected, #navAccordion .selected a.heading { background-color:#ffffff; color:#000000; border-top:0; border-bottom:1px solid #4e82b4; border-right:1px solid #ffffff; border-left:1px solid #ffffff; }
+
+#navAccordion .selected a.heading { border:0; }
+
+#navAccordion li { margin:0; }
+
+#navAccordion li span, #navAccordion li a { background-image:none; }
+
+#navAccordion li span { display:none; }
+
+/* icon controls */
+
+.iconControls button {background-color: transparent; border-color: 0; padding: 0; border-style: none;}
+
+.iconControls img {border-color: #a1d2f6; border-width: 1px; border-style: solid;}

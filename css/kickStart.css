@@ -1,0 +1,12 @@
+/*
+kickStart.css 
+tjs 091015
+file version 1.00 
+release version 1.13
+*/
+#text { width:400px; border:1px solid #000000; margin:0 auto; overflow:hidden; position:relative; }
+#text p { padding:10px; margin:0; }
+#viewAll { position:absolute; bottom:0px; right:0px; z-index:100; color:#ffffff; font-weight:bold; text-decoration:none; padding:1px 3px; }
+#ellipsis { background-color:ffffff; position:absolute; left:164px; top:50px; display:block; }
+#image { width:402px; height:328px; background:#000000; position:absolute; top:60px; background:#000000 url(../images/bicycle4x2BG.jpg) no-repeat 0 13px; }
+
