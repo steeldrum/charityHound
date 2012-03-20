@@ -287,7 +287,7 @@ is enabled only for sponsors.
 
 <tr><td></td><td></td></tr>
 
-<tr><td><h1>Tired of Charities Hounding You For Donations?</h1></td><td><h1>Join Us.  We Sniff Out The Bad Ones!</h1></td></tr>
+<tr><td><h1>Tired of Charities Hounding You For Donations?</h1></td><td><h1>Join Us.  We Sniff Out Ones That Care About What You Donate!</h1></td></tr>
 
 <tr><td><img src="images/charityBagSmall.jpg" /></td><td><img src="images/ZevaBlueRocksSmall.jpg" /></td></tr>
 

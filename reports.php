@@ -74,6 +74,11 @@ function processArgs(account) {
 	fromlog.value = my_year;
 	var tolog = $('#tolog').get(0);
 	tolog.value = my_year;
+	// tjs120319
+	var fromtag = $('#fromtag').get(0);
+	fromtag.value = my_year;
+	var totag = $('#totag').get(0);
+	totag.value = my_year;
 	
 	//setAuthenticated();
 	//alert("index.html processArgs authenticated " + authenticated);
@@ -139,6 +144,20 @@ function processArgs(account) {
 			//alert("index.html processArgs disable logout, enable login");
 			fromlog.disabled="disabled";
 			tolog.disabled="disabled";
+				elm.disabled="disabled";
+		}
+	}
+
+	// tjs 120319
+	elm = $('#designatedDonations').get(0);
+	if (elm) {
+		if (authenticated == true) {
+			//alert("index.html processArgs disable login, enable logout");
+				elm.disabled="";	
+		} else {
+			//alert("index.html processArgs disable logout, enable login");
+			fromtag.disabled="disabled";
+			totag.disabled="disabled";
 				elm.disabled="disabled";
 		}
 	}
@@ -242,6 +261,24 @@ From year: <input id="fromlog" type="number" />&nbsp;&nbsp;To year: <input id="t
 </p>
 <p>
 <button id="solicitorDonations">View Donations and Solicitations Grand Totals (also by Charity)</button>
+</p>
+
+<br/>
+
+<p>Another handy report lists certain user-designated charities.  In the process of logging
+solicitations some forms are readily identified for designation tags such as:
+"they pledge complete confidentiality of received donations". (A pledge like this
+implies they will NOT simply sell your name to some other fund-raiser).  Another
+favorable designation would be tagged to charities that provide an area on the donor form
+for the donor to specify when it might be best to be reminded for any subsequent contributions
+(e.g. monthly, quarterly, yearly, etc.).  Charities with favorable designations would appear
+to have the edge over others.  Note: this report also lists charities that have been tagged
+with unfavorable designations.</p>
+<p>
+From year: <input id="fromtag" type="number" />&nbsp;&nbsp;To year: <input id="totag" type="number" />
+</p>
+<p>
+<button id="designatedDonations">View Designated Charities (tagged as favorable or otherwise)</button>
 </p>
 
 <br/>
@@ -397,6 +434,26 @@ this link: <a href="http://collogistics.com/wiki/pages/b4i2y0/CharityHoundorg_Pa
 		        }
 		    });
 
+		    //tjs 120319
+		    $("#fromtag").bind('change', function(event) {
+		    	var from = $('#fromtag').val();
+				var to = $('#totag').val();
+		        if (to < from) {
+		        	$('#totag').val(from);
+		        	//start.value = end;
+					//alert("reports start now " + start.value);
+		        }
+		    });
+
+		    $("#totag").bind('change', function(event) {
+		    	var from = $('#fromtag').val();
+				var to = $('#totag').val();
+		        if (to < from) {
+		        	$('#fromtag').val(to);
+		        	//start.value = end;
+					//alert("reports start now " + start.value);
+		        }
+		    });
 		    
 				//tjs 110511
         var account = <?php echo $account; ?>;
@@ -447,6 +504,18 @@ var url = 'view_solicitor_charities.php?account=' + account + '&from=' + from + 
 window.location.href = url;
 	});
 
+	// tjs 120319
+	$("#designatedDonations").click(function() {
+var elm = $('#fromtag').get(0);
+var from = elm.value;
+elm = $('#totag').get(0);
+var to = elm.value;
+//alert("reports view donations checked " + checked + " value " + elm.value);
+var url = 'view_designated_charities.php?account=' + account + '&from=' + from + '&to=' + to;
+//alert("reports view solicitor donations url " + url);
+window.location.href = url;
+	});
+	
 	//tjs 110511
         //alert("index account " + account);
         //e.g. account 1

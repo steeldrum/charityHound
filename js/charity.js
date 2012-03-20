@@ -448,8 +448,6 @@ function refreshCharities(torfLoggedIn, torfDetail) {
 //delete
 //http://localhost/~thomassoucy/philanthropy/donations.php?account=1&amount=5&charityId=5&remove=true&id=1
 
-//function addAmount(charityId, memberId) {
-//function doAmountTransaction(trxType, charityId, memberId, id) {
 function doAmountTransaction(trxType, charityId, memberId, id, newAmount, newDate) {
 //alert ("charity doAmountTransaction charity id " + charityId + " member id " + memberId);
 //alert ("charity doAmountTransaction charity id " + charityId + " member id " + memberId + " id " + id + " new amount " + newAmount + " new date " + newDate);
@@ -460,8 +458,6 @@ if (trxType == 2)
 	remove = 'true';
 if (id == 0) {
 	queryStr = "input#" + charityId;
-//var amount = jQuery(queryStr);
-//var amount = jQuery(queryStr).get(0);
     amount = jQuery(queryStr).get(0).value;
     } else {
     amount = newAmount;
@@ -469,8 +465,6 @@ if (id == 0) {
 //alert ("charity amount " + amount);
 
 	var donationsRequest = getXMLHTTPRequest();
-	//url = 'ccGetCustomersXML.php?account=' + loginAccountNumber;
-	//var url = 'donations.php?account=' + loginAccountNumber;
 	var url = 'donations.php?account=' + memberId + '&amount=' + amount + '&charityId=' + charityId + '&remove=' + remove + '&id=' + id;
 	if (newDate != null) {
 		url += '&date=' + newDate;
@@ -965,29 +959,62 @@ function processCharityForm() {
 }
 
 function processDonationForm() {
-//doAmountTransaction(trxType, charityId, memberId, id, newAmount)
-			//alert("charity processDonationForm...");
-			var id = document.donationForm.id.value;
-			var charityId = document.donationForm.charityId.value;
-			var memberId = document.donationForm.memberId.value;
-			var amount = document.donationForm.amount.value;
-			var remove = document.donationForm.remove.value;
-			//var madeOn = document.donationForm.date.value;
-			    //var madeOn = $( "#datepicker" ).datepicker( "option", "defaultDate" );
-			    var date = $( "#datepicker" ).datepicker( "getDate" );
-			   // var madeOn = $.datepicker.formatDate( "ISO_8601", date );
-			   //'yy-mm-dd'
-			    var madeOn = $.datepicker.formatDate( 'yy-mm-dd', date );
+		//alert("charity processDonationForm...");
+		var id = document.donationForm.id.value;
+		var charityId = document.donationForm.charityId.value;
+		var memberId = document.donationForm.memberId.value;
+		var amount = document.donationForm.amount.value;
+		var remove = document.donationForm.remove.value;
+		//var madeOn = document.donationForm.date.value;
+		    //var madeOn = $( "#datepicker" ).datepicker( "option", "defaultDate" );
+		var date = $( "#datepicker" ).datepicker( "getDate" );
+		   // var madeOn = $.datepicker.formatDate( "ISO_8601", date );
+		   //'yy-mm-dd'
+		var madeOn = $.datepicker.formatDate( 'yy-mm-dd', date );
 
-			//alert("charity processDonationForm amount " + amount + " madeOn " + madeOn);
-			//if (remove == true) {
-			if (remove == 'true') {
+		//alert("charity processDonationForm amount " + amount + " madeOn " + madeOn);
+		//if (remove == true) {
+		if (remove == 'true') {
 			//doAmountTransaction(2, charityId, memberId, id, amount);
 			doAmountTransaction(2, charityId, memberId, id, amount, null);
-			} else {
+		} else {
 			//doAmountTransaction(1, 0, 0, id, amount);
 			doAmountTransaction(1, charityId, memberId, id, amount, madeOn);
 			//todo release datepicker ??
-			}
-			$("#donationDialog").dialog("close");
+			//alert ("charity processDonationForm blank " + document.donationForm.blank.checked + " currency " + document.donationForm.currency.checked);
+		
+			// tjs 120316
+			var blank = document.donationForm.blank.checked;
+			var currency = document.donationForm.currency.checked;
+			var reminder = document.donationForm.reminder.checked;
+			var confidential = document.donationForm.confidential.checked;
+			//postRatingsUpdate(charityId, memberId, id, madeOn, blank, currency, reminder, confidential);
+			postRatingsUpdate(charityId, memberId, madeOn, blank, currency, reminder, confidential);
+		}
+		
+		$("#donationDialog").dialog("close");
+}
+
+// tjs 120316
+function postRatingsUpdate(charityId, memberId, date, blank, currency, reminder, confidential) {
+
+	if (!blank && !currency && !reminder && !confidential)
+		return;
+	
+	var ratingsRequest = getXMLHTTPRequest();
+	var url = 'ratings.php?account=' + memberId + '&charityId=' + charityId + '&date=' + date + '&blank=' + blank + '&currency=' + currency + '&reminder=' + reminder + '&confidential=' + confidential;
+	//alert ("charity postRatingsUpdate url " + url);
+	// NB account = 0 means it derives using the session on server
+// e.g. charity postRatingsUpdate url ratings.php?account=0&charityId=545&date=2012-03-16&blank=true&currency=false&reminder=false&confidential=false
+	requestXMLData(ratingsRequest, url, function() {
+		   if(ratingsRequest.readyState == 4) {
+				if(ratingsRequest.status == 200) {
+				    //var data = ratingsRequest;
+					//alert ("charity postRatingsUpdate ratings posted!");
+				} else {
+				    // issue an error message for any other HTTP response
+				    alert("An error has occurred: " + ratingsRequest.statusText);
+				}
+		   }
+	});
 }

@@ -57,7 +57,7 @@ function displayPageFooter() {
 ?>
 </div>
 <footer>
-<h2>Join Us.  We Sniff Out The Bad Ones!</h2>
+<h2>Join Us.  We Sniff Out Ones That Care About What You Donate!</h2>
 <br/>
 
 <div class="iconControls">

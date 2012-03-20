@@ -51,7 +51,9 @@ class Donation extends DataObject {
       $st = $conn->query( "SELECT found_rows() as totalRows" );
       $row = $st->fetch();
       parent::disconnect( $conn );
-      return array( $members, $row["totalRows"] );
+      // tjs 120316
+      //return array( $members, $row["totalRows"] );
+      return array( $donations, $row["totalRows"] );
     } catch ( PDOException $e ) {
       parent::disconnect( $conn );
       die( "Query failed: " . $e->getMessage() );

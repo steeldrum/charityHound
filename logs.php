@@ -139,6 +139,18 @@ eventually show date added (and allow changed value)
 		<tr>
 		<td>Date: <div id="datepicker" /></td>
 		</tr>
+		<tr>
+		<td>Blank Envelope Appeal: <input type="checkbox" name="blank" value="1" /></td>
+		</tr>
+		<tr>
+		<td>Currency Bated Appeal: <input type="checkbox" name="currency" value="1" /></td>
+		</tr>
+		<tr>
+		<td>Appeal Includes Reminder Schedule: <input type="checkbox" name="reminder" value="1" /></td>
+		</tr>
+		<tr>
+		<td>Appeal Pledges Donor Privacy: <input type="checkbox" name="confidential" value="1" /></td>
+		</tr>
 		</tbody></table>
 		<button type="button" onclick="processDonationForm()">Submit</button>
 	</form>
