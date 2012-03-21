@@ -990,6 +990,11 @@ function processDonationForm() {
 			var confidential = document.donationForm.confidential.checked;
 			//postRatingsUpdate(charityId, memberId, id, madeOn, blank, currency, reminder, confidential);
 			postRatingsUpdate(charityId, memberId, madeOn, blank, currency, reminder, confidential);
+			// tjs 120321
+			document.donationForm.blank.checked = "";
+			document.donationForm.currency.checked = "";
+			document.donationForm.reminder.checked = "";
+			document.donationForm.confidential.checked = "";
 		}
 		
 		$("#donationDialog").dialog("close");
