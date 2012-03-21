@@ -113,6 +113,16 @@ To summarize the <span class="akey">typical user workflow steps</span>:
 <li>Charity Hound (not you) will periodically aggregate data from every registered user and promulgate results.  Over time <span class="akey">it should become clear which charities are more disciplined with regarding the "blizzard" of wasteful donor solicitations!</span> </li>
 </ul>
 </p>
+<p>
+Details about the Solicitations/Donations page:<br/><br/>
+This page contains two "lists".  The top list, Charities, lists all active charities.  Some helpful information, such as the number of "solicitations" you have already logged appear.  A "Rate" column tries to derive how many per twelve months.  It should take several months of logging before the rate becomes a reliable metric.  The most common operation is to use the '+' control.  It does two things: (1) it logs your donation amount (typically zero).  This formally logs the solicitation.  If you fill in the amount then not only is the solicitation logged but your donation is also logged.  (2) By using the '+' as a side effect the lower panel ("Donations") gets refreshed.  This shows a detailed list of your solicitations that you had logged in the past.  Entires with non-zero amounts are actual donations.
+</p>
+<p>
+There is a possibility that you are undecided about giving anything.  Perhaps you plan to research the cause further.  Indeed this is quite typical.  In such cases log the solicitation with a zero amount anyway.  Later on the same charity can be found (search in the Charities panel).  Then use the magnifying glass (icon) to immediately display the lower list of "Donations".  Perhaps the most recent donation shows a "zero" amount.  But you now plan to write a check.  In the lower list simply click the pencil icon (edits that list item).  A form is displayed.  Change the amount from zero to whatever you plan to donate.  Submit the form and you are done!
+</p>
+<p>
+Every logged solicitation can be edited.  The most typical need is when (and if) you decide to contribute a few days after logging the solicitation.  To help identify charity organizations that are willing to contain fund-raising costs the same form has a few check boxes.  When appropriate check any boxes that apply.  This helps our reporting system sort through and identify cost conscious charities.
+</p>
 <br/>
 
 <div class="iconControls">
