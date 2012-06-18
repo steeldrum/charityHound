@@ -107,8 +107,10 @@ var lastDonationCharityId = 0;
 //charityName shortName averageDonation numberZeroAmounts numberNonZeroAmounts lastAmount ACTIONS
 //function refreshCharities(torf) {
 function refreshCharities(torfLoggedIn, torfDetail) {
+	//alert("charity refreshCharities torfLoggedIn " + torfLoggedIn);
 	var loggedIn = false;
 	var detail = false;
+	//alert("charity refreshCharities torfLoggedIn " + torfLoggedIn + " torfDetail " + torfDetail);
 	if (torfLoggedIn != null && torfLoggedIn == 'true') {
 		loggedIn = true;
 	}
@@ -124,6 +126,7 @@ function refreshCharities(torfLoggedIn, torfDetail) {
 	//var url = 'getCharitiesXML.php?account=' + loginAccountNumber;
 	var url = 'getCharitiesXML.php?account=' + loginAccountNumber + '&detail=' + detail;
 	//alert("charity refreshCharities url " + url);
+	//alert("charity refreshCharities loggedIn " + loggedIn + " detail " + detail + " url " + url);
 	//tjs101123
 	//requestXMLData(charityRequest, url, function() {
 	postRequestXMLData(charityRequest, url, function() {

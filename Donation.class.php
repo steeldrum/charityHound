@@ -167,6 +167,8 @@ $solicitationsLoggedTheSameDay = true;
 		$average = round( $total/$donationsCount );
 	}
 	
+	// tjs 120618
+	if ($account > 0) {
 	// tjs 111811
 	$member = Member::getMember($account);
 	$isSelectableForSite = $member->getValue( "isSelectableForSite" );
@@ -246,6 +248,9 @@ $solicitationsLoggedTheSameDay = true;
 				$rate = round( 365/$averageDaysDurationBetweenSolicitations );
 			}
 		}
+	} else {
+		$rate = 0;
+	}
 	} else {
 		$rate = 0;
 	}

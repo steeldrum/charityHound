@@ -57,6 +57,7 @@ $query="SELECT id FROM charities where memberId = ".$account;
 //echo $query;
 $result=mysql_query($query);
 $num=mysql_numrows($result);
+// e.g. 489
 //echo $num;
 if ($num < 1) {
 	$query="SELECT * FROM charities where memberId = 0 and isInactive is null";
@@ -112,19 +113,28 @@ if ($detail == 'false') {
 }
 $result=mysql_query($query);
 $num=mysql_numrows($result);
+// e.g 488
+//echo "num for account".$num;
 $i=0;
 while ($i < $num) {
 	$charityId=mysql_result($result,$i,"id");
 	
 	$charityName=mysql_result($result,$i,"charityName");
 	$shortName=mysql_result($result,$i,"shortName");
+	//if ($i == 0) {
+		// e.g. id 2 name AARP Foundation short 
+		//echo "id ".$charityId." name ".$charityName." short ".$shortName;
+	//}
 	
 	// tjs 111027
 	//list( $solicitations, $rate, $donations, $average ) = Donation::deriveDonationInfo4Charity( $account, $charityId );
 	//tjs 111115
 	//list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $account, $charityId );
 	list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $account, $charityId, 2000, 2100 );
-	
+	// tjs 120618
+	//if ($i == 0) {
+	//	echo "id ".$charityId." sols ".$solicitations." rate ".$rate." dons ".$donations." ave ".$average." last ".$lastAmount;
+	//}
 	$dunns=mysql_result($result,$i,"dunns");
 	$dunnsPart = '<dunns/>';
 	if (strlen($dunns) > 0)

@@ -168,8 +168,8 @@ eventually show date added (and allow changed value)
     <script type="text/javascript" src="js/effects.highlight.js"></script>
      <script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <script type="text/javascript" src="js/charity.js"></script>
-	<script type="text/javascript" src="ui.resizable.js"></script>
-	<script type="text/javascript" src="ui.dialog.js"></script>
+	<script type="text/javascript" src="js/ui/ui.resizable.js"></script>
+	<script type="text/javascript" src="js/ui/ui.dialog.js"></script>
 
     <script type="text/javascript">
 
@@ -220,7 +220,11 @@ eventually show date added (and allow changed value)
 		//setAuthenticated();
 	var account = <?php echo $account; ?>;
 	var authenticated = account > 0? 'true' : 'false';
-			refreshCharities(authenticated);
+	//tjs 120618 e.g. 0 if not logged in
+	//alert("logs account " + account);
+	// tjs 120618
+			//refreshCharities(authenticated);
+			refreshCharities(authenticated, 'false');
 
 	  });
 
