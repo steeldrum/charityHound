@@ -85,7 +85,9 @@ class Donation extends DataObject {
   	
   	//this number is TBD.  For the time being assume about one month's duration.
 //After data becomes aggregated this amount could be fine-tuned and dynamically derived.
-$averageDaysDurationBetweenSolicitations = 30;
+// tjs 120619
+//$averageDaysDurationBetweenSolicitations = 30;
+$averageDaysDurationBetweenSolicitations = AVERAGE_SOLICITATION_GAP;
 
 //when users initially populate their database it is likely that they may log
 //several prior solicitations all at once (i.e. the same date).  This could
@@ -213,7 +215,9 @@ $solicitationsLoggedTheSameDay = true;
 								//possible initial data entry of historical data all packed into narrow
 								//data range.  The nominal value expected would be about 1 solicitation
 								//per month.  Hence nominal factor would be 12.
-								$factor = 12;
+								// tjs 120619
+								//$factor = 12;
+								$factor = NOMINAL_RATE;
 								if ($daysDuration < $factor) {
 									$factor = $daysDuration;
 								}
