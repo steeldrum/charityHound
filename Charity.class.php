@@ -462,6 +462,233 @@ for ($k = $startRow; $k < $sizeOfCharities; ++$k) {
 //echo "totalSolicitationsCount ".$totalSolicitationsCount." totalDonationsCount ".$totalDonationsCount;
 return array( $solicitorCharities, $sizeOfCharities, $totalSolicitationsCount, $totalDonationsCount );
   }
+
+  // tjs 120621
+  //public static function setMemberId( $memberId ) {
+  public function setMemberId( $memberId ) {
+  	$this->data["memberId"] = $memberId;
+  }
+  //public static function setBaseId( $baseId ) {
+  public function setBaseId( $baseId ) {
+  	$this->data["baseId"] = $baseId;
+  }
+
+  // tjs 120622
+  //public static function setId( $id ) {
+  public function setId( $id ) {
+  	$this->data["id"] = $id;
+  }
+  public static function propagateCharity( $id, $memberId ) {
+  	//$this->data["memberId"] = $memberId;
+  		//the id to be distributed or propagated back to the base
+	//$id = $_POST["charityId"];
+	//assume that the id represents a base row and therefore will also be the baseId
+	$baseId = $id;
+	//$member = $_POST["memberId"];
+	
+	//date_default_timezone_set ( "America/New_York" );
+    //$today = date("Y-m-d");
+	
+	$conn = parent::connect();
+	$charity = null;
+	
+	//find list of active members to distribute the newly added charity to
+	$activeMembers = array();
+	if ($memberId == 0) {
+		$sql = "SELECT distinct memberId FROM " . TBL_CHARITIES;
+
+	    try {
+	      $st = $conn->prepare( $sql );
+	      //$st->bindValue( ":startRow", $startRow, PDO::PARAM_INT );
+	      //$st->bindValue( ":numRows", $numRows, PDO::PARAM_INT );
+	      $st->execute();
+	      //$charities = array();
+	      foreach ( $st->fetchAll() as $row ) {
+	        //$charities[] = new Charity( $row );
+	        $charity = new Charity( $row );
+			$currentMemberId = $charity->getValue("memberId");
+			if ($currentMemberId <> 0) {
+				$activeMembers[] = $currentMemberId;
+			}
+	      }
+	    } catch ( PDOException $e ) {
+	      parent::disconnect( $conn );
+	      die( "Query failed: " . $e->getMessage() );
+	    }
+	} else {
+		$activeMembers[] = $memberId;
+	}
+	
+	// for debug only e.g. active member 1 active member 6 active member 2 active member 10
+		//foreach($activeMembers as $activeMember) {
+		//	echo " active member ".$activeMember;
+		//}
+		
+	//locate the newly added charity which is to be distributed (or propagated back to the base)
+	$charity = null;
+	$charityCount = 0;
+	$fromMemberId = 0;
+	$charityName="";
+	$shortName="";
+	$dunns="";
+	$url="";
+	$numStars="0";
+	$isInactive="0";
+	$isForProfit="0";
+	
+	$sql = "SELECT * FROM  " . TBL_CHARITIES . " where id = :id";
+    try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":id", $id, PDO::PARAM_INT );
+      $st->execute();
+      //$charities = array();
+      foreach ( $st->fetchAll() as $row ) {
+        //$charities[] = new Charity( $row );
+        $charity = new Charity( $row );        
+		$fromMemberId = $charity->getValue("memberId");
+		$charityName=$charity->getValue("charityName");
+		$shortName=$charity->getValue("shortName");
+		if (strlen($shortName) == 0)
+			$shortName='';
+		$dunns=$charity->getValue("dunns");
+		if (strlen($dunns) == 0)
+			$dunns='';
+		$url=$charity->getValue("url");
+		if (strlen($url) == 0)
+			$url='';
+		$numStars=$charity->getValue("numStars");
+		if (strlen($numStars) == 0)
+			$numStars='0';
+		$isInactive=$charity->getValue("isInactive");
+		if (strlen($isInactive) == 0)
+			$isInactive='0';
+		$isForProfit=$charity->getValue("isForProfit");
+		if (strlen($isForProfit) == 0)
+			$isForProfit='0';
+	  }
+    } catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    }
+	
+    // for debug only e.g. fromMemberId 1 charityName American Parkinson Disease Association shortName APDA url 
+    //echo "fromMemberId ".$fromMemberId." charityName ".$charityName." shortName ".$shortName." url ".$url;
+    
+	//case where the id specified is a row that a member had created
+	//this case means the member's row will be propagated back into the memberId = 0 (base) row
+	//rows that are propagated back are then automatically picked up by future members
+	//but if the associated member is zero then they are distributed now
+	if ($fromMemberId > 0) {
+		//$sql = "SELECT * FROM  " . TBL_CHARITIES . "  where memberId = 0 and charityName like '%:charityName%'";
+		//$sql = "SELECT * FROM  " . TBL_CHARITIES . "  where memberId = 0 and charityName = ':charityName'";
+		$sql = "SELECT * FROM  " . TBL_CHARITIES . "  where memberId = 0 and charityName = :charityName";
+		try {
+	      $st = $conn->prepare( $sql );
+	      $st->bindValue( ":charityName", $charityName, PDO::PARAM_STR );
+	      $st->execute();
+	      // e.g. fromMemberId 1 charityName American Parkinson Disease Association
+		  //echo "fromMemberId ".$fromMemberId." charityName ".$charityName;
+	      $charityCount = 0;
+	      foreach ( $st->fetchAll() as $row ) {
+	      	$charityCount++;
+	      	// e.g. found member 0 charityName American Parkinson Disease Association
+	      	//echo "found member 0 charityName ".$charityName;
+		  }
+		  // e.g. charityCount 1
+		  //echo "charityCount ".$charityCount;
+		  if ($charityCount == 0) {
+		  	// e.g. charityCount 0 charity member id 1
+		  //echo "charity member id ".$charity->getValue('memberId');
+		  	//inserts a new charity into the base (i.e. propagates the 'from' member's charity to the base)
+				//$charity->data["memberId"] = 0;
+		  	$charity->setMemberId(0);
+			  //echo "charity member id ".$charity->getValue('memberId');
+		  	  $charity->insert();
+		  	  // updates the from members charity that being propagated with the new base id
+		  	  // first get the baseId
+			  //$sql = "SELECT * FROM  " . TBL_CHARITIES . "  where memberId = 0 and charityName = ':charityName'";
+		  	  $sql = "SELECT * FROM  " . TBL_CHARITIES . "  where memberId = 0 and charityName = :charityName";
+		      $st = $conn->prepare( $sql );
+		      $st->bindValue( ":charityName", $charityName, PDO::PARAM_STR );
+		      $st->execute();
+		      $charityCount = 0;
+		      $baseId = 0;
+		      foreach ( $st->fetchAll() as $row ) {
+		      	$charityCount++;
+	        	$charity = new Charity( $row );
+	        	$baseId = $charity->getValue('id');        
+		      }
+		      // update the baseId in the fromMember's charity
+			  if ($charityCount == 1) {
+			  	$charity->setId($id);
+			  	$charity->setMemberId($fromMemberId);
+			  	$charity->setBaseId($baseId);
+			  	$charity->update();
+			  }
+		  } else if ($charityCount == 1) {	// derive the base id
+			  //$sql = "SELECT * FROM  " . TBL_CHARITIES . "  where memberId = 0 and charityName = ':charityName'";
+		  		$sql = "SELECT * FROM  " . TBL_CHARITIES . "  where memberId = 0 and charityName = :charityName";
+		      $st = $conn->prepare( $sql );
+		      $st->bindValue( ":charityName", $charityName, PDO::PARAM_STR );
+		      $st->execute();
+		      foreach ( $st->fetchAll() as $row ) {
+		      	$baseCharity = new Charity( $row );
+		      	$baseId = $baseCharity->getValue('id');
+			  }
+			  // e.g. derived baseId 2502	
+			  //echo "derived baseId ".$baseId;      
+		  }
+	    } catch ( PDOException $e ) {
+	      parent::disconnect( $conn );
+	      die( "Query failed: " . $e->getMessage() );
+	    }		
+	} 
+	//this is where the distribution of the charity from the base to one (or all) members occurs.
+	foreach($activeMembers as $activeMember) {
+		// e.g. baseId 0 active member 1 charity name American Parkinson Disease AssociationQuery
+		//echo "baseId ".$baseId." active member ".$activeMember." charity name ".$charityName;      
+		
+		//$sql = "SELECT * FROM  " . TBL_CHARITIES . "  where memberId = :activeMember and charityName like '%:charityName%'";
+		//$sql = "SELECT * FROM  " . TBL_CHARITIES . "  where memberId = :activeMember and charityName = ':charityName'";
+		$sql = "SELECT * FROM  " . TBL_CHARITIES . "  where memberId = :activeMember and charityName = :charityName";
+	    try {
+	      $st = $conn->prepare( $sql );
+	      $st->bindValue( ":activeMember", $activeMember, PDO::PARAM_INT );
+	      $st->bindValue( ":charityName", $charityName, PDO::PARAM_STR );
+	      $st->execute();
+	      $charityCount = 0;
+	      foreach ( $st->fetchAll() as $row ) {
+	      	$charityCount++;
+		  }
+		  if ($charityCount == 0) {
+				//inserts a new charity (i.e. propagates the member's charity to another active)
+				//$charity->data["memberId"] = 0;
+			  $charity->setMemberId($activeMember);
+			  $charity->setBaseId($baseId);
+			  $charity->insert();
+		  } else if ($charityCount == 1) {
+			  //$sql = "SELECT * FROM  " . TBL_CHARITIES . "  where memberId = :activeMember and charityName = ':charityName'";
+		  	$sql = "SELECT * FROM  " . TBL_CHARITIES . "  where memberId = :activeMember and charityName = :charityName";
+		      $st = $conn->prepare( $sql );
+		      $st->bindValue( ":activeMember", $activeMember, PDO::PARAM_INT );
+		      $st->bindValue( ":charityName", $charityName, PDO::PARAM_STR );
+		      $st->execute();
+		      foreach ( $st->fetchAll() as $row ) {
+		      	$activeMemberCharity = new Charity( $row );
+		      	$activeMemberCharityBaseId = $activeMemberCharity->getValue('baseId');
+		      	if ($activeMemberCharityBaseId  == null || $activeMemberCharityBaseId == 0) {
+			      	$activeMemberCharity->setBaseId($baseId);
+			      	$activeMemberCharity->update();
+		      	}
+			  }	      
+		  }
+	    } catch ( PDOException $e ) {
+	      parent::disconnect( $conn );
+	      die( "Query failed: " . $e->getMessage() );
+	    }
+	}
+    	
+  }
   
   public function insert() {
     $conn = parent::connect();
