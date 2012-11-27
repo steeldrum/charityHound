@@ -56,7 +56,9 @@ class RatedCharity extends Charity {
     "blankEnvelopeAppeals" => "",
     "currencyBatedAppeals" => "",
     "appealReminderSchedules" => "",
-    "appealPrivacyPledges" => ""
+    // tjs 121127 "appealPrivacyPledges" => ""
+  "appealPrivacyPledges" => "",
+  "lastAmount" => ""
   );
 /*
   public static function getCharities( $startRow, $numRows, $order ) {
@@ -115,11 +117,12 @@ foreach ( $charities as $charity ) {
 		}
 		if ($charityId != $lastCharityId) {
 			//if ($amount > 0) {
-			if ($amount == 0) {
+			// tjs 121127
+			//if ($amount == 0) {
 				//echo "prior lastCharityId ".$lastCharityId." amount ".$amount;
 				$charities[] = Charity::getCharity( $lastCharityId );;
 				//echo "size of priorYearCharities ".sizeof($priorYearCharities);
-			}
+			//}
 				$amount = $lastAmount;
 			$lastCharityId = $charityId;
 		} else {
@@ -130,9 +133,10 @@ foreach ( $charities as $charity ) {
 	if ($charityId != $lastCharityId) {
 			//echo "prior final lastCharityId ".$lastCharityId." amount ".$amount;			
 		//if ($amount > 0) {
-		if ($amount == 0) {
+		// tjs 121127
+		//if ($amount == 0) {
 			$charities[] = Charity::getCharity( $lastCharityId );
-		}
+		//}
 	}
     
   for($i = 0, $sizeOfCharities = sizeof($charities); $i < $sizeOfCharities; ++$i)
@@ -183,6 +187,7 @@ $cumRating = 0;
     $ratedCharity->data["baseId"] = $rate;
     //$charity->data["numStars"] = $donations*$average;
     $ratedCharity->data["numStars"] = $solicitations;
+    $ratedCharity->data["lastAmount"] = $lastAmount;
     $allDesignatedCharities[] = $ratedCharity;
  }
 }
