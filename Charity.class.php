@@ -240,12 +240,13 @@ return array( $lapsedCharities, $sizeOfAllLapsedCharities );
 			$amount += $lastAmount;
 		}
 	}
-	if ($charityId != $lastCharityId) {
+	// tjs 121127
+	//if ($charityId != $lastCharityId) {
 			//echo "prior final lastCharityId ".$lastCharityId." amount ".$amount;			
 		if ($amount > 0) {
 			$charities[] = Charity::getCharity( $lastCharityId );
 		}
-	}
+	//}
     
   for($i = 0, $sizeOfCharities = sizeof($charities); $i < $sizeOfCharities; ++$i)
 {
