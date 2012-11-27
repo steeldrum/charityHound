@@ -149,11 +149,12 @@ public static function getLapsedCharities( $memberId, $priorYear, $lapsedYear, $
 			$amount += $lastAmount;
 		}
 	}
-	if ($charityId != $lastCharityId) {
+	// tjs 121127
+	//if ($charityId != $lastCharityId) {
 		if ($amount == 0) { 
 			$lapsedYearCharities[] = Charity::getCharity( $lastCharityId );
 		} 
-	}
+	//}
 
 $j = 0;
 $sizeOfPriorYearCharities = sizeof($priorYearCharities);
@@ -319,13 +320,14 @@ return array( $remittedCharities, $sizeOfCharities );
 			$amount += $lastAmount;
 		}
 	}
-	if ($charityId != $lastCharityId) {
+	// tjs 121127
+	//if ($charityId != $lastCharityId) {
 			//echo "prior final lastCharityId ".$lastCharityId." amount ".$amount;			
 		//if ($amount > 0) {
 		if ($amount == 0) {
 			$charities[] = Charity::getCharity( $lastCharityId );
 		}
-	}
+	//}
     
   for($i = 0, $sizeOfCharities = sizeof($charities); $i < $sizeOfCharities; ++$i)
 {
