@@ -138,6 +138,8 @@ Every logged solicitation can be edited.  The most typical need is when (and if)
 
 		</div>
 
+<!-- tjs 130126 -->
+		<!-- script type="text/javascript" src="js/jquery.js"></script -->
 		<script type="text/javascript" src="js/jquery-1.3.2.js"></script>
 
    <script type="text/javascript" src="js/ui/ui.core.js"></script>

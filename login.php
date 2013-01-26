@@ -70,16 +70,26 @@ function processForm() {
   if ( $errorMessages ) {
     displayForm( $errorMessages, $missingFields, $member );
   } else {
+// tjs 130126
+//echo "login member id: ".$loggedInMember->getValue( "id" );
     $_SESSION["member"] = $loggedInMember;
     displayThanks();
   }
 }
 
 function displayThanks() {
+// tjs 130126
+$firstName = "unknown";
+if (isset($_SESSION['member'])) {
+	$member = $_SESSION['member'];
+	$firstName = $member->getValue( "firstName" );
+}
 displayPageHeader( "Thanks for logging in!", true );
 ?>
-    <!--   p>Thank you for logging in. Please proceed to the <a href="index.html?authenticated=true">members' area</a>.</p -->
-    <p>Thank you for logging in. Please proceed to the <a href="index.php">members' area</a>.</p>
+    <!--  tjs 130126 -->
+    <!-- p>Thank you for logging in. Please proceed to the <a href="index.php">members' area</a>.</p -->
+    <p>Thank you for logging in <?php echo $firstName; ?>. Please proceed to the <a href="index.php">members' area</a>.</p>
+    <!-- p>Thank you for logging in <?php echo $firstName; ?>. Please proceed to the <a href="indexTest.php">members' area</a>.</p -->
 <?php
   displayPageFooter();
 }

@@ -303,6 +303,8 @@ this link: <a href="http://collogistics.com/wiki/pages/b4i2y0/CharityHoundorg_Pa
 
 		</div>
 
+<!-- tjs 130126 -->
+		<!-- script type="text/javascript" src="js/jquery.js"></script -->
 		<script type="text/javascript" src="js/jquery-1.3.2.js"></script>
 
    <script type="text/javascript" src="js/ui/ui.core.js"></script>

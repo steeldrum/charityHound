@@ -3,10 +3,20 @@
 require_once( "common.inc.php" );
 session_start();
 $account = 0;
+// tjs 130126
+//echo "index inited account: ".$account;
 if ($account == 0 && isset($_SESSION['member'])) {
+// tjs 130126
+//echo "index member in session...";
 	$member = $_SESSION['member'];
+// tjs 130126
+//echo "index member id: ".$member->getValue( "id" );
 	if ($member != null) {
+// tjs 130126
+//echo "index member id: ".$member->getValue( "id" );
 		$account = $member->getValue( "id" );
+		// tjs 130126
+		//echo "index account: ".$account;
 	}
 } 
 ?>
@@ -39,7 +49,8 @@ tjs 110511
     <title>Charity Hound</title>
     <!-- tjs 130126 -->
 		<!-- script type="text/javascript" src="js/jquery-1.3.2.js"></script -->
-		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jquery-1.3.2.js"></script>
+		<!-- script type="text/javascript" src="js/jquery.js"></script -->
 
     <script type="text/javascript" src="js/ui/ui.core.js"></script>
 
@@ -211,7 +222,7 @@ function doScheduleDisplayAd() {
   <tr>
 
   <td>
-  <p>Hosted by <a href="http://collogistics.com/groups/">Collogistics</a>
+  <p>Hosted by <a href="http://www.collogistics.com/wiki/projects">Collogistics</a>
   we help <span class="akey">registered collaborators manage their charitable contributions</span>.  Collaborators
   are asked to record all donor solicitations along with the amount that they donated.
   By so doing collaborators are able to produce a report after a calendar year end that <span class="akey">helps with
@@ -417,6 +428,7 @@ is enabled only for sponsors.
 
 		 
 		});
+
 
         var account = <?php echo $account; ?>;
 
