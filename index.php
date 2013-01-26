@@ -37,7 +37,9 @@ tjs 110511
 <meta name="description" content="Collaborative rating of CHARITIES to help navigate through donation choices and act as a watch dog for inefficient ones." />
 
     <title>Charity Hound</title>
-		<script type="text/javascript" src="js/jquery-1.3.2.js"></script>
+    <!-- tjs 130126 -->
+		<!-- script type="text/javascript" src="js/jquery-1.3.2.js"></script -->
+		<script type="text/javascript" src="js/jquery.js"></script>
 
     <script type="text/javascript" src="js/ui/ui.core.js"></script>
 
@@ -409,8 +411,9 @@ is enabled only for sponsors.
 
 		 
 			//open page
-		 
-            window.location.href = "../donationlog/index.html";
+		 // tjs 130126
+            //window.location.href = "../donationlog/index.html";
+            window.location.href = "app/index.html";
 
 		 
 		});

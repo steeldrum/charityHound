@@ -1,0 +1,280 @@
+/***************************************
+$Revision:: 167                        $: Revision of last commit
+$LastChangedBy::                       $: Author of last commit
+$LastChangedDate:: 2011-12-19 18:07:37#$: Date of last commit
+***************************************/
+/* 
+donationLog/styles/
+donationLog.css
+tjs 101220
+file version 1.00 
+release version 1.00
+*/
+
+#report { padding: 20px; }
+#about { padding: 20px; }
+#signin { padding: 20px; }
+
+.dial {
+	-webkit-box-sizing: border-box;
+	/* same value for the four corners */
+	-webkit-border-radius: 16px;
+	border: 2px solid black;
+    background-color: white;
+    padding: 5px;
+}
+
+.poppy {
+	width: 200px;
+	-webkit-border-radius: 16px;
+	    background-color: white;
+    padding: 15px;
+}
+.poppyFields {
+	width: 150px;
+}
+
+#logSolicitation-popup {
+    left: 0 !important;
+    right: auto !important;
+}
+#logSolicitation {
+    width: 200px;
+    border: 1px solid #000;
+    border-left: none;
+    background: rgba(0,0,0,.5);
+    margin: -1px 0;
+}
+
+#makeDonation-popup {
+    right: 0 !important;
+    left: auto !important;
+}
+#makeDonation {
+    width: 200px;
+    border: 1px solid #000;
+    border-right: none;
+    background: rgba(0,0,0,.5);
+    margin: -1px 0;
+}
+#makeDonation h4 {font-size:16px;}
+
+#makeDonation .amountLabel {
+	-webkit-box-sizing: border-box;
+	/* same value for the four corners */
+	-webkit-border-radius: 16px;
+	border: 1px grey;
+	background-color: grey;
+	opacity: 0.5;
+	}
+#makeDonation .provisionLabel {
+		-webkit-box-sizing: border-box;
+	/* same value for the four corners */
+	-webkit-border-radius: 16px;
+	/* greenish */
+	border: 1px #00cc99;
+	background-color: #00cc99;
+	opacity: 0.5;
+}
+#makeDonation .envelopeLabel {
+		-webkit-box-sizing: border-box;
+	/* same value for the four corners */
+	-webkit-border-radius: 16px;
+	/* redish */
+	border: 1px #ff3366;
+	background-color: #ff3366;
+	opacity: 0.5;
+}
+
+.ui-li-heading { overflow: auto; white-space:normal; }
+img { margin:10px; }
+label {
+            float: left;
+            width: 5em;
+        }
+input.ui-input-text {
+    		display: inline !important;
+		    width: 12em !important;
+		}
+form p {
+			clear:left;
+			margin:1px;
+		}
+
+/* tjs 111219 */
+		.segmented-control { text-align:center;}
+		.segmented-control .ui-controlgroup { margin: 0.2em; }
+		/*.ui-control-active, .ui-control-inactive { border-style: solid; border-color: gray; }*/
+	.ui-control-active, .ui-control-inactive { border-style: solid; border-color: gray; font-size: xx-small;}
+		.ui-control-active { background: #BBB; }
+		.ui-control-inactive { background: #DDD; }
+
+.showButton { display: inline; }
+.hideButton { display: none; }
+
+.showDiv { display: block; }
+.hideDiv { display: none; }
+
+.ads {
+	z-index: -1;
+	position: relative;
+	-webkit-transition: margin-top 0.35s ease-out;
+	border-bottom: 0;
+	margin: 0 auto 34px;
+	width: 320px;
+}
+
+.ads img { display: block; }
+
+.ads .tab:before {
+	color: red;
+	/*content: 'Please ';*/
+	content: 'Ad ';
+}
+	
+.ads .tab {
+	position: absolute;
+	background-image:-webkit-gradient(
+		linear, left top, left bottom,
+		from(black), to(#666));
+	color: white;
+	font: bold 11px/24px verdana;
+	height: 24px;
+	bottom: -24px;
+	left: 0;
+	width: 100%;
+	padding: 0 5px;
+	-webkit-box-sizing: border-box;
+}
+
+.select-list-wrapper {
+    margin: 9px;
+}
+
+.select-list-wrapper h2 {
+    color: #4c566c;
+    font-size: 17px;
+    line-height: 0.8;
+    font-weight: bold;
+    text-shadow: #fff 0 1px 0;
+    margin: 20px 10px 12px;
+}
+
+.select-list-wrapper p {
+    background-color: #fff;
+    -webkit-border-radius: 10px;
+    font-size: 17px;
+    line-height: 20px;
+    margin: 9px 0 20px;
+    border: solid 1px #a9abae;
+    padding: 11px 9px 12px;
+}
+
+.select-list-wrapper ul {
+    background-color: #fff;
+    -webkit-border-radius: 10px;
+    font-size: 17px;
+    line-height: 20px;
+    margin: 9px 0 10px;
+}
+
+.select-list-wrapper ul li {
+    padding: 11px 9px 12px;
+}
+
+.select-list-wrapper ul {
+    font-weight: bold;
+    margin-bottom: 20px;
+    list-style: none;
+    padding: 0;
+    border: solid 1px #a9abae;
+}
+
+.select-list-wrapper ul li:not(:last-child) {
+    border-bottom: inherit;
+}
+
+.nonprofit {
+    padding: inherit;
+    color: inherit;
+    text-decoration: inherit;
+    margin: -11px -9px -12px;
+    display: block;
+    -webkit-tap-highlight-color: transparent;
+    /*background: url(#chevron,gray) right center no-repeat;*/
+}
+
+.select-list-wrapper ul li:first-child a {
+    -webkit-border-top-right-radius: 10px;
+    -webkit-border-top-left-radius: 10px;
+}
+
+.select-list-wrapper ul li:last-child a {
+    -webkit-border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+}
+
+.split-view .view:first-child {
+    display: none;
+}
+
+.select-list-wrapper ul li a:active {
+    color: #fff;
+    background:
+        -webkit-gradient(linear,
+            left top, left bottom,
+            from(rgba(255, 255, 255, .25)), to(transparent) ),
+
+        url(#chevron,white) right center no-repeat #015de6;
+}
+
+.select-list-wrapper ul li a:active * {
+    color: #fff;
+}
+
+/* tjs 120203 */
+*.ui-listview *.ui-btn-up-c,
+*.ui-listview *.ui-btn-down-c,
+*.ui-listview *.ui-btn-hover-c
+  {
+  /* Copy your .ui-btn-up styles here */
+	/*border: 1px solid 		#ccc*/ /*{c-bup-border}*/;
+	border-color: #ccc /*{c-bup-border}*/;
+}
+
+/* Repeat for each of your themes */
+*.ui-listview *.ui-btn-up-a,
+*.ui-listview *.ui-btn-down-a,
+*.ui-listview *.ui-btn-hover-a
+  {
+  /* Copy your .ui-btn-up styles here */
+	/*border: 1px solid 		#222*/ /*{a-bup-border}*/;
+	border-color: #222 /*{a-bup-border}*/;
+}
+
+*.ui-listview *.ui-btn-up-b,
+*.ui-listview *.ui-btn-down-b,
+*.ui-listview *.ui-btn-hover-b
+  {
+  /* Copy your .ui-btn-up styles here */
+	/*border: 1px solid 		#145072*/ /*{b-bup-border}*/;
+	border-color: #145072 /*{b-bup-border}*/;
+}
+
+*.ui-listview *.ui-btn-up-d,
+*.ui-listview *.ui-btn-down-d,
+*.ui-listview *.ui-btn-hover-d
+  {
+  /* Copy your .ui-btn-up styles here */
+	/*border: 1px solid 		#ccc*/ /*{d-bup-border}*/;
+	border-color: #ccc /*{d-bup-border}*/;
+}
+
+*.ui-listview *.ui-btn-up-e,
+*.ui-listview *.ui-btn-down-e,
+*.ui-listview *.ui-btn-hover-e
+  {
+  /* Copy your .ui-btn-up styles here */
+	/*border: 1px solid 		#F7C942*/ /*{e-bup-border}*/;
+	border-color: #F7C942 /*{e-bup-border}*/;
+}
