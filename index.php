@@ -300,7 +300,7 @@ is enabled only for sponsors.
 
   <div class="iconControls">
 
-  <p>Hosted for incubation by: <a href="../index.html"><img src="images/favicon.ico"></a>&nbsp;&nbsp;Use <button id="key"><img src="images/key.gif" /></button> to highlight key "take-away" pointers.</p>
+  <p>Hosted for incubation by: <a href="http://www.collogistics.com/index.html"><img src="images/favicon.ico"></a>&nbsp;&nbsp;Use <button id="key"><img src="images/key.gif" /></button> to highlight key "take-away" pointers.</p>
 
   </div>
 
