@@ -424,8 +424,9 @@ is enabled only for sponsors.
 			//open page
 		 // tjs 130126
             //window.location.href = "../donationlog/index.html";
-            //window.location.href = "app/index.html";
-            window.location.href = "http://www.charityHound.org/app/index.html";
+            // tjs 130128;
+            //window.location.href = "http://www.charityHound.org/app/index.html";
+            window.location.href = "http://openappmkt.com/app/510695fdeb377200020020b9/CharityHound";
 
 		 
 		});
