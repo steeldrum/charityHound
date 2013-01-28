@@ -222,14 +222,14 @@ function doScheduleDisplayAd() {
   <tr>
 
   <td>
-  <p>Hosted by <a href="http://www.collogistics.com/wiki/projects">Collogistics</a>
+  <p>Hosted by <a href="http://www.collogistics.com">Collogistics</a>
   we help <span class="akey">registered collaborators manage their charitable contributions</span>.  Collaborators
   are asked to record all donor solicitations along with the amount that they donated.
   By so doing collaborators are able to produce a report after a calendar year end that <span class="akey">helps with
   tax computations</span> for those who deduct charitable contributions (typically on 1040 Schedule A).
   </p>
   <p>
-  As an additional benefit participating collaborators are periodically emailed
+  As an additional benefit, participating collaborators are periodically emailed
   a <span class="akey">summary profile report</span> (on an aggregate basis) of both contributors
   and gift recipients.  No individual data is ever divulged. This means all users'
   private donations (along with the recipients) remain private.  However these aggregate-based
@@ -266,10 +266,10 @@ hardly a day will pass without receiving an appeal from some organization.  Our 
 by enabling our fellow collaborators an <span class="akey">easy way to "log"</span> these obstrusive appeals, eventually
 (via negative publicity regarding their marketing agressiveness) the <span class="akey">frequency of wasted
 mailed reminders will drop drastically</span>.  For our collaborators' experience we provide a special
-smart phone "<span class="akey">web app</span>" that handles the most frequent tasks.
+mobile (e.g. smart phone or tablet) "<span class="akey">web app</span>" that handles the most frequent tasks.
 </p>
 <p>
-<button id="iPhoneDonationLogApp">Download iPhone App</button>&nbsp;&nbsp;<a href="CharityHoundWebApp.pdf">how does the Web App Work?</a>
+<button id="iPhoneDonationLogApp">Download Mobile App</button>&nbsp;&nbsp;<a href="CharityHoundWebApp.pdf">how does the Web App Work?</a>
 </p>
 <p>
 Finally, we provide all collaborators an opportunity to help our cause!  Understand that
@@ -277,8 +277,8 @@ Finally, we provide all collaborators an opportunity to help our cause!  Underst
 ways that help defer our costs are offered.
 <ul>
 <li>Since collaborators use our software (and/or smart phone apps) as well as storage of their data 
-it is requested that they <span class="akey">consider us during times when they make donations<span> to other charities.</li>
-<li>Contact us and <span class="akey">ask about becomming a "sponsor"</span>. Sponsors benefit by means of increased visibility
+it is requested that they <span class="akey">volunteer skills to mature this site (still in beta).<span></li>
+<li>Contact us and <span class="akey">ask about becomming a "sponsor"</span>. Sponsors will benefit by means of increased visibility
 via our web site (and/or smart phone "apps").</li>
 </ul>
 </p>
@@ -424,7 +424,8 @@ is enabled only for sponsors.
 			//open page
 		 // tjs 130126
             //window.location.href = "../donationlog/index.html";
-            window.location.href = "app/index.html";
+            //window.location.href = "app/index.html";
+            window.location.href = "http://www.charityHound.org/app/index.html";
 
 		 
 		});

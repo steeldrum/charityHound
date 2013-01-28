@@ -121,7 +121,7 @@ This page contains two "lists".  The top list, Charities, lists all active chari
 There is a possibility that you are undecided about giving anything.  Perhaps you plan to research the cause further.  Indeed this is quite typical.  In such cases log the solicitation with a zero amount anyway.  Later on the same charity can be found (search in the Charities panel).  Then use the magnifying glass (icon) to immediately display the lower list of "Donations".  Perhaps the most recent donation shows a "zero" amount.  But you now plan to write a check.  In the lower list simply click the pencil icon (edits that list item).  A form is displayed.  Change the amount from zero to whatever you plan to donate.  Submit the form and you are done!
 </p>
 <p>
-Every logged solicitation can be edited.  The most typical need is when (and if) you decide to contribute a few days after logging the solicitation.  To help identify charity organizations that are willing to contain fund-raising costs the same form has a few check boxes.  When appropriate check any boxes that apply.  This helps our reporting system sort through and identify cost conscious charities.
+Every logged solicitation can be edited.  The most typical need is when (and if) you decide to contribute a few days after logging the solicitation.  To help identify charity organizations that are willing to contain fund-raising costs the same form has a few check boxes.  When appropriate check any boxes that apply.  This helps our reporting system sort through and identify cost conscious charities.  This sorting feature is modelled after the iBook, <i>Dead Giveaway - Sleuthing Around Nonprofits</i>, available on the iPad.
 </p>
 <br/>
 
