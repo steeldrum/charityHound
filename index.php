@@ -269,7 +269,14 @@ mailed reminders will drop drastically</span>.  For our collaborators' experienc
 mobile (e.g. smart phone or tablet) "<span class="akey">web app</span>" that handles the most frequent tasks.
 </p>
 <p>
-<button id="iPhoneDonationLogApp">Download Mobile App</button>&nbsp;&nbsp;<a href="CharityHoundWebApp.pdf">how does the Web App Work?</a>
+To properly install this mobile app:
+<ul>
+<li>On mobile device use a browser such as Safari and visit this same web page.</li>
+<li>Then click here: <button id="iPhoneDonationLogApp">Download Mobile App</button>&nbsp;&nbsp;<a href="CharityHoundWebApp.pdf">how does the Web App Work?</a>
+</li>
+<li>Finally use the browser action control <img src="images/appleActionIcon23x15.png" /> to add the web app to the device's home screen. 
+</li>
+</ul>
 </p>
 <p>
 Finally, we provide all collaborators an opportunity to help our cause!  Understand that
@@ -426,7 +433,9 @@ is enabled only for sponsors.
             //window.location.href = "../donationlog/index.html";
             // tjs 130128;
             //window.location.href = "http://www.charityHound.org/app/index.html";
-            window.location.href = "http://openappmkt.com/app/510695fdeb377200020020b9/CharityHound";
+            // tjs 130130;
+            //window.location.href = "http://openappmkt.com/app/510695fdeb377200020020b9/CharityHound";
+            window.location.href = "app/index.html";
 
 		 
 		});
