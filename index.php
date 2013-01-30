@@ -436,8 +436,9 @@ is enabled only for sponsors.
             // tjs 130130;
             //window.location.href = "http://openappmkt.com/app/510695fdeb377200020020b9/CharityHound";
             //window.location.href = "app/index.html";
-            window.location.assign("app/index.html");
-            //window.location.assign = "http://new-host.home:8081/charityhound/app/index.html";
+            //window.location.assign("app/index.html");
+            //window.location.assign("http://new-host.home:8081/app/index.html");
+            window.location.assign("http://www.charityhound.org/app/index.html");
 
 		 
 		});
