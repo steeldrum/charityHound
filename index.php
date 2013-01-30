@@ -438,7 +438,8 @@ is enabled only for sponsors.
             //window.location.href = "app/index.html";
             //window.location.assign("app/index.html");
             //window.location.assign("http://new-host.home:8081/app/index.html");
-            window.location.assign("http://www.charityhound.org/app/index.html");
+            //window.location.assign("http://www.charityhound.org/app/index.html");
+            window.open("http://www.charityhound.org/app/index.html",'','',true);
 
 		 
 		});
