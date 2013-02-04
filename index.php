@@ -272,7 +272,7 @@ mobile (e.g. smart phone or tablet) "<span class="akey">web app</span>" that han
 To properly install this mobile app:
 <ul>
 <li>On mobile device use a browser such as Safari and visit this same web page.</li>
-<li>Then click here: <button id="iPhoneDonationLogApp">Download Mobile App</button>&nbsp;&nbsp;<a href="CharityHoundWebApp.pdf">how does the Web App Work?</a>
+<li>Then, to download the mobile app, click here: <a href="app/index.html" target="_parent"><img src="images/pawPrint16x16.jpg"/></a>&nbsp;&nbsp;<a href="CharityHoundWebApp.pdf">how does the Web App Work?</a>
 </li>
 <li>Finally use the browser action control <img src="images/appleActionIcon23x15.png" /> to add the web app to the device's home screen. 
 </li>
@@ -439,7 +439,9 @@ is enabled only for sponsors.
             //window.location.assign("app/index.html");
             //window.location.assign("http://new-host.home:8081/app/index.html");
             //window.location.assign("http://www.charityhound.org/app/index.html");
-            window.open("http://www.charityhound.org/app/index.html",'','',true);
+            // tjs 130204
+            //window.open("http://www.charityhound.org/app/index.html",'','',true);
+            window.open("app/index.html",'','',true);
 
 		 
 		});

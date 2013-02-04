@@ -37,6 +37,9 @@ release version 1.00
 #logSolicitation-popup {
     left: 0 !important;
     right: auto !important;
+    /* tjs 130204 */
+    top: 50 !important;
+    bottom: auto !important;
 }
 #logSolicitation {
     width: 200px;
@@ -49,6 +52,9 @@ release version 1.00
 #makeDonation-popup {
     right: 0 !important;
     left: auto !important;
+    /* tjs 130204 */
+    top: 50 !important;
+    bottom: auto !important;
 }
 #makeDonation {
     width: 200px;
