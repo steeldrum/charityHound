@@ -7,7 +7,10 @@ if ($account == 0 && isset($_SESSION['member'])) {
 	if ($member != null) {
 		$account = $member->getValue( "id" );
 	}
-} 
+}
+// tjs 130307
+$aggregateProvider = AGGREGATE_DSN;
+$aggregateDatabase = AGGREGATE_DB_NAME;
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <!--------------------------------------
@@ -183,7 +186,6 @@ function processArgs(account) {
 
 <h1>Reports</h1>
 
-				<br/>
 <p> The report of donations lists charities in alphabetic order.  For each charity listed
 you can see detail that includes the <span class="akey">amount contributed and the date of the contribution</span>.
 The details are summarized showing the total count of solicitations and the total
@@ -280,12 +282,13 @@ From year: <input id="fromtag" type="number" />&nbsp;&nbsp;To year: <input id="t
 <p>
 <button id="designatedDonations">View Designated Charities (tagged as favorable or otherwise)</button>
 </p>
-
-<br/>
-
-<p>A blog post provides the latest information about charities that are naughty or nice.  To view post use 
-this link: <a href="http://collogistics.com/wiki/pages/b4i2y0/CharityHoundorg_Pantas_Naughty_or_Nice_Charities_Checklist.html#">CharityHound.org "Panta's Naughty or Nice Charities Checklist"</a></p>
 <p>
+The following reports use aggregate data (based on all users' information, not just yours):
+<button id="designatedBlanks" disabled="disabled">Charities Who Send "Blank" Solicitations (no indication of sender)</button>
+<button id="designatedCurrencies" disabled="disabled">Charities Who Send "Currency Bated" Solicitations (money in envelope)</button>
+<button id="designatedConfidentials" disabled="disabled">Charities Who Pledge Privacy (won't sell your identity to others)</button>
+<button id="designatedReminders" disabled="disabled">Charities Who Provide A Schedule (won't hound you with repeated solicitations)</button>
+</p>
 
 <br/>
 
@@ -517,6 +520,36 @@ var url = 'view_designated_charities.php?account=' + account + '&from=' + from +
 //alert("reports view solicitor donations url " + url);
 window.location.href = url;
 	});
+
+	// tjs 130307
+	var aggregateProvider = <?php echo json_encode($aggregateProvider); ?>;
+	var	aggregateDatabase = <?php echo json_encode($aggregateDatabase); ?>;
+		//alert("account " + account + " aggregateProvider done");		
+		//alert("aggregateProvider " + aggregateProvider + " aggregateDatabase " + aggregateDatabase);
+		// hack for test - comment out!
+		//aggregateDatabase = 'collogistics';
+	
+	$("#designatedBlanks").click(function() {
+		//alert("reports view designatedBlanks...");		
+var url = 'view_designated_aggregates.php?provider=' + aggregateProvider + '&database=' + aggregateDatabase + '&aggregateList=blankScoreList';
+//alert("reports view designatedBlanks url " + url);
+window.location.href = url;
+	});
+	$("#designatedCurrencies").click(function() {
+		var url = 'view_designated_aggregates.php?provider=' + aggregateProvider + '&database=' + aggregateDatabase + '&aggregateList=currencyBatedList';
+		//alert("reports view solicitor donations url " + url);
+		window.location.href = url;
+			});
+	$("#designatedConfidentials").click(function() {
+		var url = 'view_designated_aggregates.php?provider=' + aggregateProvider + '&database=' + aggregateDatabase + '&aggregateList=confidentialScoreList';
+		//alert("reports view solicitor donations url " + url);
+		window.location.href = url;
+			});
+	$("#designatedReminders").click(function() {
+		var url = 'view_designated_aggregates.php?provider=' + aggregateProvider + '&database=' + aggregateDatabase + '&aggregateList=scheduleScoreList';
+		//alert("reports view solicitor donations url " + url);
+		window.location.href = url;
+			});
 	
 	//tjs 110511
         //alert("index account " + account);
