@@ -97,6 +97,8 @@ function displayForm( $errorMessages, $missingFields, $aggregateReport ) {
     <br/>
 	<a href="view_members.php">View List of Charity Hound Collaborators</a>
     <br/>
+	<a href="ratingsManager.php">Manage Ratings</a>
+    <br/>
     <a href="index.php">Home</a>
 <?php
   displayPageFooter();

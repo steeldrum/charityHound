@@ -18,7 +18,11 @@ if ($account == 0 && isset($_SESSION['member'])) {
 		// tjs 130126
 		//echo "index account: ".$account;
 	}
-} 
+}
+// tjs 130307
+$aggregateProvider = AGGREGATE_DSN;
+$aggregateDatabase = AGGREGATE_DB_NAME;
+//echo "aggregateProvider $aggregateProvider aggregateDatabase $aggregateDatabase";
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <!--------------------------------------
@@ -47,6 +51,8 @@ tjs 110511
 <meta name="description" content="Collaborative rating of CHARITIES to help navigate through donation choices and act as a watch dog for inefficient ones." />
 
     <title>Charity Hound</title>
+    <!-- tjs 130301 -->
+	<script src="https://cdn.firebase.com/v0/firebase.js"></script>
     <!-- tjs 130126 -->
 		<!-- script type="text/javascript" src="js/jquery-1.3.2.js"></script -->
 		<script type="text/javascript" src="js/jquery-1.3.2.js"></script>
@@ -69,7 +75,10 @@ tjs 110511
 	var loginAccountNumber = 0;
 	var lastName = "collaborator";
 	var firstName = "demo";
-
+// tjs 130307
+	var aggregateProvider;
+	var aggregateDatabase;
+	
 function processArgs(account) {
 	//setAuthenticated();
 	var authenticated = account > 0? true : false;
@@ -456,6 +465,20 @@ is enabled only for sponsors.
 		processArgs(account);
 				//processArgs();
 
+		// tjs 130307
+		//alert("account " + account + " aggregateProvider...");
+		//printf("Result: %s\n", $result);		
+		//var aggregateProvider = <?php printf("%s", $aggregateProvider); ?>;
+		//var aggregateDatabase = <?php printf("%s", $aggregateDatabase); ?>;
+		//var aggregateProvider = "firebaseIO.com";
+		//var aggregateDatabase = "collogistics-local";
+		aggregateProvider = <?php echo json_encode($aggregateProvider); ?>;
+		aggregateDatabase = <?php echo json_encode($aggregateDatabase); ?>;
+		//alert("account " + account + " aggregateProvider done");		
+		//alert("aggregateProvider " + aggregateProvider + " aggregateDatabase " + aggregateDatabase);
+		// hack for test - comment out!
+		//aggregateDatabase = 'collogistics';
+				
 		// tjs 111027
 		var charityHoundRegisterDialogOpts = {
 				title: "CharityHound Registration",
@@ -463,7 +486,7 @@ is enabled only for sponsors.
 				dialogClass: 'dial',
 				modal: true,
 				autoOpen: false
-				}
+				};
 		//alert("index init charityHoundRegisterDialogOpts inited...");
 
 				$("#charityHoundRegisterDialog").dialog(charityHoundRegisterDialogOpts);

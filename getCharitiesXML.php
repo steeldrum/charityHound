@@ -15,6 +15,7 @@ release version 1.00
 //http://localhost/~thomassoucy/charityhound/getCharitiesXML.php
 //http://localhost/~thomassoucy/charityhound/getCharitiesXML.php?account=0
 //http://localhost/~thomassoucy/charityhound/getCharitiesXML.php?account=1
+//http://new-host-8.home:8081/getCharitiesXML.php?account=1
 
 date_default_timezone_set ( "America/New_York" );
 

@@ -36,6 +36,8 @@ release version 1.00
   <link rel="stylesheet" type="text/css" href="css/demo_table.css">
    <script type="text/javascript" src="js/argumenturl.js"></script>
    <script type="text/javascript" src="js/menu.js"></script>
+    <!-- tjs 130314 -->
+	<script src="https://cdn.firebase.com/v0/firebase.js"></script>
 
      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 

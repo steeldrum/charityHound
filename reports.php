@@ -284,7 +284,7 @@ From year: <input id="fromtag" type="number" />&nbsp;&nbsp;To year: <input id="t
 </p>
 <p>
 The following reports use aggregate data (based on all users' information, not just yours):
-<button id="designatedBlanks" disabled="disabled">Charities Who Send "Blank" Solicitations (no indication of sender)</button>
+<button id="designatedBlanks">Charities Who Send "Blank" Solicitations (no indication of sender)</button>
 <button id="designatedCurrencies" disabled="disabled">Charities Who Send "Currency Bated" Solicitations (money in envelope)</button>
 <button id="designatedConfidentials" disabled="disabled">Charities Who Pledge Privacy (won't sell your identity to others)</button>
 <button id="designatedReminders" disabled="disabled">Charities Who Provide A Schedule (won't hound you with repeated solicitations)</button>
