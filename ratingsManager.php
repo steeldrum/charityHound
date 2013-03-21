@@ -157,9 +157,12 @@ if ($blankEnvelopeAppeals > 0) {
 		$baseId=mysql_result($result,$i,"b");		
 		$charityName=mysql_result($result,$i,"n");
 		$score=mysql_result($result,$i,"s");
+		// tjs 130321
+		if ($baseId != null && $charityName != null && $score > 0) {
 		//echo "baseId $baseId name $charityName score $score";
 			//ensureNameBaseIdAndList($provider, $aggregateDatabase, $baseId, $charityName, $aggregateList); 
-		syncAggregateRatingsUpdate($provider, $aggregateDatabase, $baseId, $charityName, $year, $aggregateList, $score);		
+			syncAggregateRatingsUpdate($provider, $aggregateDatabase, $baseId, $charityName, $year, $aggregateList, $score);
+		}		
 		$i++;
 	}
 }	
@@ -372,6 +375,7 @@ function getYearListReferenceAndScore($provider, $database, $listType, $baseId, 
 function setNameYearPriorityScore( $provider, $database, $aggregateList, $baseId, $name, $year, $yearScore) {
 	//echo "setNameYearPriorityScore name $name year $year yearScore $yearScore score $score";
 	// setNameYearPriorityScore name Africare year 2011 yearScore 1 score 0
+	//echo "setNameYearPriorityScore provider $provider database $database aggregateList $aggregateList baseId $baseId name $name year $year yearScore $yearScore score $score";
 	
 	 $url = "https://".$database.".".$provider."/";
 	$fb = new fireBase($url);
@@ -379,6 +383,7 @@ function setNameYearPriorityScore( $provider, $database, $aggregateList, $baseId
 	
 	$result = $fb->get($baseIdPath);
 	$resultArray = json_decode($result, true);
+	//echo "setNameYearPriorityScore resultArray $resultArray";
 	//$currentName = null;
 	//$yearList = array();
 	/*
@@ -396,23 +401,27 @@ function setNameYearPriorityScore( $provider, $database, $aggregateList, $baseId
    		//'.priority' => $score
 	);
 	$foundYear = false;
-	foreach($resultArray as $key=>$value) {
-		if ($key != "name") {
-			if ($key == $year) {
-				$data[$key] = $yearScore;
-				$foundYear = true;
-				$priority += $yearScore;
-			} else {
-          		$data[$key] = $value;
-				$priority += $value;
+	if ($resultArray != null) {
+		//echo "setNameYearPriorityScore resultArray $resultArray";
+		foreach($resultArray as $key=>$value) {
+			if ($key != "name") {
+				if ($key == $year) {
+					$data[$key] = $yearScore;
+					$foundYear = true;
+					$priority += $yearScore;
+				} else {
+					$data[$key] = $value;
+					$priority += $value;
+				}
 			}
-        }
+		}
     }
 	if(!$foundYear) {
 		$data[$year] = $yearScore;
 		$priority += $yearScore;
 	}
 	$data['.priority'] = $priority;
+	//echo "setNameYearPriorityScore baseIdPath $baseIdPath data $data";
 	$result = $fb->set($baseIdPath, $data);
 }
 
