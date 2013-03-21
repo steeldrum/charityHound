@@ -20,7 +20,8 @@ $provider = isset( $_GET["provider"] ) ? preg_replace( "/[^ a-zA-Z.]/", "", $_GE
 $database = isset( $_GET["database"] ) ? preg_replace( "/[^ a-zA-Z]/", "", $_GET["database"] ) : "collogistics-test";
 $aggregateList = isset( $_GET["aggregateList"] ) ? preg_replace( "/[^ a-zA-Z]/", "", $_GET["aggregateList"] ) : "blankScoreList";
 $title = "Charities That Send Appeals In Envelopes With No Return Address (blank appeals)";
-if ($aggregateList == 'currencyBatedList') {
+//if ($aggregateList == 'currencyBatedList') {
+if ($aggregateList == 'currencyScoreList') {
 	$title = "Charities That Send Appeals Containing Currency (expensive appeals)";	
 } else if ($aggregateList == 'confidentialScoreList') {
 	$title = "Charities That Formally Commit to Donar Privacy (they do NOT sell your identity information)";	

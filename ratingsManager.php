@@ -196,68 +196,68 @@ if ($currencyBatedAppeals > 0) {
 }
 
 function syncAggregateRatingsUpdate($provider, $database, $baseId, $charityName, $year, $aggregateList, $score) {
-	ensureNameBaseIdAndList($provider, $database, $baseId, $charityName, $aggregateList);
+	//$addedNameBaseIdOrList = ensureNameBaseIdAndList($provider, $database, $baseId, $charityName, $aggregateList);
+	//if ($addedNameBaseIdOrList) {
+		// provide time delay for synchronization to occur.  Seconds delay TBD.
+	//	sleep(4);
+	//}
    	list( $referenceYear, $currentYearScore, $cumYearScores) = getYearListReferenceAndScore( $provider, $database, $aggregateList, $baseId, $year );
+   	//echo "syncAggregateRatingsUpdate referenceYear $referenceYear currentYearScore $currentYearScore cumYearScores $cumYearScores score $score";
+	// e.g. syncAggregateRatingsUpdate referenceYear currentYearScore 0 cumYearScores 0 
+   	
+  	if ($currentYearScore != $score) {
+   		//setNameYearPriorityScore( $provider, $database, $aggregateList, $baseId, $charityName, $year, $score, $cumYearScores );   	
+   		setNameYearPriorityScore( $provider, $database, $aggregateList, $baseId, $charityName, $year, $score );   	
+  	}
+/*  	
    	$adjustedScore = $cumYearScores;
 	$url = "https://".$database.".".$provider."/";
 	$fb = new fireBase($url);
+	// if found the year associated with this base id
   	if ($referenceYear != null) {
+  		// possibility that it changed
    		if ($currentYearScore != $score) {
    			// PUT new score replacing the current score...
 			//$yearScorePath = $aggregateList."/".$baseId."/yearList/".$referenceYear."/score";
-   			$yearScorePath = $aggregateList."/".$baseId."/yearList/".$referenceYear;
+
+   			$baseIdPath = $aggregateList."/".$baseId;
 			$data = array(
-			    'score' => $score
+			    $year => $score
 			);
-			$result = $fb->set($yearScorePath, $data);
-			//printf("Reading data from %s\n", $aggregateListPath);
+			$result = $fb->set($baseIdPath, $data);
+   			//printf("Reading data from %s\n", $aggregateListPath);
 			$adjustedScore = $adjustedScore - $currentYearScore + $score;
    		}
-   		//return;
    	} else {
-   		// the year has not been appended to yearList
-   		// POST the year and the score...
-		$ch = curl_init();
-   		//echo "cURL inited! reply ".$ch;
-		$url = "https://".$database.".".$provider."/".$aggregateList."/".$baseId."/yearList.json";
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-	//curl_setopt($ch, CURLOPT_HTTPGET, true); // default
-	//CURLOPT_RETURNTRANSFER
-		curl_setopt($ch, CURLOPT_POST, 1);
-		// for test
-		//$score = '44';
-		$data = '{"year" : "'.$year.'", "score" : "'.$score.'"}';
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data); 
-	
-		// grab URL and pass it to the browser
-		$result = curl_exec($ch);
-
-		// close cURL resource, and free up system resources
-		curl_close($ch);   		
+   			$baseIdPath = $aggregateList."/".$baseId;
+			$data = array(
+			    $year => $score
+			);
+			$result = $fb->set($baseIdPath, $data);
+		
 		$adjustedScore = $adjustedScore + $score;
    	}
-
-   	// tjs 130314
-   	//$donationCountScores = getDonationCountScores( $provider, $database, $aggregateList, $baseId );
-   	//$adjustedScore += $donationCountScores;
-   	setPriorityScore( $provider, $database, $aggregateList, $baseId, $adjustedScore );	
+*/
+   	//setPriorityScore( $provider, $database, $aggregateList, $baseId, $adjustedScore );	
 }		
 
 function ensureNameBaseIdAndList($provider, $database, $baseId, $charityName, $aggregateList) {
+	$addedNameBaseIdOrList = false;
 	$url = "https://".$database.".".$provider."/";
 	$fb = new fireBase($url);
-	$aggregateListPath = "/".$aggregateList;
+	$aggregateListPath = $aggregateList;
 	//printf("Reading data from %s\n", $aggregateListPath);
 	$result = $fb->get($aggregateListPath);
+	//echo "ensureNameBaseIdAndList result $result";
+	// e.g.  {"5":{"name":"n5","2011":4,"2010":5},"1":{"name":"n1","2010":10}}
 	if ($result == null || $result = "") {
 		// the list doesn't exist.  Needs to be created.
 			$baseIdPath = $aggregateListPath."/".$baseId;
 			$data = array(
-    			'id' => $baseId,
-			    'name' => $charityName,
-    			'score' => 0
-   //'.priority' => 0
+    			//'id' => $baseId,
+			    //'name' => $charityName,
+ 			    'name' => $charityName
+    			//'score' => 0
 			);			
 	        $result = $fb->set($baseIdPath, $data);
 	        
@@ -267,7 +267,9 @@ function ensureNameBaseIdAndList($provider, $database, $baseId, $charityName, $a
     			'.priority' => 0
 			);			
 	        $result = $fb->set($priorityPath, $data);
-		} else {
+	        $addedNameBaseIdOrList = true;
+			//echo "ensureNameBaseIdAndList (new list and baseId) addedNameBaseIdOrList $addedNameBaseIdOrList";
+	} else {
 		//printf("Result: %s\n", $result);
 		$object_array = json_decode($result);
 		$result_array = array();
@@ -288,15 +290,19 @@ function ensureNameBaseIdAndList($provider, $database, $baseId, $charityName, $a
 	        //echo " Create node ".$baseId." base Id ".$baseId." name ".$charityName;
 			$baseIdPath = $aggregateListPath."/".$baseId;
 			$data = array(
-    			'id' => $baseId,
-			    'name' => $charityName,
-    			'score' => 0
-   // 'priority' => 0
-			);			
+    			//'id' => $baseId,
+			    //'name' => $charityName,
+			    'name' => $charityName
+			//'score' => 0
+ 			);			
 	        $result = $fb->set($baseIdPath, $data);
 			//printf("Result: %s\n", $result);
+	        $addedNameBaseIdOrList = true;
+			//echo "ensureNameBaseIdAndList (new baseId) addedNameBaseIdOrList $addedNameBaseIdOrList";
+			// e.g. ensureNameBaseIdAndList (new baseId) addedNameBaseIdOrList 1 
 	    }
-	}	
+	}
+	return $addedNameBaseIdOrList;	
 }
 
 function getYearListReferenceAndScore($provider, $database, $listType, $baseId, $year) {
@@ -306,6 +312,31 @@ function getYearListReferenceAndScore($provider, $database, $listType, $baseId, 
 	$cumScores = 0;
 	$url = "https://".$database.".".$provider."/";
 	$fb = new fireBase($url);
+	$baseIdPath = $aggregateList."/".$baseId;
+	$result = $fb->get($baseIdPath);
+	$resultArray = json_decode($result, true);
+	$foundYear = false;
+	$yearScore = 0;
+	foreach($resultArray as $key=>$value)
+    {
+          //echo "Key: ", $key, " is $value ";
+          // e.g. Key: -IopwnuAmjn30Yj1qn0V is Array 
+	 	if ($key != 'name') {
+	          //echo "Key: ", $key2, " is $value2 ";
+	          // e.g. Key: score is 44 Key: year is 2013 
+	          if ($key == $year) {
+	          	$yearScore = $value;
+	          	$referenceYear = $year;
+	          	$foundYear = true;
+	          }
+	         	$cumScores += $value;
+	 	}
+    }
+	if ($foundYear  && $score == 0) {
+	    	$score = $yearScore;
+	    }
+    
+/*	
 	$yearListPath = $aggregateList."/".$baseId."/yearList";
 	//printf("Reading data from %s\n", $aggregateListPath);
 	$result = $fb->get($yearListPath);
@@ -333,46 +364,85 @@ function getYearListReferenceAndScore($provider, $database, $listType, $baseId, 
 	    }
 	    $cumScores += $yearScore;
     }
-
+*/
     return array( $referenceYear, $score, $cumScores );	
 }
 
-// tjs 130314 - remove support for this...
-/*
-function getDonationCountScores( $provider, $database, $aggregateList, $baseId ) {
-	$countDonationIds = 0;
-	$url = "https://".$database.".".$provider."/";
-	$fb = new fireBase($url);
-	$donationListPath = $aggregateList."/".$baseId."/donationList";
-	//printf("Reading data from %s\n", $aggregateListPath);
-	$result = $fb->get($donationListPath);
-	$resultArray = json_decode($result, true);
+//function setNameYearPriorityScore( $provider, $database, $aggregateList, $baseId, $name, $year, $yearScore, $score ) {
+function setNameYearPriorityScore( $provider, $database, $aggregateList, $baseId, $name, $year, $yearScore) {
+	//echo "setNameYearPriorityScore name $name year $year yearScore $yearScore score $score";
+	// setNameYearPriorityScore name Africare year 2011 yearScore 1 score 0
 	
-	//echo "yearList result ".$result;
-	// e.g. yearList result {"-IopwnuAmjn30Yj1qn0V":{"score":"44","year":"2013"}} 
-	//$foundYear = false;
-    foreach($resultArray as $key=>$value)
-    {
-          //echo "Key: ", $key, " is $value ";
-          // e.g. Key: -IopwnuAmjn30Yj1qn0V is Array 
-    	foreach($value as $key2=>$value2)
-	    {
-	          //echo "Key: ", $key2, " is $value2 ";
-	          // e.g. Key: score is 44 Key: year is 2013 
-	          if ($key2 == "donationId") {
-	          	$countDonationIds++;
-	          }
-	    }
+	 $url = "https://".$database.".".$provider."/";
+	$fb = new fireBase($url);
+	$baseIdPath = $aggregateList."/".$baseId;
+	
+	$result = $fb->get($baseIdPath);
+	$resultArray = json_decode($result, true);
+	//$currentName = null;
+	//$yearList = array();
+	/*
+	foreach($resultArray as $key=>$value) {
+		if ($key == "name") {
+          	$currentName = $value;
+          	break;
+        }
+    }*/
+	//$priority = $score;
+	$priority = 0;
+	$data = array(
+		//'name' => $name,
+	'name' => $name
+   		//'.priority' => $score
+	);
+	$foundYear = false;
+	foreach($resultArray as $key=>$value) {
+		if ($key != "name") {
+			if ($key == $year) {
+				$data[$key] = $yearScore;
+				$foundYear = true;
+				$priority += $yearScore;
+			} else {
+          		$data[$key] = $value;
+				$priority += $value;
+			}
+        }
     }
-	return $countDonationIds;
+	if(!$foundYear) {
+		$data[$year] = $yearScore;
+		$priority += $yearScore;
+	}
+	$data['.priority'] = $priority;
+	$result = $fb->set($baseIdPath, $data);
 }
-*/
 
 function setPriorityScore( $provider, $database, $aggregateList, $baseId, $score ) {
 	//echo "setPriorityScore score $score";
 	 $url = "https://".$database.".".$provider."/";
 	$fb = new fireBase($url);
 	 $baseIdPath = $aggregateList."/".$baseId;
+	$result = $fb->get($baseIdPath);
+	$resultArray = json_decode($result, true);
+	$currentName = null;
+	$yearList = array();
+	foreach($resultArray as $key=>$value) {
+		if ($key == "name") {
+          	$currentName = $value;
+          	break;
+        }
+    }
+	$data = array(
+		'name' => $currentName,
+   		'.priority' => $score
+	);
+	foreach($resultArray as $key=>$value) {
+		if ($key != "name") {
+          	$data[$key] = $value;
+        }
+    }
+	
+	$result = $fb->set($baseIdPath, $data);
+ 	/*
 	$result = $fb->get($baseIdPath);
 	$resultArray = json_decode($result, true);
 	$currentId = null;
@@ -432,13 +502,6 @@ function setPriorityScore( $provider, $database, $aggregateList, $baseId, $score
 		    				$currentYearScore = $value6;
 		    			}
 			    		}
-		    			/*
-		    			if ($key5 == "year") {
-		    				$currentYear = $value5;
-		    			} else if ($key5 == "score") {
-		    				$currentYearScore = $value5;
-		    			}
-		    			*/
 		    		}
 		          		//echo "Key3: ", $key3, " is $value3 ";
 		          		//$yearList[] = array($key3 => $value3);
@@ -465,132 +528,7 @@ function setPriorityScore( $provider, $database, $aggregateList, $baseId, $score
 		// close cURL resource, and free up system resources
 		curl_close($ch);   		
 		    }	        
-	/* e.g.
-Key: score is 0 Key: name is Africare Key: id is 11 
-  Key: yearList is Array 
-  Key2: -Ip_6NnqNz9vkdlzal_H is Array
-   Key3: score is 1 Key3: year is 2011 
 	 */
-	 
- 	
-/*
-    $currentBaseIdData = $fb->get($baseIdPath);
-	//$currentBaseIdData = $result;
-	$currentBaseIdDataWithPriority = '{'.$currentBaseIdData.', ".priority":'.$score.'}';
-	$result = $fb->set($baseIdPath, $currentBaseIdDataWithPriority);
-* 
- *  	$url = "https://".$database.".".$provider."/";
-	$baseIdPath = $aggregateList."/".$baseId;
-	$urlAndPath = $url.$baseIdPath.".json";
-	$data = array(
-    	'score' => $score
-	);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $urlAndPath);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH");
-        $jsonData = json_encode($data);
-        $header = array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($jsonData)
-        );
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-            $result = curl_exec($ch);
-	curl_close($ch);
-            // handle priority ...
-		$urlAndPriorityPath = $url.$baseIdPath."/.priority.json";
-	$data = array(
-    		'.priority' => $score
-		);
-	$ch = curl_init();
-	//$urlAndPriorityPath = $url.$baseIdPath."/.priority/.json";
-		curl_setopt($ch, CURLOPT_URL, $urlAndPriorityPath);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH");
-        $jsonData = json_encode($data);
-        $header = array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($jsonData)
-        );
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-            $result = curl_exec($ch);
-            
-            curl_close($ch);			
-
- 	$url = "https://".$database.".".$provider."/";
-	$fb = new fireBase($url);
-   	$scorePath = $aggregateList."/".$baseId."/score";
-			$data = array(
-			    '.value' => $score
-			);
-			$result = $fb->set($scorePath, $data);
- 			// tjs 130313
-			$baseIdPath = $aggregateList."/".$baseId;
-			$data = array(
-			    '.priority' => $score
-			);
-			$result = $fb->set($baseIdPath, $data);
-* 
- * 
- *    	$scorePath = $aggregateList."/".$baseId."/score";
-			$data = array(
-			    '.value' => $score,
-			'.priority' => $score
-			);
-			$result = $fb->set($scorePath, $data);
-
- * 	$baseIdPath = $aggregateList."/".$baseId;
-	$urlAndPath = $url.$baseIdPath.".json";
-	$data = array(
-    	'score' => $score
-	);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $urlAndPath);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH");
-        $jsonData = json_encode($data);
-        $header = array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($jsonData)
-        );
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-            $result = curl_exec($ch);
-// read curl https://SampleChat.firebaseIO-demo.com/users/tom/.priority/.json
-// write curl -X PUT -d '{"name": {"first": "Tom"}, ".priority": 1.0}' \
-//  https://SampleChat.firebaseIO-demo.com/users/tom/.json
-//  To write priority and a primitive value (e.g. a string) at the same time, you can add a ".priority" child and put the
-//   primitive value in a ".value" child. For example:
-//curl -X PUT -d '{".value": "Tom", ".priority": 1.0}' \
- // https://SampleChat.firebaseIO-demo.com/users/tom/name/first.json
-            
-            // handle priority ...
-		$urlAndPriorityPath = $url.$baseIdPath."/.priority/.json";
-        curl_setopt($ch, CURLOPT_URL, $urlAndPriorityPath);
-		$data = array(
-    		'.priority' => $score
-		);
-        $jsonData = json_encode($data);
-        $header = array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($jsonData)
-        );
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-            $result = curl_exec($ch);
-            
-            curl_close($ch);*/
 }
 
 function displayThanks() {
