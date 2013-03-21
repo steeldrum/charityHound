@@ -25,7 +25,7 @@ if ($aggregateList == 'currencyScoreList') {
 	$title = "Charities That Send Appeals Containing Currency (expensive appeals)";	
 } else if ($aggregateList == 'confidentialScoreList') {
 	$title = "Charities That Formally Commit to Donar Privacy (they do NOT sell your identity information)";	
-} else if ($aggregateList == 'scheduleScoreList') {
+} else if ($aggregateList == 'reminderScoreList') {
 	$title = "Charities That Provide Donors a Schedule For Subsequent Appeals (they do NOT hound you repeatedly!)";	
 }
 	//echo "PHP provider $provider"; 

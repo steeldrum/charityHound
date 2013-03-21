@@ -1106,13 +1106,67 @@ function postAggregateRatingsUpdate(donationId, charityId, memberId, date, blank
 function syncAggregateRatingsUpdate(provider, database, donationId, charityId, name, year, aggregateList) {
 	//alert("syncAggregateRatingsUpdate provider " + provider + " database " + database + " charityId " + charityId + " year " + year + " list " + aggregateList);
 	// e.g. syncAggregateRatingsUpdate provider firebaseIO.com database collogistics charityId 9 year 2013 list blankScoreList
-	var url = 'https://' + database + '.' + provider + '/' + aggregateList;
+	//tjs 130321
+	//var url = 'https://' + database + '.' + provider + '/' + aggregateList;
+	var url = 'https://' + database + '.' + provider;
+	var databaseRootRef = new Firebase(url);
+	var blankScoreListRef = databaseRootRef.child(aggregateList);
 	//alert("syncAggregateRatingsUpdate url " + url);
 	// e.g. syncAggregateRatingsUpdate url https://collogistics.firebaseIO.com/blankScoreList
-	var aggregateScoreListRef = new Firebase(url);
+	//var aggregateScoreListRef = new Firebase(url);
 				//'https://' + database + '.' + provider + '//' + aggregateList);
 			//'https://' + database + '.' + provider + '/' + aggregateList);
 	//url);
+	
+	var currentScore = 0;
+	var userScoreRef = blankScoreListRef.child(charityId);
+	//alert("userScoreRef...");
+	var newYearString = String(year);
+	var yearScoreRef = userScoreRef.child(newYearString);
+	//yearScoreRef.on('value', function(dataSnapshot) {
+	yearScoreRef.once('value', function(dataSnapshot) {
+		  var childData = dataSnapshot.val();
+		  //alert("bumpScore childData " + childData);
+		  if (childData != null) {
+			  //currentScore = childData;
+			  currentScore = Number(childData);
+		  }
+		  currentScore++;
+		  yearScoreRef.set(currentScore, function(error) {
+			  if (error == null) {						  
+				//userScoreRef.on('value', function(dataSnapshot) { 
+					userScoreRef.once('value', function(dataSnapshot) { 
+						// Given a DataSnapshot containing a child 'fred' and a child 'wilma':
+						var cumYearScores = 0;
+						dataSnapshot.forEach(function(childSnapshot) {
+						  // This code will be called twice.
+						  var name = childSnapshot.name();
+						  //alert("bumpScore name " + name);
+						  if (name != 'name') {
+							  var year = Number(name);
+							  //alert("bumpScore year " + year);						
+							  var childData = childSnapshot.val();
+							  //alert("bumpScore for cum childData " + childData);						
+							  cumYearScores += Number(childData);
+						  }
+						  // name will be 'fred' the first time and 'wilma' the second time.
+						  // childData will be the actual contents of the child.
+						});
+						userScoreRef
+						.setPriority(
+								cumYearScores,
+								function(
+										error) {
+									//alert("bumpScore cumYearScores " + cumYearScores);
+								});
+					});
+				} else {
+					  alert("bumpScore error " + error);						
+				}
+		  });
+	});
+
+	/*
 		//alert("syncAggregateRatingsUpdate aggregateScoreListRef...");
 		//alert("syncAggregateRatingsUpdate aggregateScoreListRef " + aggregateScoreListRef.toString());
 		// e.g. syncAggregateRatingsUpdate aggregateScoreListRef https://collogistics.firebaseIO.com/blankScoreList
@@ -1171,7 +1225,9 @@ function syncAggregateRatingsUpdate(provider, database, donationId, charityId, n
 					recalculateScores(userScoreRef, false, false);
 				});
 			}
-		});
+		});*/
+		
+		
 		/*
 		var donationListRef = userScoreRef.child('donationList');
 		//alert("donationListRef " + donationListRef);
