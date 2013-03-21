@@ -190,7 +190,10 @@ if ($currencyBatedAppeals > 0) {
 		$score=mysql_result($result,$i,"s");
 		//echo "baseId $baseId name $charityName score $score";
 			//ensureNameBaseIdAndList($provider, $aggregateDatabase, $baseId, $charityName, $aggregateList); 
-		syncAggregateRatingsUpdate($provider, $aggregateDatabase, $baseId, $charityName, $year, $aggregateList, $score);		
+		// tjs 130321
+		if ($baseId != null && $charityName != null && $score > 0) {
+			syncAggregateRatingsUpdate($provider, $aggregateDatabase, $baseId, $charityName, $year, $aggregateList, $score);
+		}		
 		$i++;
 	}
 }		
