@@ -323,21 +323,23 @@ function getYearListReferenceAndScore($provider, $database, $listType, $baseId, 
 	$resultArray = json_decode($result, true);
 	$foundYear = false;
 	$yearScore = 0;
-	foreach($resultArray as $key=>$value)
-    {
-          //echo "Key: ", $key, " is $value ";
-          // e.g. Key: -IopwnuAmjn30Yj1qn0V is Array 
-	 	if ($key != 'name') {
-	          //echo "Key: ", $key2, " is $value2 ";
-	          // e.g. Key: score is 44 Key: year is 2013 
-	          if ($key == $year) {
-	          	$yearScore = $value;
-	          	$referenceYear = $year;
-	          	$foundYear = true;
-	          }
-	         	$cumScores += $value;
-	 	}
-    }
+	if ($resultArray != null) {
+		foreach($resultArray as $key=>$value)
+	    {
+	          //echo "Key: ", $key, " is $value ";
+	          // e.g. Key: -IopwnuAmjn30Yj1qn0V is Array 
+		 	if ($key != 'name') {
+		          //echo "Key: ", $key2, " is $value2 ";
+		          // e.g. Key: score is 44 Key: year is 2013 
+		          if ($key == $year) {
+		          	$yearScore = $value;
+		          	$referenceYear = $year;
+		          	$foundYear = true;
+		          }
+		         	$cumScores += $value;
+		 	}
+	    }
+	}
 	if ($foundYear  && $score == 0) {
 	    	$score = $yearScore;
 	    }

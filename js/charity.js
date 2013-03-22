@@ -1123,6 +1123,8 @@ function syncAggregateRatingsUpdate(provider, database, donationId, charityId, n
 	//alert("userScoreRef...");
 	var newYearString = String(year);
 	var yearScoreRef = userScoreRef.child(newYearString);
+	// tjs 130321
+	var nameRef = userScoreRef.child('name');
 	//yearScoreRef.on('value', function(dataSnapshot) {
 	yearScoreRef.once('value', function(dataSnapshot) {
 		  var childData = dataSnapshot.val();
@@ -1132,38 +1134,75 @@ function syncAggregateRatingsUpdate(provider, database, donationId, charityId, n
 			  currentScore = Number(childData);
 		  }
 		  currentScore++;
-		  yearScoreRef.set(currentScore, function(error) {
-			  if (error == null) {						  
-				//userScoreRef.on('value', function(dataSnapshot) { 
-					userScoreRef.once('value', function(dataSnapshot) { 
-						// Given a DataSnapshot containing a child 'fred' and a child 'wilma':
-						var cumYearScores = 0;
-						dataSnapshot.forEach(function(childSnapshot) {
-						  // This code will be called twice.
-						  var name = childSnapshot.name();
-						  //alert("bumpScore name " + name);
-						  if (name != 'name') {
-							  var year = Number(name);
-							  //alert("bumpScore year " + year);						
-							  var childData = childSnapshot.val();
-							  //alert("bumpScore for cum childData " + childData);						
-							  cumYearScores += Number(childData);
-						  }
-						  // name will be 'fred' the first time and 'wilma' the second time.
-						  // childData will be the actual contents of the child.
-						});
-						userScoreRef
-						.setPriority(
-								cumYearScores,
-								function(
-										error) {
-									//alert("bumpScore cumYearScores " + cumYearScores);
+		  if (currentScore == 1) {
+			  nameRef.set(name, function(error) {
+				  yearScoreRef.set(currentScore, function(error) {
+					  if (error == null) {						  
+						//userScoreRef.on('value', function(dataSnapshot) { 
+							userScoreRef.once('value', function(dataSnapshot) { 
+								// Given a DataSnapshot containing a child 'fred' and a child 'wilma':
+								var cumYearScores = 0;
+								dataSnapshot.forEach(function(childSnapshot) {
+								  // This code will be called twice.
+								  var name = childSnapshot.name();
+								  //alert("bumpScore name " + name);
+								  if (name != 'name') {
+									  var year = Number(name);
+									  //alert("bumpScore year " + year);						
+									  var childData = childSnapshot.val();
+									  //alert("bumpScore for cum childData " + childData);						
+									  cumYearScores += Number(childData);
+								  }
+								  // name will be 'fred' the first time and 'wilma' the second time.
+								  // childData will be the actual contents of the child.
 								});
-					});
-				} else {
-					  alert("bumpScore error " + error);						
-				}
-		  });
+								userScoreRef
+								.setPriority(
+										cumYearScores,
+										function(
+												error) {
+											//alert("bumpScore cumYearScores " + cumYearScores);
+										});
+							});
+						} else {
+							  alert("bumpScore error " + error);						
+						}
+				  });				  
+			  });
+		  } else {
+			  yearScoreRef.set(currentScore, function(error) {
+				  if (error == null) {						  
+					//userScoreRef.on('value', function(dataSnapshot) { 
+						userScoreRef.once('value', function(dataSnapshot) { 
+							// Given a DataSnapshot containing a child 'fred' and a child 'wilma':
+							var cumYearScores = 0;
+							dataSnapshot.forEach(function(childSnapshot) {
+							  // This code will be called twice.
+							  var name = childSnapshot.name();
+							  //alert("bumpScore name " + name);
+							  if (name != 'name') {
+								  var year = Number(name);
+								  //alert("bumpScore year " + year);						
+								  var childData = childSnapshot.val();
+								  //alert("bumpScore for cum childData " + childData);						
+								  cumYearScores += Number(childData);
+							  }
+							  // name will be 'fred' the first time and 'wilma' the second time.
+							  // childData will be the actual contents of the child.
+							});
+							userScoreRef
+							.setPriority(
+									cumYearScores,
+									function(
+											error) {
+										//alert("bumpScore cumYearScores " + cumYearScores);
+									});
+						});
+					} else {
+						  alert("bumpScore error " + error);						
+					}
+			  });
+		  }
 	});
 
 	/*
