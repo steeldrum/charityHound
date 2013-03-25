@@ -1102,15 +1102,14 @@ function postAggregateRatingsUpdate(donationId, charityId, memberId, date, blank
 }
 
 // tjs 130314 - remove support for donation lists, add support to bump year's score by one
-//function syncAggregateRatingsUpdate(provider, database, donationId, charityId, name, date, aggregateList) {
 function syncAggregateRatingsUpdate(provider, database, donationId, charityId, name, year, aggregateList) {
 	//alert("syncAggregateRatingsUpdate provider " + provider + " database " + database + " charityId " + charityId + " year " + year + " list " + aggregateList);
 	// e.g. syncAggregateRatingsUpdate provider firebaseIO.com database collogistics charityId 9 year 2013 list blankScoreList
-	//tjs 130321
-	//var url = 'https://' + database + '.' + provider + '/' + aggregateList;
 	var url = 'https://' + database + '.' + provider;
 	var databaseRootRef = new Firebase(url);
-	var blankScoreListRef = databaseRootRef.child(aggregateList);
+	// tjs 130325
+	//var blankScoreListRef = databaseRootRef.child(aggregateList);
+	var aggregateListRef = databaseRootRef.child(aggregateList);
 	//alert("syncAggregateRatingsUpdate url " + url);
 	// e.g. syncAggregateRatingsUpdate url https://collogistics.firebaseIO.com/blankScoreList
 	//var aggregateScoreListRef = new Firebase(url);
@@ -1119,7 +1118,8 @@ function syncAggregateRatingsUpdate(provider, database, donationId, charityId, n
 	//url);
 	
 	var currentScore = 0;
-	var userScoreRef = blankScoreListRef.child(charityId);
+	//var userScoreRef = blankScoreListRef.child(charityId);
+	var userScoreRef = aggregateListRef.child(charityId);
 	//alert("userScoreRef...");
 	var newYearString = String(year);
 	var yearScoreRef = userScoreRef.child(newYearString);
