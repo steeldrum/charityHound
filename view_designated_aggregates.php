@@ -28,7 +28,8 @@ if ($aggregateList == 'currencyScoreList') {
 } else if ($aggregateList == 'reminderScoreList') {
 	$title = "Charities That Provide Donors a Schedule For Subsequent Appeals (they do NOT hound you repeatedly!)";	
 }
-	//echo "PHP provider $provider"; 
+//echo "PHP provider $provider database $database list $aggregateList"; 
+
 //require_once( "common.inc.php" );
 //require_once( "config.php" );
 //require_once( "Member.class.php" );
@@ -63,6 +64,12 @@ displayPageHeader( $title );
 		var LEADERBOARD_SIZE = 10;
 	var provider = <?php echo json_encode($provider); ?>;
 	var database = <?php echo json_encode($database); ?>;
+	//alert("database " + database);
+// tjs 130325 hack for now...
+if (database == 'collogisticstest') {
+	database = 'collogistics-test';
+	//alert("hacked database " + database);
+}
 	var aggregateList = <?php echo json_encode($aggregateList); ?>;
 	var url = 'https://' + database + "." + provider + '/' + aggregateList;
 	//alert("provider " + provider);
