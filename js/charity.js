@@ -1040,6 +1040,8 @@ function postAggregateRatingsUpdate(donationId, charityId, memberId, date, blank
 	if (!blank && !currency && !reminder && !confidential)
 		return;
 
+	// tjs 130326
+	var memberCharityId = charityId;
 	// tjs 130314
 	var year = date.substr(0, 4);
 	//alert("postAggregateRatingsUpdate year " + year);
@@ -1061,36 +1063,33 @@ function postAggregateRatingsUpdate(donationId, charityId, memberId, date, blank
 			$(data).find('charity').each(function() {
 				var $charity = $(this);
 				var charityId = $charity.attr('id');
-				//var solicitations = $charity.attr('solicitations');
-				//var rate = $charity.attr('rate');
-				//var donations = $charity.attr('donations');
-				//var average = $charity.attr('average');
-				//var lastAmount = $charity.attr('lastAmount');
-				//var donationMadeOnLastSolicitation = lastAmount > 0;
-				var children = $charity.children();
-				var name = children[0].firstChild.nodeValue;
-				var shortName = ' ';
-				if (children[1].firstChild) {
-					shortName = children[1].firstChild.nodeValue;
-				}
-				var aggregateList;
-				if (blank) {
-					aggregateList = 'blankScoreList';
-					// tjs 130314
-					syncAggregateRatingsUpdate(provider, database, donationId, charityId, name, year, aggregateList);
-					//syncAggregateRatingsUpdate(provider, database, donationId, charityId, name, date, aggregateList);
-				}
-				if (currency) {
-					aggregateList = 'currencyScoreList';
-					syncAggregateRatingsUpdate(provider, database, donationId, charityId, name, year, aggregateList);
-				}
-				if (reminder) {
-					aggregateList = 'reminderScoreList';
-					syncAggregateRatingsUpdate(provider, database, donationId, charityId, name, year, aggregateList);
-				}
-				if (confidential) {
-					aggregateList = 'confidentialScoreList';
-					syncAggregateRatingsUpdate(provider, database, donationId, charityId, name, year, aggregateList);
+				// tjs 130326
+				if (charityId != memberCharityId) {
+					var children = $charity.children();
+					var name = children[0].firstChild.nodeValue;
+					var shortName = ' ';
+					if (children[1].firstChild) {
+						shortName = children[1].firstChild.nodeValue;
+					}
+					var aggregateList;
+					if (blank) {
+						aggregateList = 'blankScoreList';
+						// tjs 130314
+						syncAggregateRatingsUpdate(provider, database, donationId, charityId, name, year, aggregateList);
+						//syncAggregateRatingsUpdate(provider, database, donationId, charityId, name, date, aggregateList);
+					}
+					if (currency) {
+						aggregateList = 'currencyScoreList';
+						syncAggregateRatingsUpdate(provider, database, donationId, charityId, name, year, aggregateList);
+					}
+					if (reminder) {
+						aggregateList = 'reminderScoreList';
+						syncAggregateRatingsUpdate(provider, database, donationId, charityId, name, year, aggregateList);
+					}
+					if (confidential) {
+						aggregateList = 'confidentialScoreList';
+						syncAggregateRatingsUpdate(provider, database, donationId, charityId, name, year, aggregateList);
+					}
 				}
 			});
 		} else {
@@ -1204,165 +1203,6 @@ function syncAggregateRatingsUpdate(provider, database, donationId, charityId, n
 			  });
 		  }
 	});
-
-	/*
-		//alert("syncAggregateRatingsUpdate aggregateScoreListRef...");
-		//alert("syncAggregateRatingsUpdate aggregateScoreListRef " + aggregateScoreListRef.toString());
-		// e.g. syncAggregateRatingsUpdate aggregateScoreListRef https://collogistics.firebaseIO.com/blankScoreList
-		var userScoreRef = aggregateScoreListRef.child(charityId);
-		//alert("syncAggregateRatingsUpdate userScoreRef " + userScoreRef.toString());
-		// e.g. syncAggregateRatingsUpdate userScoreRef https://collogistics.firebaseIO.com/blankScoreList/9
-		var yearListRef = userScoreRef.child('yearList');
-		//alert("syncAggregateRatingsUpdate yearListRef " + yearListRef.toString());
-		// e.g. syncAggregateRatingsUpdate yearListRef https://collogistics.firebaseIO.com/blankScoreList/9/yearList
-		var years = new Array();
-		//var foundYear = false;
-		yearListRef.once('value',function(yearListSnapshot) {
-			//alert("syncAggregateRatingsUpdate snoop thru list");
-			// Given a DataSnapshot containing a child 'fred' and a child 'wilma':
-			yearListSnapshot.forEach(function(childSnapshot) {
-				// This code will be called twice.
-				var childName = childSnapshot.name();
-				var childData = childSnapshot.val();
-				var aYear = childData.year;
-				var aScore = childData.score;
-				//alert("syncAggregateRatingsUpdate aYear " + aYear + " node name " + childName + " aScore " + aScore);
-				// e.g. syncAggregateRatingsUpdate aYear 2013 node name -IpdOqAG5Sd1GoIyKE2A aScore 1
-				years[aYear] = childName + "_" + aScore;
-				//alert("syncAggregateRatingsUpdate aYear " + aYear + " node name " + childName + " value " + years[aYear]);
-			});
-			if (years[year] && years[year] != null) {
-				// bump current score by one
-				//var fredNameRef = new Firebase('https://SampleChat.firebaseIO-demo.com/users/fred/name');
-				// Modify the 'first' and 'last' children, but leave other data at fredNameRef unchanged
-				//fredNameRef.update({first: 'Fred', last: 'Flintstone'});
-				var nameAndScore = years[year].split('_');
-				//alert("syncAggregateRatingsUpdate bump name " + nameAndScore[0] + " score " + nameAndScore[1] + " yearListRef " + yearListRef);
-				// e.g. syncAggregateRatingsUpdate bump name -IpdOqAG5Sd1GoIyKE2A score 1 yearListRef https://collogistics.firebaseIO.com/blankScoreList/9/yearList
-				var yearRef = yearListRef.child(nameAndScore[0]);
-				var bumpedScore = Number(nameAndScore[1]) + 1;
-				//yearRef.update({score: bumpedScore});
-				// Same as the previous example, except we will also display an alert
-				// message when the data has finished synchronizing.
-				//var onComplete = function(error) {
-				//  if (error) alert('Synchronization failed.');
-				//  else alert('Synchronization succeeded.');
-				//};
-				//fredNameRef.update({first: 'Wilma', last: 'Flintstone'}, onComplete);
-				yearRef.update({score: bumpedScore}, function(error) {
-					recalculateScores(userScoreRef, false, false);					
-				});
-				//recalculateScores(userScoreRef, false, false);
-			} else {
-				// no scores for the year yet - set to one for this logged rating
-				var newYearRef = yearListRef.push();
-				//alert("pushed new donationIdRef for newDonationId "
-				//+ newDonationId);
-				newYearRef.set({year : year, score : 1},function(error) {
-					//alert("after list synched newScore "
-					//+ newScore);
-					recalculateScores(userScoreRef, false, false);
-				});
-			}
-		});*/
-		
-		
-		/*
-		var donationListRef = userScoreRef.child('donationList');
-		//alert("donationListRef " + donationListRef);
-		var donationIds = new Array();
-		var foundDonationId = false;
-		donationListRef.once('value',function(donationIdListSnapshot) {
-			//alert("snoop thru list");
-			// Given a DataSnapshot containing a child 'fred' and a child 'wilma':
-			donationIdListSnapshot.forEach(function(childSnapshot) {
-				// This code will be called twice.
-				var childName = childSnapshot.name();
-				var childData = childSnapshot.val();
-				var aDonationId = childData.donationId;
-				//alert("aDonationId " + aDonationId + " node name " + childName);
-				donationIds.push(aDonationId);
-			});
-			var donationIdsLength = donationIds.length;
-			//alert("donationIds length " + newScore);
-			for ( var i = 0; i < ndonationIdsLength; i++) {
-				var childDonationId = donationIds[i];
-				if (childDonationId == donationId) {
-					foundDonationId = true;
-				}
-			}
-			//alert("foundDonationId " + foundDonationId);
-			if (foundDonationId == false) {
-				//alert("donationIds length (not found) " + newScore);
-				var newDonationIdRef = donationListRef.push();
-				//alert("pushed new donationIdRef for newDonationId "
-				//+ newDonationId);
-				newDonationIdRef.set({donationId : donationId},function(error) {
-					//alert("after list synched newScore "
-					//+ newScore);
-					recalculateScores(userScoreRef, false, false);
-				});
-			} // if false
-		});
-		*/
-}
-
-function recalculateScores(userScoreRef, displaySolicitations, displayYearScores){
-	
-	var yearListRef = userScoreRef
-	.child('yearList');
-	//alert("donationListRef " + donationListRef);
-	var cumYearScores = 0;
-	//var cumDonationIds = 0;
-	yearListRef.once('value',function(yearListSnapshot) {
-//alert("snoop thru list");
-		yearListSnapshot.forEach(function(childSnapshot) {
-			var childData = childSnapshot.val();
-			var aScore = Number(childData.score);
-			cumYearScores += aScore;
-	//alert("aDonationId " + aDonationId + " node name " + childName);
-		});
-/*
-		var donationListRef = userScoreRef
-		.child('donationList');
-//alert("donationListRef " + donationListRef);
-		donationListRef.once('value',function(donationIdListSnapshot) {
-	//alert("snoop thru list");
-			donationIdListSnapshot.forEach(function(childSnapshot) {
-				cumDonationIds++;
-			});
-			cumYearScores += cumDonationIds;
-*/
-			userScoreRef.once('value',function(dataSnapshot) {
-				var data = dataSnapshot.val();
-				var name = data.name;
-				var currentScore = data.score;
-	//alert ("recalculateScores currentScore " + currentScore + " cumYearScores " + cumYearScores);
-	// e.g. recalculateScores currentScore 1 cumYearScores 1
-				if (currentScore != cumYearScores && cumYearScores >= 0) {
-					userScoreRef
-					.child(
-							'score')
-					.set(
-							cumYearScores);
-					userScoreRef
-					.setPriority(
-							cumYearScores,
-							function(
-									error) {
-								// refresh view as if clicked view...
-								if (displaySolicitations == true) {
-									displaySolicitations(userScoreRef);
-								}
-								if (displayYearScores == true) {
-									//alert("recalculateScores displayYearScores...");
-									displayYearScores(userScoreRef);
-								}
-							});
-				}
-			});
-		//});
-	});		
 }
 	
 
