@@ -30,24 +30,6 @@ if ($aggregateList == 'currencyScoreList') {
 }
 //echo "PHP provider $provider database $database list $aggregateList"; 
 
-//require_once( "common.inc.php" );
-//require_once( "config.php" );
-//require_once( "Member.class.php" );
-//require_once( "Charity.class.php" );
-//require_once( "RatedCharity.class.php" );
-/*
-$account = isset( $_GET["account"] ) ? (int)$_GET["account"] : 0;
-$from = isset( $_GET["from"] ) ? (int)$_GET["from"] : 2000;
-$to = isset( $_GET["to"] ) ? (int)$_GET["to"] : 2100;
-$start = isset( $_GET["start"] ) ? (int)$_GET["start"] : 0;
-$order = isset( $_GET["order"] ) ? preg_replace( "/[^ a-zA-Z]/", "", $_GET["order"] ) : "charityName";
-//list( $charities, $totalRows, $totalSolicitations, $totalDonations ) = Charity::getSolicitationCountByCharities( $account, $from, $to, $start, PAGE_SIZE, $order );
-list( $charities, $totalRows ) = RatedCharity::getDesignatedCharities( $account, $from, $to, $start, PAGE_SIZE, $order );
-displayPageHeader( "View Designated Charities" );
-*/
-        // tjs 121127
-//delta for lastAmount
-//displayPageHeader( "View Designated Charities" );
 displayPageHeader( $title );
 ?>
 <html>
@@ -56,12 +38,24 @@ displayPageHeader( $title );
 		<script type="text/javascript" src="js/jquery-1.3.2.js"></script>
 </head>
 <body>
+ <p>During our site development phase, some registered collaborators have identified <span id="numberRows"></span> nonprofits
+  in this group.</p>
+  <div id="listTypeDescription"></div>
 	<table id="leaderboardTable"></table>
+	<div style="float:left;">
+	<input type="button" id="more" value="More">
+</div>
 
 	<script>
 	//alert("blankScoreListRef...");
 		//var LEADERBOARD_SIZE = 5;
 		var LEADERBOARD_SIZE = 10;
+		// tjs 130326
+		var numberOfRows = 0;
+		var size = LEADERBOARD_SIZE;
+		var increment = LEADERBOARD_SIZE;
+		var maxSize = 100;
+		
 	var provider = <?php echo json_encode($provider); ?>;
 	var database = <?php echo json_encode($database); ?>;
 	//alert("database " + database);
@@ -71,13 +65,13 @@ if (database == 'collogisticstest') {
 	//alert("hacked database " + database);
 }
 	var aggregateList = <?php echo json_encode($aggregateList); ?>;
+	//var aggregateListType = "blankScoreList";
+	//if ()
 	var url = 'https://' + database + "." + provider + '/' + aggregateList;
 	//alert("provider " + provider);
 	//alert("url " + url);
 		// Create our Firebase reference
-		var blankScoreListRef = new Firebase(
-				//'https://collogistics.firebaseio.com//blankScoreList');
-	url);
+	var scoreListRef = new Firebase(url);
 	var tableHeaderRendered = false;
 
 		//alert("blankScoreListRef " + blankScoreListRef);
@@ -116,7 +110,7 @@ if (database == 'collogisticstest') {
 			removedScoreRow.remove();
 			delete htmlForPath[scoreSnapshot.name()];
 		}
-
+/*
 		// Create a view to only receive callbacks for the last LEADERBOARD_SIZE scores
 		var scoreListView = blankScoreListRef.limit(LEADERBOARD_SIZE);
 
@@ -129,18 +123,71 @@ if (database == 'collogisticstest') {
 		// Add a callback to handle when a score is removed
 		scoreListView.on('child_removed', function(oldScoreSnapshot) {
 			handleScoreRemoved(oldScoreSnapshot);
-		});
+		});*/
 
 		// Add a callback to handle when a score changes or moves positions.
 		var changedCallback = function(scoreSnapshot, prevScoreName) {
 			handleScoreRemoved(scoreSnapshot);
 			handleScoreAdded(scoreSnapshot, prevScoreName);
 		};
+		/*
 		scoreListView.on('child_moved', changedCallback);
 		scoreListView.on('child_changed', changedCallback);
+		*/
+		function displayView() {
+			//alert("displayView...");
+			$('#listTypeDescription').empty();
+			//alert("displayView scoreListRef " + scoreListRef);
+			if (aggregateList == "blankScoreList") {
+				//alert("displayView scoreListRef " + scoreListRef);
+				$('#listTypeDescription').text('The group consists of charities who send out "blank-envelope" solicitations (i.e. with no clear indication who the sender is).  This list is sorted by those nonprofits who choose to annoy potential donors most frequently at the top.');
+			} else if (aggregateList == "currencyScoreList") {
+				$('#listTypeDescription').text('The group consists of charities who send out "currency-bated" solicitations (i.e. with actual coins, stamps, etc.).  This list is sorted by those nonprofits who choose to waste on fundraising this way most frequently at the top.');
+			} else if (aggregateList == "confidentialScoreList") {
+				$('#listTypeDescription').text('The group consists of charities who send out solicitations that provide donors the ability to ensure privacy (i.e. inhibit selling identity information to other nonprofits). This list is sorted by those favorable nonprofits who choose to do this most frequently at the top.');
+			} else if (aggregateList == "reminderScoreList") {
+				$('#listTypeDescription').text('The group consists of charities who send out solicitations that provide donors with control over future reminders (i.e. refer to text of iBook <i>Dead Giveaway - Sleuthing Around Nonprofits</i>). This list is sorted by those favorable nonprofits who choose to do this most frequently at the top.');
+			}
+			$('#leaderboardTable').empty();
+			var scoreListView = scoreListRef.limit(size);
+			//alert("displayView startRow " + start + " endRow " + end);
+
+			// Add a callback to handle when a new score is added.
+			scoreListView.on('child_added', function(newScoreSnapshot,
+					prevScoreName) {
+				handleScoreAdded(newScoreSnapshot, prevScoreName);
+			});
+			// Add a callback to handle when a score is removed
+			scoreListView.on('child_removed', function(oldScoreSnapshot) {
+				handleScoreRemoved(oldScoreSnapshot);
+			});
+
+			scoreListView.on('child_moved', changedCallback);
+			scoreListView.on('child_changed', changedCallback);			
+		}
+
+		scoreListRef.once('value', function(dataSnapshot) {
+			numberOfRows = dataSnapshot.numChildren();
+			$("#numberRows").append(numberOfRows);
+			displayView();
+		});
+		$("#more").click(function() {
+			if (size < maxSize - increment) {
+				size = numberOfRows - size > increment? size + increment : numberOfRows;
+			} else {
+				size = numberOfRows < maxSize? numberOfRows : maxSize;
+			}
+			if (size >= numberOfRows) {
+				//$("input[type=submit]").attr("disabled", "disabled");
+				$("#more").attr('disabled', 'disabled');
+			}
+			displayView();
+		});
 		</script>
     <br/>
+    <p>
 <a class="even" href="javascript:newLocation('reports', 'logistics')" title="Reports">Back to Contributions Report</a>
+</p>
 		<?php
 displayPageFooter();
 ?>
