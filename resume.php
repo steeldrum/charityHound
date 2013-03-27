@@ -104,7 +104,7 @@ recorded event is: "I was mailed a donor request and I contributed this specifie
 To summarize the <span class="akey">typical user workflow steps</span>:
 <ul>
 <li>Use Browse Charities page to <span class="akey">cleanup list by inactivating some</span>. A "one shot" task. Also use Internet to verify if organization is a 'for' or 'non' profit.</li>
-<li>Receive a <span class="akey">mailed donor solicitation enevlope</span>. </li>
+<li>Receive a <span class="akey">mailed donor solicitation envelope</span>. </li>
 <li>Use the Solicitations Donations page and <span class="akey">record solicitation</span>.  On occasion specify contributed amount. </li>
 <li>In a cardboard box <span class="akey">replace any former envelope<span> (from a charity) with the latest one. </li>
 <li>Every so often (perhaps once or twice a year) identify worthy charities that you had tracked with a zero amount and <span class="akey">make contributions</span> (updating your tracking). </li>

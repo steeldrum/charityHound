@@ -286,8 +286,8 @@ From year: <input id="fromtag" type="number" />&nbsp;&nbsp;To year: <input id="t
 The following reports use aggregate data (based on all users' information, not just yours):
 <button id="designatedBlanks">Charities Who Send "Blank" Solicitations (no indication of sender)</button>
 <button id="designatedCurrencies">Charities Who Send "Currency Bated" Solicitations (money in envelope)</button>
-<button id="designatedConfidentials" disabled="disabled">Charities Who Pledge Privacy (won't sell your identity to others)</button>
-<button id="designatedReminders" disabled="disabled">Charities Who Provide A Schedule (won't hound you with repeated solicitations)</button>
+<button id="designatedConfidentials">Charities Who Pledge Privacy (won't sell your identity to others)</button>
+<button id="designatedReminders">Charities Who Provide A Schedule (won't hound you with repeated solicitations)</button>
 </p>
 
 <br/>
@@ -548,7 +548,7 @@ window.location.href = url;
 		window.location.href = url;
 			});
 	$("#designatedReminders").click(function() {
-		var url = 'view_designated_aggregates.php?provider=' + aggregateProvider + '&database=' + aggregateDatabase + '&aggregateList=scheduleScoreList';
+		var url = 'view_designated_aggregates.php?provider=' + aggregateProvider + '&database=' + aggregateDatabase + '&aggregateList=reminderScoreList';
 		//alert("reports view solicitor donations url " + url);
 		window.location.href = url;
 			});

@@ -110,30 +110,13 @@ if (database == 'collogisticstest') {
 			removedScoreRow.remove();
 			delete htmlForPath[scoreSnapshot.name()];
 		}
-/*
-		// Create a view to only receive callbacks for the last LEADERBOARD_SIZE scores
-		var scoreListView = blankScoreListRef.limit(LEADERBOARD_SIZE);
-
-		// Add a callback to handle when a new score is added.
-		scoreListView.on('child_added', function(newScoreSnapshot,
-				prevScoreName) {
-			handleScoreAdded(newScoreSnapshot, prevScoreName);
-		});
-
-		// Add a callback to handle when a score is removed
-		scoreListView.on('child_removed', function(oldScoreSnapshot) {
-			handleScoreRemoved(oldScoreSnapshot);
-		});*/
 
 		// Add a callback to handle when a score changes or moves positions.
 		var changedCallback = function(scoreSnapshot, prevScoreName) {
 			handleScoreRemoved(scoreSnapshot);
 			handleScoreAdded(scoreSnapshot, prevScoreName);
 		};
-		/*
-		scoreListView.on('child_moved', changedCallback);
-		scoreListView.on('child_changed', changedCallback);
-		*/
+
 		function displayView() {
 			//alert("displayView...");
 			$('#listTypeDescription').empty();
@@ -146,7 +129,7 @@ if (database == 'collogisticstest') {
 			} else if (aggregateList == "confidentialScoreList") {
 				$('#listTypeDescription').text('The group consists of charities who send out solicitations that provide donors the ability to ensure privacy (i.e. inhibit selling identity information to other nonprofits). This list is sorted by those favorable nonprofits who choose to do this most frequently at the top.');
 			} else if (aggregateList == "reminderScoreList") {
-				$('#listTypeDescription').text('The group consists of charities who send out solicitations that provide donors with control over future reminders (i.e. refer to text of iBook <i>Dead Giveaway - Sleuthing Around Nonprofits</i>). This list is sorted by those favorable nonprofits who choose to do this most frequently at the top.');
+				$('#listTypeDescription').text('The group consists of charities who send out solicitations that provide donors with control over future reminders (i.e. refer to text of iBook: Dead Giveaway - Sleuthing Around Nonprofits). This list is sorted by those favorable nonprofits who choose to do this most frequently at the top.');
 			}
 			$('#leaderboardTable').empty();
 			var scoreListView = scoreListRef.limit(size);
@@ -169,6 +152,9 @@ if (database == 'collogisticstest') {
 		scoreListRef.once('value', function(dataSnapshot) {
 			numberOfRows = dataSnapshot.numChildren();
 			$("#numberRows").append(numberOfRows);
+			if (numberOfRows == 0) {
+				$("#more").attr('disabled', 'disabled');
+			}
 			displayView();
 		});
 		$("#more").click(function() {
@@ -178,7 +164,6 @@ if (database == 'collogisticstest') {
 				size = numberOfRows < maxSize? numberOfRows : maxSize;
 			}
 			if (size >= numberOfRows) {
-				//$("input[type=submit]").attr("disabled", "disabled");
 				$("#more").attr('disabled', 'disabled');
 			}
 			displayView();
