@@ -78,7 +78,90 @@ tjs 110511
 // tjs 130307
 	var aggregateProvider;
 	var aggregateDatabase;
+
+	//tjs 130329
+	var OPENINGS_SIZE = 10;
+	var numberOfRows = 0;
+	var tableHeaderRendered = false;
+
+	// Create our Firebase reference
+	var collogisticsRootRef = new Firebase('https://collogistics.firebaseio.com');
+	var collogisticsSiteRef = collogisticsRootRef.child('collogisticsSite');
+	var collogisticsOpeningsRef = collogisticsSiteRef.child('Openings');
 	
+	// Keep a mapping of firebase locations to HTML elements, so we can move / remove elements as necessary.
+	//var htmlForPath = {};
+
+	// Helper function that takes a new score snapshot and adds an appropriate row to our leaderboard table.
+	//function handleOpeningAdded(openingSnapshot, prevOpeningName) {
+	//function handleOpeningAdded(openingName) {
+	function handleOpeningAdded(openingName, openingDescription) {
+		//alert("handleOpeningAdded openingSnapshot.val() " + openingSnapshot.val());
+		//alert("handleOpeningAdded openingSnapshot.val().name " + openingSnapshot.val().name);
+		//alert("handleOpeningAdded openingSnapshot.val().name() " + openingSnapshot.val().name());
+			if (!tableHeaderRendered) {
+				tableHeaderRendered = true;
+				//var newHeaderRow = "<tr><th>Name</th><th>Count</th></tr>";
+				var newHeaderRow = "<tr><th>PositionName</th><th>Description</th></tr>";
+				$("#openingsTable").append(newHeaderRow);
+			}
+		var newOpeningRow = $("<tr/>");
+		newOpeningRow.append($("<td/>").append(
+				//$("<em/>").text(openingSnapshot.val().name)));
+				$("<em/>").text(openingName)));
+		// tjs optionally comment out butfor test...
+		//newScoreRow.append($("<td/>").text(scoreSnapshot.val().score));
+		newOpeningRow.append($("<td/>").text(openingDescription));
+
+		// Store a reference to the table row so we can get it again later.
+		//htmlForPath[openingSnapshot.name()] = newScoreRow;
+
+		// Insert the new score in the appropriate place in the table.
+		//if (prevOpeningName === null) {
+			$("#openingsTable").append(newOpeningRow);
+		//} else {
+			//var lowerOpeningRow = htmlForPath[prevOpeningName];
+			//lowerOpeningRow.before(newOpeningRow);
+		//}			
+	}
+
+	// Helper function to handle a score object being removed; just removes the corresponding table row.
+	function handleOpeningRemoved(openingSnapshot) {
+		var removedOpeningRow = htmlForPath[openingSnapshot.name()];
+		removedOpeningRow.remove();
+		//delete htmlForPath[openingSnapshot.name()];
+	}
+
+	// Add a callback to handle when a score changes or moves positions.
+	var changedCallback = function(openingSnapshot, prevOpeningName) {
+		handleOpeningRemoved(openingSnapshot);
+		handleOpeningAdded(openingSnapshot, prevOpeningName);
+	};
+
+	function displayOpenings() {
+		$('#openingsTable').empty();
+		
+		/*
+		//var scoreListView = blankScoreListRef.startAt(start).limit(LEADERBOARD_SIZE);
+		//var scoreListView = blankScoreListRef.limit(LEADERBOARD_SIZE);
+		var openingsListView = collogisticsOpeningsRef.limit(OPENINGS_SIZE);
+		//alert("displayView startRow " + start + " endRow " + end);
+
+		// Add a callback to handle when a new score is added.
+		openingsListView.on('child_added', function(newOpeningSnapshot,
+				prevOpeningName) {
+			handleOpeningAdded(newOpeningSnapshot, prevOpeningName);
+		});
+		// Add a callback to handle when a score is removed
+		openingsListView.on('child_removed', function(oldOpeningSnapshot) {
+			handleOpeningRemoved(oldOpeningSnapshot);
+		});
+
+		openingsListView.on('child_moved', changedCallback);
+		openingsListView.on('child_changed', changedCallback);
+		*/			
+	}
+
 function processArgs(account) {
 	//setAuthenticated();
 	var authenticated = account > 0? true : false;
@@ -321,7 +404,7 @@ is enabled only for sponsors.
 <tr><td><img src="images/charityBagSmall.jpg" /></td><td><img src="images/ZevaBlueRocksSmall.jpg" /></td></tr>
 
   </table>
-<button id="login" onclick="doLogin();">Login</button>&nbsp;&nbsp;<button id="logout" onclick="doLogout();">Logout</button>&nbsp;&nbsp;<button id="register" onclick="doRegister();">Register</button>&nbsp;&nbsp;<button id="admin" disabled="disabled" onclick="doSiteAdmin();">Site Admin</button>
+<button id="login" onclick="doLogin();">Login</button>&nbsp;&nbsp;<button id="logout" onclick="doLogout();">Logout</button>&nbsp;&nbsp;<button id="register" onclick="doRegister();">Register</button>&nbsp;&nbsp;<button id="admin" disabled="disabled" onclick="doSiteAdmin();">Site Admin</button>&nbsp;&nbsp;<button id="opener">View Openings</button>
 
   <br/>
 
@@ -395,6 +478,10 @@ is enabled only for sponsors.
 		</div>
 		<!-- #charityHoundRegisterDialog -->
 
+<div id="dialog" title="CharityHound Openings">We have Openings!
+	<table id="openingsTable"></table>
+
+</div>
 
     <script type="text/javascript">
 
@@ -433,6 +520,11 @@ is enabled only for sponsors.
 
 				});
 
+		 // tjs 130329
+		 	$( "#dialog" ).dialog({ autoOpen: false, width: 500 });
+			$( "#opener" ).click(function() {
+			$( "#dialog" ).dialog( "open" );
+			});
 		 
         $("#iPhoneDonationLogApp").click(function() {
 
@@ -585,6 +677,32 @@ $('.error').hide();
 
     processRegisterForm(token, username, password1, password2, emailAddress, firstName, lastName, gender, passwordMnemonicQuestion, passwordMnemonicAnswer);
 }); 
+
+// tjs 130329
+collogisticsOpeningsRef.once('value', function(dataSnapshot) {
+	numberOfRows = dataSnapshot.numChildren();
+	//alert("collogisticsOpeningsRef numberOfRows " + numberOfRows);
+	// e.g. collogisticsOpeningsRef numberOfRows 2
+	//displayOpenings();
+	$('#openingsTable').empty();
+  	dataSnapshot.forEach(function(childSnapshot) {
+		  var childName = childSnapshot.name();
+		  //alert("collogisticsOpeningsRef childName " + childName);
+		  if (childName != "eventDescription") {
+			  var openingDescriptionRef = collogisticsOpeningsRef.child(childName).child('description');
+			  //alert("collogisticsOpeningsRef openingDescriptionRef " + openingDescriptionRef);
+			  openingDescriptionRef.once('value', function(openingDescriptionSnapshot) {
+				  //var openingDescriptionName = openingSnapshot.name();
+				 //alert("collogisticsOpeningsRef openingDescriptionName " + openingDescriptionName);
+				  var openingDescription = openingDescriptionSnapshot.val();
+				  //alert("collogisticsOpeningsRef openingDescription " + openingDescription);
+				  handleOpeningAdded(childName, openingDescription);
+			  });
+			  //handleOpeningAdded(childName);
+		  }		  					  		
+	});
+
+});
 
 	  });
 
