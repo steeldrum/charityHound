@@ -85,9 +85,10 @@ tjs 110511
 	var tableHeaderRendered = false;
 
 	// Create our Firebase reference
-	var collogisticsRootRef = new Firebase('https://collogistics.firebaseio.com');
-	var collogisticsSiteRef = collogisticsRootRef.child('collogisticsSite');
-	var collogisticsOpeningsRef = collogisticsSiteRef.child('Openings');
+	// tjs 130401 - use signup database for this...
+	var signupRootRef = new Firebase('https://signup.firebaseio.com');
+	var signupSiteRef = signupRootRef.child('collogisticsSite');
+	var signupOpeningsRef = signupSiteRef.child('Openings');
 	
 	// Keep a mapping of firebase locations to HTML elements, so we can move / remove elements as necessary.
 	//var htmlForPath = {};
@@ -678,8 +679,8 @@ $('.error').hide();
     processRegisterForm(token, username, password1, password2, emailAddress, firstName, lastName, gender, passwordMnemonicQuestion, passwordMnemonicAnswer);
 }); 
 
-// tjs 130329
-collogisticsOpeningsRef.once('value', function(dataSnapshot) {
+// tjs 130401
+signupOpeningsRef.once('value', function(dataSnapshot) {
 	numberOfRows = dataSnapshot.numChildren();
 	//alert("collogisticsOpeningsRef numberOfRows " + numberOfRows);
 	// e.g. collogisticsOpeningsRef numberOfRows 2
@@ -689,7 +690,7 @@ collogisticsOpeningsRef.once('value', function(dataSnapshot) {
 		  var childName = childSnapshot.name();
 		  //alert("collogisticsOpeningsRef childName " + childName);
 		  if (childName != "eventDescription") {
-			  var openingDescriptionRef = collogisticsOpeningsRef.child(childName).child('description');
+			  var openingDescriptionRef = signupOpeningsRef.child(childName).child('description');
 			  //alert("collogisticsOpeningsRef openingDescriptionRef " + openingDescriptionRef);
 			  openingDescriptionRef.once('value', function(openingDescriptionSnapshot) {
 				  //var openingDescriptionName = openingSnapshot.name();
