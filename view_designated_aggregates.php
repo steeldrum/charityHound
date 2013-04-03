@@ -59,11 +59,12 @@ displayPageHeader( $title );
 	var provider = <?php echo json_encode($provider); ?>;
 	var database = <?php echo json_encode($database); ?>;
 	//alert("database " + database);
+	// tjs 130401 - comment out hack use oddbulb for formal tests...
 // tjs 130325 hack for now...
-if (database == 'collogisticstest') {
-	database = 'collogistics-test';
+//if (database == 'collogisticstest') {
+//	database = 'collogistics-test';
 	//alert("hacked database " + database);
-}
+//}
 	var aggregateList = <?php echo json_encode($aggregateList); ?>;
 	//var aggregateListType = "blankScoreList";
 	//if ()

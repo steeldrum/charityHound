@@ -96,23 +96,42 @@ tjs 110511
 	// Helper function that takes a new score snapshot and adds an appropriate row to our leaderboard table.
 	//function handleOpeningAdded(openingSnapshot, prevOpeningName) {
 	//function handleOpeningAdded(openingName) {
-	function handleOpeningAdded(openingName, openingDescription) {
-		//alert("handleOpeningAdded openingSnapshot.val() " + openingSnapshot.val());
+	// tjs 130403
+	//function handleOpeningAdded(openingName, openingDescription) {
+	//var childName = childSnapshot.name();
+	//function handleOpeningAdded(openingName, openingDescription, numberOfSignees) {
+	function handleOpeningAdded(dataSnapshot, openingDescription, numberOfSignees) {
+		var openingName = dataSnapshot.name();
+		//alert("handleOpeningAdded isAdminUser " + isAdminUser);
 		//alert("handleOpeningAdded openingSnapshot.val().name " + openingSnapshot.val().name);
 		//alert("handleOpeningAdded openingSnapshot.val().name() " + openingSnapshot.val().name());
 			if (!tableHeaderRendered) {
 				tableHeaderRendered = true;
 				//var newHeaderRow = "<tr><th>Name</th><th>Count</th></tr>";
-				var newHeaderRow = "<tr><th>PositionName</th><th>Description</th></tr>";
+				//var newHeaderRow = "<tr><th>PositionName</th><th>Description</th></tr>";
+				//$("#openingsTable").append(newHeaderRow);
+				var newHeaderRow = "<tr><th>PositionName</th><th>Description</th>";
+				if (isAdminUser) {
+					newHeaderRow += "<th>Signees</th>";
+				} else {
+					newHeaderRow += "<th>Details</th>";
+				}
+				newHeaderRow += "</tr>";
 				$("#openingsTable").append(newHeaderRow);
 			}
 		var newOpeningRow = $("<tr/>");
 		newOpeningRow.append($("<td/>").append(
 				//$("<em/>").text(openingSnapshot.val().name)));
 				$("<em/>").text(openingName)));
-		// tjs optionally comment out butfor test...
-		//newScoreRow.append($("<td/>").text(scoreSnapshot.val().score));
 		newOpeningRow.append($("<td/>").text(openingDescription));
+		if (isAdminUser) {
+			//newOpeningRow += "<th>" + numberOfSignees + "</th>";
+			newOpeningRow.append($("<td/>").text(numberOfSignees));
+		} else {
+				var td = '<td><button onclick="viewOpeningDetails(' + "'" + dataSnapshot.ref().toString() + "'" + ');">Details</button></td>';
+				//alert("handleOpeningAdded td " + td);
+				newOpeningRow.append($(td));
+		}
 
 		// Store a reference to the table row so we can get it again later.
 		//htmlForPath[openingSnapshot.name()] = newScoreRow;
@@ -139,30 +158,39 @@ tjs 110511
 		handleOpeningAdded(openingSnapshot, prevOpeningName);
 	};
 
-	function displayOpenings() {
-		$('#openingsTable').empty();
-		
+	// tjs 130403
+	var isAdminUser = false;
+	var currentOpeningRef = null;
+	//function viewOpeningDetails(openingName) {
+	function viewOpeningDetails(openingRef) {
+		//alert("viewOpeningDetails openingRef " + openingRef);
+		currentOpeningRef = openingRef;
+		$( "#signupDialog" ).dialog( "open" );
 		/*
-		//var scoreListView = blankScoreListRef.startAt(start).limit(LEADERBOARD_SIZE);
-		//var scoreListView = blankScoreListRef.limit(LEADERBOARD_SIZE);
-		var openingsListView = collogisticsOpeningsRef.limit(OPENINGS_SIZE);
-		//alert("displayView startRow " + start + " endRow " + end);
-
-		// Add a callback to handle when a new score is added.
-		openingsListView.on('child_added', function(newOpeningSnapshot,
-				prevOpeningName) {
-			handleOpeningAdded(newOpeningSnapshot, prevOpeningName);
+		var openingRootRef = new Firebase(openingRef);
+		//var myOpeningRef = openingRef;
+		// e.g. viewOpeningDetails openingRef https://signup.firebaseio.com/collogisticsSite/Openings/CTO
+		var signeesRef = openingRootRef.child('signees');
+		//alert("viewOpeningDetails signeesRef " + signeesRef);
+		signeesRef.once('value', function(dataSnapshot) {
+			var numberOfSignees = dataSnapshot.numChildren();
+			//alert("viewOpeningDetails numberOfSignees " + numberOfSignees);
+			//var openingName = dataSnapshot.name();
+			//alert("viewOpeningDetails openingName " + openingName);
+			$( "#signup" ).dialog( "open" );
 		});
-		// Add a callback to handle when a score is removed
-		openingsListView.on('child_removed', function(oldOpeningSnapshot) {
-			handleOpeningRemoved(oldOpeningSnapshot);
-		});
-
-		openingsListView.on('child_moved', changedCallback);
-		openingsListView.on('child_changed', changedCallback);
-		*/			
+		*/
 	}
-
+	function refreshSignee(signeesRef, id, name, phone, email) {
+		//alert("refreshSignee signeesRef " + signeesRef + " id " + id + " name " + name + " phone " + phone + " email " + email);
+		// e.g. refreshSignee signeesRef https://collogistics.firebaseio.com/collogisticsSite/collaboratorManagement/collaboratorsMaintenance/signees id -Iqqg6XrbzGBZ8kcXva6 name Thomas J. Soucy phone 781 599-8014 email tsoucy@me.com
+		signeesRef.child(id).child('id').set(id); 						
+		signeesRef.child(id).child('name').set(name); 						
+		signeesRef.child(id).child('phone').set(phone); 						
+		signeesRef.child(id).child('email').set(email); 
+		$( "#signupDialog" ).dialog( "close" );							
+	}
+	
 function processArgs(account) {
 	//setAuthenticated();
 	var authenticated = account > 0? true : false;
@@ -484,6 +512,15 @@ is enabled only for sponsors.
 
 </div>
 
+<div id="signupDialog" title="CharityHound Opening Details">For additional details browse the Collogistics Wiki <a href="http://www.collogistics.com/wiki/projects/pinchpennygiving/Pinch_Penny_Giving_CharityHound.html">Pinch Penny Giving </a>
+or read the iBook <i>Dead Giveaway - Sleuthing Around Nonprofits</i>.  For details specific to this opening provide us with:
+<br/>
+	<input type="text" id="nameInput" placeholder="Name">
+	<input type="text" id="phoneInput" placeholder="Phone">
+	<input type="text" id="emailInput" placeholder="Email">
+	<button id="signup">Send Details!</button>
+</div>
+
     <script type="text/javascript">
 
 	  //function to execute when doc ready
@@ -524,9 +561,17 @@ is enabled only for sponsors.
 		 // tjs 130329
 		 	$( "#dialog" ).dialog({ autoOpen: false, width: 500 });
 			$( "#opener" ).click(function() {
+				// tjs 130403
+				//var isDisabledAdmin = $('#admin').attr('disabled');
+				//alert("opener isDisabledAdmin " + isDisabledAdmin);
+				//isAdminUser = $('#admin').attr('disabled') == 'disabled';
+				//isAdminUser = !$('#admin').attr('disabled');
+				//alert("opener isAdminUser " + isAdminUser);
 			$( "#dialog" ).dialog( "open" );
 			});
-		 
+
+		 	$( "#signupDialog" ).dialog({ autoOpen: false, width: 250 });
+			 
         $("#iPhoneDonationLogApp").click(function() {
 
 		 
@@ -681,6 +726,9 @@ $('.error').hide();
 
 // tjs 130401
 signupOpeningsRef.once('value', function(dataSnapshot) {
+	// tjs 130403
+	isAdminUser = !$('#admin').attr('disabled');
+	
 	numberOfRows = dataSnapshot.numChildren();
 	//alert("collogisticsOpeningsRef numberOfRows " + numberOfRows);
 	// e.g. collogisticsOpeningsRef numberOfRows 2
@@ -689,6 +737,8 @@ signupOpeningsRef.once('value', function(dataSnapshot) {
   	dataSnapshot.forEach(function(childSnapshot) {
 		  var childName = childSnapshot.name();
 		  //alert("collogisticsOpeningsRef childName " + childName);
+		  // tjs 130403
+		  var numberOfOpeningChildren = childSnapshot.numChildren() - 1;
 		  if (childName != "eventDescription") {
 			  var openingDescriptionRef = signupOpeningsRef.child(childName).child('description');
 			  //alert("collogisticsOpeningsRef openingDescriptionRef " + openingDescriptionRef);
@@ -697,7 +747,9 @@ signupOpeningsRef.once('value', function(dataSnapshot) {
 				 //alert("collogisticsOpeningsRef openingDescriptionName " + openingDescriptionName);
 				  var openingDescription = openingDescriptionSnapshot.val();
 				  //alert("collogisticsOpeningsRef openingDescription " + openingDescription);
-				  handleOpeningAdded(childName, openingDescription);
+				  //handleOpeningAdded(childName, openingDescription);
+				  //handleOpeningAdded(childName, openingDescription, numberOfOpeningChildren);
+				  handleOpeningAdded(childSnapshot, openingDescription, numberOfOpeningChildren);
 			  });
 			  //handleOpeningAdded(childName);
 		  }		  					  		
@@ -705,6 +757,104 @@ signupOpeningsRef.once('value', function(dataSnapshot) {
 
 });
 
+// tjs 130403
+$("#signup").click(function() {
+	
+	var name = $("#nameInput").val();
+	var phone = $("#phoneInput").val();
+	var email = $("#emailInput").val();
+
+	var openingRootRef = new Firebase(currentOpeningRef);
+	//var myOpeningRef = openingRef;
+	// e.g. viewOpeningDetails openingRef https://signup.firebaseio.com/collogisticsSite/Openings/CTO
+	var signeesRef = openingRootRef.child('signees');
+	//var signeesRef = currentOpeningRef.child('signees');
+	//alert("signup name " + name + " phone " + phone + " email " + email + " signeesRef " + signeesRef);		
+	signeesRef.once('value', function(dataSnapshot) {
+		var foundEmail = false;		
+		var signeeId = null;
+		dataSnapshot.forEach(function(childSnapshot) {
+			  // This code will be called twice.
+			  var signeeRef = childSnapshot.name();
+			  //alert("emailInput signeeRef " + signeeRef);
+		  	  var signeeEmail;
+		  	  if (signeeRef != null) {
+				  signeeRef.once('value', function(signeeSnapshot) {
+					  var signeeAttr = signeeSnapshot.name();
+					  if (signeeAttr == 'email') {
+						  signeeEmail = signeeSnapshot.val();
+						  if (signeeEmail == email) {
+							  foundEmail = true;
+						  }
+					  }
+					  if (signeeAttr == 'id') {
+						  signeeId = signeeSnapshot.val();
+					  }
+				  });
+		  	  }
+			});
+		if (foundEmail == false) {
+			var id = signeesRef.push().name(); // generate a unique id based on timestamp
+			  //alert("emailInput id " + id);
+			// e.g. emailInput id -IqqccNh4SLZLSzRE5ns
+			refreshSignee(signeesRef, id, name, phone, email);											
+		} else {
+			refreshSignee(signeesRef, signeeId, name, phone, email);					
+		}
+
+	/*
+			//alert("emailInput...");
+			var webSiteName = $("#webSiteNameInput").val();
+			var eventName = $("#eventNameInput").val();
+			var rolesOrTasksName = $("#rolesOrTasksInput").val();
+			var name = $("#nameInput").val();
+			var phone = $("#phoneInput").val();
+			var email = $("#emailInput").val();
+			//alert("emailInput input webSiteName " + webSiteName + " eventName " + eventName + " rolesOrTasksName " + rolesOrTasksName + " email " + email);
+			if (webSiteName.length === 0 || eventName.length === 0
+					|| rolesOrTasksName.length === 0 || email.length === 0)
+				return;
+			//alert("emailInput input webSiteName " + webSiteName + " eventName " + eventName + " rolesOrTasksName " + rolesOrTasksName + " email " + email);
+			var webSiteNameRef = signupRootRef.child(webSiteName);
+			var eventNameRef = webSiteNameRef.child(eventName);
+			var rolesOrTasksNameRef = eventNameRef.child(rolesOrTasksName);	
+			var signeesRef = rolesOrTasksNameRef.child('signees');	
+			//alert("emailInput webSiteNameRef " + webSiteNameRef + " eventNameRef " + eventNameRef + " rolesOrTasksNameRef " + rolesOrTasksNameRef + " signeesRef " + signeesRef);
+			signeesRef.once('value', function(dataSnapshot) {
+				var foundEmail = false;		
+				var signeeId = null;
+				dataSnapshot.forEach(function(childSnapshot) {
+					  // This code will be called twice.
+					  var signeeRef = childSnapshot.name();
+					  //alert("emailInput signeeRef " + signeeRef);
+				  	  var signeeEmail;
+				  	  if (signeeRef != null) {
+						  signeeRef.once('value', function(signeeSnapshot) {
+							  var signeeAttr = signeeSnapshot.name();
+							  if (signeeAttr == 'email') {
+								  signeeEmail = signeeSnapshot.val();
+								  if (signeeEmail == email) {
+									  foundEmail = true;
+								  }
+							  }
+							  if (signeeAttr == 'id') {
+								  signeeId = signeeSnapshot.val();
+							  }
+						  });
+				  	  }
+					});
+				if (foundEmail == false) {
+					var id = signeesRef.push().name(); // generate a unique id based on timestamp
+					  //alert("emailInput id " + id);
+					// e.g. emailInput id -IqqccNh4SLZLSzRE5ns
+					refreshSignee(signeesRef, id, name, phone, email);											
+				} else {
+					refreshSignee(signeesRef, signeeId, name, phone, email);					
+				}
+			});
+			*/
+	});
+}); 
 	  });
 
 	</script>
