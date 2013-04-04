@@ -93,23 +93,11 @@ tjs 110511
 	// Keep a mapping of firebase locations to HTML elements, so we can move / remove elements as necessary.
 	//var htmlForPath = {};
 
-	// Helper function that takes a new score snapshot and adds an appropriate row to our leaderboard table.
-	//function handleOpeningAdded(openingSnapshot, prevOpeningName) {
-	//function handleOpeningAdded(openingName) {
-	// tjs 130403
-	//function handleOpeningAdded(openingName, openingDescription) {
-	//var childName = childSnapshot.name();
-	//function handleOpeningAdded(openingName, openingDescription, numberOfSignees) {
 	function handleOpeningAdded(dataSnapshot, openingDescription, numberOfSignees) {
 		var openingName = dataSnapshot.name();
-		//alert("handleOpeningAdded isAdminUser " + isAdminUser);
-		//alert("handleOpeningAdded openingSnapshot.val().name " + openingSnapshot.val().name);
 		//alert("handleOpeningAdded openingSnapshot.val().name() " + openingSnapshot.val().name());
 			if (!tableHeaderRendered) {
 				tableHeaderRendered = true;
-				//var newHeaderRow = "<tr><th>Name</th><th>Count</th></tr>";
-				//var newHeaderRow = "<tr><th>PositionName</th><th>Description</th></tr>";
-				//$("#openingsTable").append(newHeaderRow);
 				var newHeaderRow = "<tr><th>PositionName</th><th>Description</th>";
 				if (isAdminUser) {
 					newHeaderRow += "<th>Signees</th>";
@@ -121,28 +109,16 @@ tjs 110511
 			}
 		var newOpeningRow = $("<tr/>");
 		newOpeningRow.append($("<td/>").append(
-				//$("<em/>").text(openingSnapshot.val().name)));
 				$("<em/>").text(openingName)));
 		newOpeningRow.append($("<td/>").text(openingDescription));
 		if (isAdminUser) {
-			//newOpeningRow += "<th>" + numberOfSignees + "</th>";
 			newOpeningRow.append($("<td/>").text(numberOfSignees));
 		} else {
 				var td = '<td><button onclick="viewOpeningDetails(' + "'" + dataSnapshot.ref().toString() + "'" + ');">Details</button></td>';
 				//alert("handleOpeningAdded td " + td);
 				newOpeningRow.append($(td));
 		}
-
-		// Store a reference to the table row so we can get it again later.
-		//htmlForPath[openingSnapshot.name()] = newScoreRow;
-
-		// Insert the new score in the appropriate place in the table.
-		//if (prevOpeningName === null) {
 			$("#openingsTable").append(newOpeningRow);
-		//} else {
-			//var lowerOpeningRow = htmlForPath[prevOpeningName];
-			//lowerOpeningRow.before(newOpeningRow);
-		//}			
 	}
 
 	// Helper function to handle a score object being removed; just removes the corresponding table row.
@@ -166,20 +142,6 @@ tjs 110511
 		//alert("viewOpeningDetails openingRef " + openingRef);
 		currentOpeningRef = openingRef;
 		$( "#signupDialog" ).dialog( "open" );
-		/*
-		var openingRootRef = new Firebase(openingRef);
-		//var myOpeningRef = openingRef;
-		// e.g. viewOpeningDetails openingRef https://signup.firebaseio.com/collogisticsSite/Openings/CTO
-		var signeesRef = openingRootRef.child('signees');
-		//alert("viewOpeningDetails signeesRef " + signeesRef);
-		signeesRef.once('value', function(dataSnapshot) {
-			var numberOfSignees = dataSnapshot.numChildren();
-			//alert("viewOpeningDetails numberOfSignees " + numberOfSignees);
-			//var openingName = dataSnapshot.name();
-			//alert("viewOpeningDetails openingName " + openingName);
-			$( "#signup" ).dialog( "open" );
-		});
-		*/
 	}
 	function refreshSignee(signeesRef, id, name, phone, email) {
 		//alert("refreshSignee signeesRef " + signeesRef + " id " + id + " name " + name + " phone " + phone + " email " + email);
@@ -551,65 +513,34 @@ or read the iBook <i>Dead Giveaway - Sleuthing Around Nonprofits</i>.  For detai
 
 					//highlight specified element
 
-					//$('.akey').effect("highlight");
-
-					//$('.akey').effect("highlight", {}, 20000);
 					$('.akey').effect("highlight", {}, 30000);
 
 				});
 
 		 // tjs 130329
-		 	$( "#dialog" ).dialog({ autoOpen: false, width: 500 });
+		 	$( "#dialog" ).dialog({ autoOpen: false, width: 750 });
 			$( "#opener" ).click(function() {
-				// tjs 130403
-				//var isDisabledAdmin = $('#admin').attr('disabled');
-				//alert("opener isDisabledAdmin " + isDisabledAdmin);
-				//isAdminUser = $('#admin').attr('disabled') == 'disabled';
-				//isAdminUser = !$('#admin').attr('disabled');
-				//alert("opener isAdminUser " + isAdminUser);
 			$( "#dialog" ).dialog( "open" );
 			});
 
-		 	$( "#signupDialog" ).dialog({ autoOpen: false, width: 250 });
+		 	$( "#signupDialog" ).dialog({ autoOpen: false, width: 500 });
 			 
         $("#iPhoneDonationLogApp").click(function() {
-
 		 
 			//open page
-		 // tjs 130126
-            //window.location.href = "../donationlog/index.html";
-            // tjs 130128;
-            //window.location.href = "http://www.charityHound.org/app/index.html";
-            // tjs 130130;
-            //window.location.href = "http://openappmkt.com/app/510695fdeb377200020020b9/CharityHound";
-            //window.location.href = "app/index.html";
-            //window.location.assign("app/index.html");
-            //window.location.assign("http://new-host.home:8081/app/index.html");
-            //window.location.assign("http://www.charityhound.org/app/index.html");
-            // tjs 130204
-            //window.open("http://www.charityhound.org/app/index.html",'','',true);
-            window.open("app/index.html",'','',true);
-
-		 
+            window.open("app/index.html",'','',true);		 
 		});
 
 
         var account = <?php echo $account; ?>;
 
-        //tjs 110511
-        //alert("index account " + account);
-        //e.g. account 1
-        
 		processArgs(account);
-				//processArgs();
 
 		// tjs 130307
 		//alert("account " + account + " aggregateProvider...");
 		//printf("Result: %s\n", $result);		
 		//var aggregateProvider = <?php printf("%s", $aggregateProvider); ?>;
 		//var aggregateDatabase = <?php printf("%s", $aggregateDatabase); ?>;
-		//var aggregateProvider = "firebaseIO.com";
-		//var aggregateDatabase = "collogistics-local";
 		aggregateProvider = <?php echo json_encode($aggregateProvider); ?>;
 		aggregateDatabase = <?php echo json_encode($aggregateDatabase); ?>;
 		//alert("account " + account + " aggregateProvider done");		
@@ -625,8 +556,6 @@ or read the iBook <i>Dead Giveaway - Sleuthing Around Nonprofits</i>.  For detai
 				modal: true,
 				autoOpen: false
 				};
-		//alert("index init charityHoundRegisterDialogOpts inited...");
-
 				$("#charityHoundRegisterDialog").dialog(charityHoundRegisterDialogOpts);
 
 // tjs 111027
@@ -732,7 +661,6 @@ signupOpeningsRef.once('value', function(dataSnapshot) {
 	numberOfRows = dataSnapshot.numChildren();
 	//alert("collogisticsOpeningsRef numberOfRows " + numberOfRows);
 	// e.g. collogisticsOpeningsRef numberOfRows 2
-	//displayOpenings();
 	$('#openingsTable').empty();
   	dataSnapshot.forEach(function(childSnapshot) {
 		  var childName = childSnapshot.name();
@@ -747,11 +675,8 @@ signupOpeningsRef.once('value', function(dataSnapshot) {
 				 //alert("collogisticsOpeningsRef openingDescriptionName " + openingDescriptionName);
 				  var openingDescription = openingDescriptionSnapshot.val();
 				  //alert("collogisticsOpeningsRef openingDescription " + openingDescription);
-				  //handleOpeningAdded(childName, openingDescription);
-				  //handleOpeningAdded(childName, openingDescription, numberOfOpeningChildren);
 				  handleOpeningAdded(childSnapshot, openingDescription, numberOfOpeningChildren);
 			  });
-			  //handleOpeningAdded(childName);
 		  }		  					  		
 	});
 
@@ -763,12 +688,14 @@ $("#signup").click(function() {
 	var name = $("#nameInput").val();
 	var phone = $("#phoneInput").val();
 	var email = $("#emailInput").val();
+	if (name.length === 0 || phone.length === 0 || email.length === 0) {
+		alert("Name, phone and email are ALL required");
+		return;
+	}
 
 	var openingRootRef = new Firebase(currentOpeningRef);
-	//var myOpeningRef = openingRef;
 	// e.g. viewOpeningDetails openingRef https://signup.firebaseio.com/collogisticsSite/Openings/CTO
 	var signeesRef = openingRootRef.child('signees');
-	//var signeesRef = currentOpeningRef.child('signees');
 	//alert("signup name " + name + " phone " + phone + " email " + email + " signeesRef " + signeesRef);		
 	signeesRef.once('value', function(dataSnapshot) {
 		var foundEmail = false;		
@@ -801,58 +728,6 @@ $("#signup").click(function() {
 		} else {
 			refreshSignee(signeesRef, signeeId, name, phone, email);					
 		}
-
-	/*
-			//alert("emailInput...");
-			var webSiteName = $("#webSiteNameInput").val();
-			var eventName = $("#eventNameInput").val();
-			var rolesOrTasksName = $("#rolesOrTasksInput").val();
-			var name = $("#nameInput").val();
-			var phone = $("#phoneInput").val();
-			var email = $("#emailInput").val();
-			//alert("emailInput input webSiteName " + webSiteName + " eventName " + eventName + " rolesOrTasksName " + rolesOrTasksName + " email " + email);
-			if (webSiteName.length === 0 || eventName.length === 0
-					|| rolesOrTasksName.length === 0 || email.length === 0)
-				return;
-			//alert("emailInput input webSiteName " + webSiteName + " eventName " + eventName + " rolesOrTasksName " + rolesOrTasksName + " email " + email);
-			var webSiteNameRef = signupRootRef.child(webSiteName);
-			var eventNameRef = webSiteNameRef.child(eventName);
-			var rolesOrTasksNameRef = eventNameRef.child(rolesOrTasksName);	
-			var signeesRef = rolesOrTasksNameRef.child('signees');	
-			//alert("emailInput webSiteNameRef " + webSiteNameRef + " eventNameRef " + eventNameRef + " rolesOrTasksNameRef " + rolesOrTasksNameRef + " signeesRef " + signeesRef);
-			signeesRef.once('value', function(dataSnapshot) {
-				var foundEmail = false;		
-				var signeeId = null;
-				dataSnapshot.forEach(function(childSnapshot) {
-					  // This code will be called twice.
-					  var signeeRef = childSnapshot.name();
-					  //alert("emailInput signeeRef " + signeeRef);
-				  	  var signeeEmail;
-				  	  if (signeeRef != null) {
-						  signeeRef.once('value', function(signeeSnapshot) {
-							  var signeeAttr = signeeSnapshot.name();
-							  if (signeeAttr == 'email') {
-								  signeeEmail = signeeSnapshot.val();
-								  if (signeeEmail == email) {
-									  foundEmail = true;
-								  }
-							  }
-							  if (signeeAttr == 'id') {
-								  signeeId = signeeSnapshot.val();
-							  }
-						  });
-				  	  }
-					});
-				if (foundEmail == false) {
-					var id = signeesRef.push().name(); // generate a unique id based on timestamp
-					  //alert("emailInput id " + id);
-					// e.g. emailInput id -IqqccNh4SLZLSzRE5ns
-					refreshSignee(signeesRef, id, name, phone, email);											
-				} else {
-					refreshSignee(signeesRef, signeeId, name, phone, email);					
-				}
-			});
-			*/
 	});
 }); 
 	  });
