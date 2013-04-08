@@ -605,6 +605,8 @@ return array( $solicitorCharities, $sizeOfCharities, $totalSolicitationsCount, $
 		  	//inserts a new charity into the base (i.e. propagates the 'from' member's charity to the base)
 				//$charity->data["memberId"] = 0;
 		  	$charity->setMemberId(0);
+		  	// tjs 130405
+		  	$charity->setBaseId(null);
 			  //echo "charity member id ".$charity->getValue('memberId');
 		  	  $charity->insert();
 		  	  // updates the from members charity that being propagated with the new base id
@@ -679,7 +681,9 @@ return array( $solicitorCharities, $sizeOfCharities, $totalSolicitationsCount, $
 		      foreach ( $st->fetchAll() as $row ) {
 		      	$activeMemberCharity = new Charity( $row );
 		      	$activeMemberCharityBaseId = $activeMemberCharity->getValue('baseId');
-		      	if ($activeMemberCharityBaseId  == null || $activeMemberCharityBaseId == 0) {
+		      	// tjs 130405
+		      	//if ($activeMemberCharityBaseId  == null || $activeMemberCharityBaseId == 0) {
+		      	if ($activeMemberCharityBaseId  == null || $activeMemberCharityBaseId == 0 || $activeMemberCharityBaseId != $baseId) {
 			      	$activeMemberCharity->setBaseId($baseId);
 			      	$activeMemberCharity->update();
 		      	}
