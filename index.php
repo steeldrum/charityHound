@@ -170,6 +170,11 @@ function processArgs(account) {
 		if (elm) {
 			elm.disabled="";
 		}
+		// tjs 130412
+		elm = $('#dogparkchat').get(0);
+		if (elm) {
+			elm.disabled="";
+		}
 	} else {
 		//alert("index.html processArgs disable logout, enable login");
 		elm = $('#logout').get(0);
@@ -179,6 +184,11 @@ function processArgs(account) {
 		elm = $('#login').get(0);
 		if (elm) {
 			elm.disabled="";
+		}
+		// tjs 130412
+		elm = $('#dogparkchat').get(0);
+		if (elm) {
+			elm.disabled="disabled";
 		}
 	}
 	enableOrDisableScheduledDisplayAds();
@@ -191,6 +201,11 @@ function doLogin() {
 
 function doLogout() {
 	window.location.href = "logout.php";
+}
+
+// tjs 130412
+function doChat() {
+	window.location.href = "dogparkchat.php";
 }
 
 function doSiteAdmin() {
@@ -395,7 +410,7 @@ is enabled only for sponsors.
 <tr><td><img src="images/charityBagSmall.jpg" /></td><td><img src="images/ZevaBlueRocksSmall.jpg" /></td></tr>
 
   </table>
-<button id="login" onclick="doLogin();">Login</button>&nbsp;&nbsp;<button id="logout" onclick="doLogout();">Logout</button>&nbsp;&nbsp;<button id="register" onclick="doRegister();">Register</button>&nbsp;&nbsp;<button id="admin" disabled="disabled" onclick="doSiteAdmin();">Site Admin</button>&nbsp;&nbsp;<button id="opener">View Openings</button>
+<button id="login" onclick="doLogin();">Login</button>&nbsp;&nbsp;<button id="logout" onclick="doLogout();">Logout</button>&nbsp;&nbsp;<button id="register" onclick="doRegister();">Register</button>&nbsp;&nbsp;<button id="dogparkchat" onclick="doChat();">Visit Dog Park (Chat)</button>&nbsp;&nbsp;<button id="admin" disabled="disabled" onclick="doSiteAdmin();">Site Admin</button>&nbsp;&nbsp;<button id="opener">View Openings</button>
 
   <br/>
 
