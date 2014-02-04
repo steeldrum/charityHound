@@ -395,7 +395,7 @@ class Member extends DataObject {
 		  $st->bindValue( ":lastLoginDate", $today, PDO::PARAM_STR );
 		  $st->execute();
 	  	parent::disconnect( $conn );
-	  	echo "member id ".$member->data["id"];
+	  	//echo "member id ".$member->data["id"];
 	  	return $member;
 	  	}
 	  }
