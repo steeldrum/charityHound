@@ -10,6 +10,9 @@ session_start();
 
 if ( isset( $_POST["action"] ) and $_POST["action"] == "login" ) {
   processForm();
+  // tjs 131031
+/*} else if ( isset($_GET["account"])) {
+	processAccount($_GET["account"]);*/
 } else {
   displayForm( array(), array(), new Member( array() ) );
 }
@@ -63,10 +66,15 @@ function processForm() {
 
   if ( $missingFields ) {
     $errorMessages[] = '<p class="error">There were some missing fields in the form you submitted. Please complete the fields highlighted below and click Login to resend the form.</p>';
-  } elseif ( !$loggedInMember = $member->authenticate() ) {
-    $errorMessages[] = '<p class="error">Sorry, we could not log you in with those details. Please check your username and password, and try again.</p>';
-  }
-    
+// tjs 131101
+    //} elseif ( !$loggedInMember = $member->authenticate() ) {
+  //} elseif ( $loggedInMember = $member->authenticate()  == null) {
+  } else {
+  	$loggedInMember = $member->authenticate();
+  	if ($loggedInMember == null) {     
+  		$errorMessages[] = '<p class="error">Sorry, we could not log you in with those details. Please check your username and password, and try again.</p>';
+  	}
+  } 
   if ( $errorMessages ) {
     displayForm( $errorMessages, $missingFields, $member );
   } else {
@@ -76,6 +84,15 @@ function processForm() {
     displayThanks();
   }
 }
+/*
+function processAccount($account) {
+
+  $member = Member::getMember( $account );
+// tjs 130126
+//echo "login member id: ".$loggedInMember->getValue( "id" );
+    $_SESSION["member"] = $loggedInMember;
+    displayThanks();
+}*/
 
 function displayThanks() {
 // tjs 130126

@@ -29,16 +29,23 @@ class Donation extends DataObject {
 */
   protected $data = array(
     "id" => "",
+    "charityid" => "",
+    "memberid" => "",
+    "amount" => "",
+    "madeon" => "",
+    /* tjs 130725
     "charityId" => "",
     "memberId" => "",
     "amount" => "",
-    "madeOn" => "",
+    "madeOn" => "",*/
   );
 
   public static function getDonations( $startRow, $numRows, $order ) {
     $conn = parent::connect();
-    $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM " . TBL_DONATIONS . " ORDER BY $order LIMIT :startRow, :numRows";
-
+    //$sql = "SELECT SQL_CALC_FOUND_ROWS * FROM " . TBL_DONATIONS . " ORDER BY $order LIMIT :startRow, :numRows";
+    $sql = "SELECT * FROM " . TBL_DONATIONS . " ORDER BY $order OFFSET :startRow LIMIT :numRows";
+    $rowCount = 0;
+    
     try {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":startRow", $startRow, PDO::PARAM_INT );
@@ -47,13 +54,15 @@ class Donation extends DataObject {
       $donations = array();
       foreach ( $st->fetchAll() as $row ) {
         $donations[] = new Donation( $row );
+        // tjs 130725
+        $rowCount++;
       }
-      $st = $conn->query( "SELECT found_rows() as totalRows" );
-      $row = $st->fetch();
+      //$st = $conn->query( "SELECT found_rows() as totalRows" );
+      //$row = $st->fetch();
       parent::disconnect( $conn );
       // tjs 120316
       //return array( $members, $row["totalRows"] );
-      return array( $donations, $row["totalRows"] );
+      return array( $donations, $rowCount );
     } catch ( PDOException $e ) {
       parent::disconnect( $conn );
       die( "Query failed: " . $e->getMessage() );
@@ -71,6 +80,30 @@ class Donation extends DataObject {
       $row = $st->fetch();
       parent::disconnect( $conn );
       if ( $row ) return new Donation( $row );
+    } catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    }
+  }
+
+  //tjs 130902
+  public static function getDonationsByCharityId( $memberId, $charityId ) {
+    $conn = parent::connect();
+    $sql = "SELECT * FROM " . TBL_DONATIONS . " where memberid = :memberId and charityid = :charityId order by madeon desc";
+    $rowCount = 0;
+    
+    try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":memberId", $memberId, PDO::PARAM_INT );
+      $st->bindValue( ":charityId", $charityId, PDO::PARAM_INT );
+      $st->execute();
+      $donations = array();
+      foreach ( $st->fetchAll() as $row ) {
+        $donations[] = new Donation( $row );
+        $rowCount++;
+      }
+      parent::disconnect( $conn );
+      return array( $donations, $rowCount );
     } catch ( PDOException $e ) {
       parent::disconnect( $conn );
       die( "Query failed: " . $e->getMessage() );
@@ -104,10 +137,9 @@ $solicitationsLoggedTheSameDay = true;
 	$end = $start;
 
 	$conn = parent::connect();
-	//" and madeOn > '".$yearStart."' and madeOn < '".$yearEnd.
-    //$sql = "SELECT * FROM " . TBL_DONATIONS . " where memberId = :memberId and charityId = :charityId order by madeOn";
-    //$sql = "SELECT * FROM " . TBL_DONATIONS . " where memberId = :memberId and madeOn > :yearStart and madeOn < :yearEnd and charityId = :charityId order by madeOn";
-	$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberId = ".$account." and charityId = ".$charityId." and madeOn > '".$yearStart."' and madeOn < '".$yearEnd."' order by madeOn";
+	// tjs 130725
+	//$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberId = ".$account." and charityId = ".$charityId." and madeOn > '".$yearStart."' and madeOn < '".$yearEnd."' order by madeOn";
+	$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberid = ".$account." and charityid = ".$charityId." and madeon > '".$yearStart."' and madeon < '".$yearEnd."' order by madeon";
     //echo "sql ".$sql;
     try {
       $st = $conn->prepare( $sql );
@@ -267,8 +299,9 @@ public static function getDonationsForYear($memberId, $year) {
   $yearStart = $year."-01-01 00:00:00";
   $yearEnd = $year."-12-31 11:59:00";
     $conn = parent::connect();
-    //$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberId = :memberId and madeOn > ':yearStart' and madeOn < ':yearEnd' order by charityId";
-    $sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberId = ".$memberId." and madeOn > '".$yearStart."' and madeOn < '".$yearEnd."' order by charityId";
+ 	// tjs 130725
+     //$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberId = ".$memberId." and madeOn > '".$yearStart."' and madeOn < '".$yearEnd."' order by charityId";
+    $sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberid = ".$memberId." and madeon > '".$yearStart."' and madeon < '".$yearEnd."' order by charityid";
     //echo "SQL ".$sql;
 //echo "memberId ".$memberId." yearStart ".$yearStart." yearEnd ".$yearEnd;
     try {
@@ -297,8 +330,9 @@ public static function getDonationsForYear($memberId, $year) {
   $yearStart = $fromYear."-01-01 00:00:00";
   $yearEnd = $toYear."-12-31 11:59:00";
     $conn = parent::connect();
-    //$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberId = :memberId and madeOn > ':yearStart' and madeOn < ':yearEnd' order by charityId";
-    $sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberId = ".$memberId." and madeOn > '".$yearStart."' and madeOn < '".$yearEnd."' order by charityId";
+    // tjs 130725
+    //$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberId = ".$memberId." and madeOn > '".$yearStart."' and madeOn < '".$yearEnd."' order by charityId";
+    $sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberid = ".$memberId." and madeon > '".$yearStart."' and madeon < '".$yearEnd."' order by charityid";
     //echo "SQL ".$sql;
 //echo "memberId ".$memberId." yearStart ".$yearStart." yearEnd ".$yearEnd;
     try {
@@ -324,25 +358,30 @@ public static function getDonationsForYear($memberId, $year) {
   }
   
   public function insert() {
+  	//echo "Donation insert...";
     $conn = parent::connect();
+    // tjs 130725 field names...
     $sql = "INSERT INTO " . TBL_DONATIONS . " (
-              charityId,
-              memberId,
+              charityid,
+              memberid,
               amount,
-			madeOn
+			madeon
             ) VALUES (
               :charityId,
               :memberId,
               :amount,
 			:madeOn
              )";
-
+    //echo "Donation insert sql $sql";
+    
+    //$charityId = $this->data["charityid"];
+    //echo "Donation insert charityId $charityId";
     try {
       $st = $conn->prepare( $sql );
-      $st->bindValue( ":charityId", $this->data["charityId"], PDO::PARAM_STR );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_STR );
+      $st->bindValue( ":charityId", $this->data["charityid"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
       $st->bindValue( ":amount", $this->data["amount"], PDO::PARAM_STR );
-      $st->bindValue( ":madeOn", $this->data["madeOn"], PDO::PARAM_STR );
+      $st->bindValue( ":madeOn", $this->data["madeon"], PDO::PARAM_STR );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -354,19 +393,19 @@ public static function getDonationsForYear($memberId, $year) {
   public function update() {
     $conn = parent::connect();
     $sql = "UPDATE " . TBL_DONATIONS . " SET
-              charityId = :charityId,
-              memberId = :memberId,
+              charityid = :charityId,
+              memberid = :memberId,
               amount = :amount,
-              madeOn = :madeOn
+              madeon = :madeOn
             WHERE id = :id";
 
     try {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":id", $this->data["id"], PDO::PARAM_INT );
-      $st->bindValue( ":charityId", $this->data["charityId"], PDO::PARAM_STR );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_STR );
+      $st->bindValue( ":charityId", $this->data["charityid"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
       $st->bindValue( ":amount", $this->data["amount"], PDO::PARAM_STR );
-      $st->bindValue( ":madeOn", $this->data["madeOn"], PDO::PARAM_STR );
+      $st->bindValue( ":madeOn", $this->data["madeon"], PDO::PARAM_STR );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -391,7 +430,7 @@ public static function getDonationsForYear($memberId, $year) {
   }
 
   public function getCharityId() {
-    return $this->data["charityId"];
+    return $this->data["charityid"];
   }
   public function getAmount() {
     return $this->data["amount"];

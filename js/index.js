@@ -70,33 +70,44 @@ function login(loginAccountNumber, lastName, firstName) {
 	});
 }
 
-function getLogin() {
+// tjs 131031
+//function getLogin() {
+function getLogin(url) {
 	var loginRequest = getXMLHTTPRequest();
-	var url = 'getLoginXML.php?account=0';
+	//var url = 'getLoginXML.php?account=0';
+	// tjs 131101
+	//alert("index getLogin url " + url);
+	// e.g. index getLogin url http://localhost:3000
 	requestXMLData(loginRequest, url, function() {
 	   if(loginRequest.readyState == 4) {
-		   //alert("getLogin loginRequest.readyState " + loginRequest.readyState);
+		   alert("index getLogin loginRequest.readyState " + loginRequest.readyState);
 		if(loginRequest.status == 200) {
-		   //alert("getLogin loginRequest.status " + loginRequest.status);
+		   alert("index getLogin loginRequest.status " + loginRequest.status);
 		    var data = loginRequest.responseXML;
-		    $(data).find('account').each(function() {
-			var $account = $(this);
-			var accountId = $account.attr('id');
+			   alert("index getLogin data " + data);
+		    // tjs 131031
+		    //$(data).find('account').each(function() {
+			//var $account = $(this);
+			//var accountId = $account.attr('id');
 		   //alert("getLogin accountId " + accountId);
 			//var children = $account.children();
 			//var last = children[0].firstChild.nodeValue;
 			//var first = children[1].firstChild.nodeValue;
 			//alert("getLogin account " + accountId + " last " + last + " first " + first);
-			loginAccountNumber = accountId;
+			//loginAccountNumber = accountId;
+			loginAccountNumber = data;
 			//lastName = last;
 			//firstName = first;
-			var elm = document.getElementById('logout');						
-			if (loginAccountNumber != 0) {
-				elm.disabled="";
-			} else {
-				elm.disabled="disabled";
-			}
-		    });
+			//var elm = document.getElementById('logout');						
+			//if (loginAccountNumber != 0) {
+			//	elm.disabled="";
+			//} else {
+			//	elm.disabled="disabled";
+			//}
+		//}
+		    //});
+			var processAccountUrl = "login.php?account=" + loginAccountNumber;
+			window.location.href = processAccountUrl;
 		}
 	   }
 	});

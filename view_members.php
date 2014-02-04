@@ -20,7 +20,9 @@ require_once( "Member.class.php" );
 
 $start = isset( $_GET["start"] ) ? (int)$_GET["start"] : 0;
 $order = isset( $_GET["order"] ) ? preg_replace( "/[^ a-zA-Z]/", "", $_GET["order"] ) : "username";
+//echo "getting members...";
 list( $members, $totalRows ) = Member::getMembers( $start, PAGE_SIZE, $order );
+//echo "totalRows $totalRows";
 displayPageHeader( "View Collogistics members" );
 
 ?>

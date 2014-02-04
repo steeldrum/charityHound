@@ -19,9 +19,11 @@ release version 1.00
 
 require_once( "Member.class.php" );
 //tjs 110511 above ensures that config.php has been loaded as well
-$username=DB_USERNAME;
-$password=DB_PASSWORD;
-$database=DB_NAME;
+// tjs 130902
+//$username=DB_USERNAME;
+//$password=DB_PASSWORD;
+//$database=DB_NAME;
+require_once( "Donation.class.php" );
 session_start();
 $account = 0;
 if (isset($_SESSION['member'])) {
@@ -38,6 +40,32 @@ if ($account == 0) {
 //tjs101011
 $charityId = $_GET['charityId'];
 
+// tjs 130902
+header('Content-Type: application/xml, charset=utf-8');
+echo '<?xml version="1.0" encoding="utf-8"?>';
+echo "<donations>";
+printf("\n");
+list( $donations, $totalRows ) = Donation::getDonationsByCharityId( $account, $charityId);
+	//echo "totalRows $totalRows";
+$i=0;
+foreach ( $donations as $donation ) {
+	//echo "index counter $i";
+	// e.g. index counter 0
+//while ($i < $totalRows) {
+	//$charity = $charities[$i];
+	//$charityId=$charity.getValue("id");
+	$id=$donation->getValue("id");
+	$amount=$donation->getValue("amount");
+	$date=$donation->getValue("madeon");
+	$donation= '<donation id="'.$id.'"><memberId>'.$account.'</memberId><charityId>'.$charityId.'</charityId><amount>'.$amount.'</amount><date>'.$date.'</date></donation>';
+	echo $donation;
+	
+	//printf("<charity id=\"%s\" solicitations=\"%s\" rate=\"%s\" donations=\"%s\" average=\"%s\" lastAmount=\"%s\"><charityName>%s</charityName><shortName>%s</shortName>%s%s%s%s%s%s%s</charity>\n", $charityId, $solicitations, $rate, $donations, $average, $lastAmount, $charityName, $shortName, $dunnsPart, $urlPart, $descriptionPart, $numStarsPart, $baseIdPart, $isInactivePart, $isForProfitPart);
+	
+	$i++;
+}
+	
+/* tjs 130902
 define("MYSQL_HOST", "localhost");
 
 //$username="root";
@@ -65,6 +93,7 @@ while ($i < $num) {
 }
 
 mysql_close();
+*/
 echo "</donations>";
 
 ?> 

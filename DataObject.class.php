@@ -27,9 +27,12 @@ abstract class DataObject {
   }
 
   public function getValue( $field ) {
-    if ( array_key_exists( $field, $this->data ) ) {
-      return $this->data[$field];
-    } else {
+  	// tjs 130722
+    //if ( array_key_exists( $field, $this->data ) ) {
+  	if ( array_key_exists( strtolower($field), $this->data ) ) {
+      //return $this->data[$field];
+      return $this->data[strtolower($field)];
+  	} else {
       die( "Field not found" );
     }
   }
@@ -40,7 +43,9 @@ abstract class DataObject {
 
   protected function connect() {
     try {
+    	// tjs 130719 - conversion to postgreSQL
       $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
+    	//$conn = new PDO( DB_DSN, DB_HOST, DB_USERNAME, DB_PASSWORD );
       $conn->setAttribute( PDO::ATTR_PERSISTENT, true );
       $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
     } catch ( PDOException $e ) {

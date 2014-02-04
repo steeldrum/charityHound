@@ -23,6 +23,8 @@ if ($account == 0 && isset($_SESSION['member'])) {
 $aggregateProvider = AGGREGATE_DSN;
 $aggregateDatabase = AGGREGATE_DB_NAME;
 //echo "aggregateProvider $aggregateProvider aggregateDatabase $aggregateDatabase";
+// tjs 131031
+$authenticationProvider = AUTHENTICATION_DSN;
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <!--------------------------------------
@@ -78,6 +80,8 @@ tjs 110511
 // tjs 130307
 	var aggregateProvider;
 	var aggregateDatabase;
+	// tjs 131031
+	var authenticationProvider;
 
 	//tjs 130329
 	var OPENINGS_SIZE = 10;
@@ -196,6 +200,12 @@ function processArgs(account) {
 }
 
 function doLogin() {
+	// tjs 131031
+	// TODO security leak re account showing...
+	// tjs 131101
+	//alert("index doLogin authenticationProvider " + authenticationProvider);
+	// e.g. index doLogin authenticationProvider http://localhost:3000	
+	//getLogin(authenticationProvider);
 	window.location.href = "login.php";
 }
 
@@ -562,7 +572,12 @@ or read the iBook <i>Dead Giveaway - Sleuthing Around Nonprofits</i>.  For detai
 		//alert("aggregateProvider " + aggregateProvider + " aggregateDatabase " + aggregateDatabase);
 		// hack for test - comment out!
 		//aggregateDatabase = 'collogistics';
-				
+
+				// tjs 131031
+		authenticationProvider = <?php echo json_encode($authenticationProvider); ?>;
+		// tjs 131101
+		//alert("index ready authenticationProvider " + authenticationProvider);
+		
 		// tjs 111027
 		var charityHoundRegisterDialogOpts = {
 				title: "CharityHound Registration",
