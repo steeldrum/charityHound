@@ -246,6 +246,50 @@ class Charity extends DataObject {
 		return array( $charities, $sizeOfCharities );
 	}
 
+	// tjs 140205
+	//$query="SELECT * FROM charities where memberId = ".$account." and (isInactive is null or isInactive = 0) order by charityName";
+	public static function getCharitiesActiveForMember( $memberId) {
+		//$memberCharities = array();
+		$charities = array();
+
+		$conn = parent::connect();
+		// "SELECT * FROM charities where memberId = ".$account;
+		$sql = "SELECT * FROM " . TBL_CHARITIES . " WHERE memberid = :memberId and (isinactive is null or isinactive = 0) order by charityname";
+
+		//if ($detail == 'false') {
+			//$query="SELECT * FROM charities where memberId = ".$account." and (isInactive is null or isInactive = 0)";
+			//$sql += " and (isInactive is null or isInactive = 0)";
+			//$sql .= " and (isinactive is null or isinactive = 0) orderby charityname";
+		//}
+
+		//echo "sql $sql";
+		// e.g. SELECT * FROM charities WHERE memberid = :memberId and (isInactive is null or isInactive = 0)
+
+		try {
+			$st = $conn->prepare( $sql );
+			$st->bindValue( ":memberId", $memberId, PDO::PARAM_INT );
+			$st->execute();
+			//$charities = array();
+			foreach ( $st->fetchAll() as $row ) {
+				$charities[] = new Charity( $row );
+			}
+			//$st = $conn->query( "SELECT found_rows() as totalRows" );
+			//$row = $st->fetch();
+			parent::disconnect( $conn );
+			//return array( $members, $row["totalRows"] );
+		} catch ( PDOException $e ) {
+			parent::disconnect( $conn );
+			die( "Query failed: " . $e->getMessage() );
+		}
+
+		$sizeOfCharities = sizeof($charities);
+		//echo "sizeOfCharities $sizeOfCharities";
+		// e.g. sizeOfCharities 0
+		//echo "sizeOfMemberCharities ".$sizeOfMemberCharities;
+
+		return array( $charities, $sizeOfCharities );
+	}
+	
 	public static function getLapsedCharities( $memberId, $priorYear, $lapsedYear, $startRow, $numRows, $order ) {
 		$lapsedCharities = array();
 		$allLapsedCharities = array();

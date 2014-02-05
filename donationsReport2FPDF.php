@@ -14,6 +14,19 @@ file version 1.00
 release version 1.00
 */
 
+// tjs 140205
+//echo "starting...";
+//require_once "DataObject.class.php";
+//require_once( "Charity.class.php" );
+//require_once( "common.inc.php" );
+//require_once( "config.php" );
+//echo "config included...";
+require_once( "Member.class.php" );
+//echo "Member included...";
+require_once( "Charity.class.php" );
+//echo "Charity included...";
+//require_once( "Donation.class.php" );
+
 require ('fpdf.php');
 
 /*
@@ -36,11 +49,13 @@ e.g. of data content:
 see also http://www.fpdf.org/
 */
 
-require_once( "Member.class.php" );
+//require_once( "Member.class.php" );
 //tjs 110511 above ensures that config.php has been loaded as well
-$username=DB_USERNAME;
-$password=DB_PASSWORD;
-$database=DB_NAME;
+// tjs 140205
+//$username=DB_USERNAME;
+//$password=DB_PASSWORD;
+//$database=DB_NAME;
+//echo "before session...";
 session_start();
 
 //$lastName = "AAAAAA";
@@ -75,6 +90,7 @@ $pdf->AddPage();
 $pdf->SetFont('Arial','B',16);
 
 $account = $_GET['account'];
+//echo "account $account";
 
 if (strlen($account) > 0 && $account != '0') {
 	//echo $account;
@@ -88,9 +104,17 @@ if (strlen($account) > 0 && $account != '0') {
 
 $start = $_GET['start'];
 $end = $_GET['end'];
+$yearStart = (int)$start;
+$yearEnd = (int)$end;
 //tjs110304
 $hideSolicitations = $_GET['hideSolicitations']; 
-
+//echo "account $account start $start end $end";
+// e.g. account 1 start 2013 end 2013
+// tjs 140205
+list( $charities, $totalRows ) = Charity::getCharitiesActiveForMember( $account);
+//echo "totalRows $totalRows";
+// e.g. totalRows 570
+/*
 define("MYSQL_HOST", "localhost");
 
 //$username="root";
@@ -108,17 +132,65 @@ $donations = array();
 $query="SELECT * FROM charities where memberId = ".$account." and (isInactive is null or isInactive = 0) order by charityName";
 $result=mysql_query($query);
 $num=mysql_numrows($result);
+*/
+$donations = array();
+$startDate = $start."-01-01 00:00:00";
+$endDate = $end."-12-31 23:59:59";
+//$beginDateRange=date_create($startDate);
+//$endDateRange=date_create($endDate);
+//echo "startDate $startDate";
+//echo "beginDateRange $beginDateRange";
+
 $i=0;
-while ($i < $num) {
+// tjs 140205
+//while ($i < $num) {
+foreach ( $charities as $charity ) {
+/*	
 	$charityId=mysql_result($result,$i,"id");
 
 	$charityName=mysql_result($result,$i,"charityName");
 	$shortName=mysql_result($result,$i,"shortName");
 	$isForProfit=mysql_result($result,$i,"isForProfit");
-
-	//$query="SELECT * FROM donations where memberId = ".$account." and charityId = ".$charityId." order by madeOn desc";
+*/
+	$charityId=$charity->getValue("id");
+	//$memberId=$charity->getValue("id");
+		$charityName=$charity->getValue("charityname");
+	$shortName=$charity->getValue("shortname");
+	$isForProfit=$charity->getValue("isforprofit");
+//echo "charityName $charityName";
+// e.g.  A Wider Circle	
+	list( $charityDonations, $totalDonationRows ) = Donation::getDonationsByCharityId( $account, $charityId );
+//echo "totalDonationRows $totalDonationRows";
+// e.g. totalDonationRows 1
+	if ($totalDonationRows > 0) {
+		$j=0;
+		foreach ( $charityDonations as $donation ) {
+			$id=$donation->getValue("id");
+			$amount=$donation->getValue("amount");
+			$date=$donation->getValue("madeon");
+			//echo "date $date";
+			//$donationDate=date_create($date);
+			//echo "donation date $donationDate";
+			//$diff1=date_diff($beginDateRange,$date);
+			//$diff2=date_diff($date,$endDateRange);
+			//echo "date $date diff1 $diff1 diff2 $diff2";
+			//date 2010-12-09 20:47:13 diff1 diff2
+			$donationYear = (int)substr($date, 0, 4);
+			if ($donationYear >= $yearStart && $donationYear <= $yearEnd) {
+			//echo "donationYear $donationYear";
+			// e.g. donationYear 2010
+			//$d = new Donation($id, $amount, $date, $charityId, $charityName, $shortName);
+			$d = new CharityDonation($id, $amount, $date, $charityId, $charityName, $shortName, $isForProfit);
+			$donations[] = $d;
+			$j++;
+			}
+		}
+		//echo "charityName $charityName posted $j donations";
+		// e.g. charityName AARP Foundation posted 28 donations
+	}
+		//$query="SELECT * FROM donations where memberId = ".$account." and charityId = ".$charityId." order by madeOn desc";
 	// TODO postgres
-	$query="SELECT * FROM donations where memberId = ".$account." and charityId = ".$charityId." and madeOn BETWEEN '".$start."-01-01 00:00:00' AND '".$end."-12-31 23:59:59' order by madeOn desc";
+	/*$query="SELECT * FROM donations where memberId = ".$account." and charityId = ".$charityId." and madeOn BETWEEN '".$start."-01-01 00:00:00' AND '".$end."-12-31 23:59:59' order by madeOn desc";
 	$result2=mysql_query($query);
 	$num2=mysql_numrows($result2);
 	$j=0;
@@ -130,11 +202,11 @@ while ($i < $num) {
 		$d = new Donation($id, $amount, $date, $charityId, $charityName, $shortName, $isForProfit);
 		$donations[] = $d;
 		$j++;
-	}
+	}*/
 	$i++;
 }
 
-class Donation {
+class CharityDonation {
 	public $_id;
 	public $_amount;
 	public $_date;
@@ -382,7 +454,14 @@ function outputDonation($pdf, $donation) {
 
 }
 
+$sizeOfDonations = sizeof($donations);
+//echo "sizeOfDonations $sizeOfDonations";
+// e.g. sizeOfDonations 16
 foreach($donations as $donation) {
+	//$charityName = $donation->getName();
+	//echo "process $charityName ";
+	//$donation->showDetails();
+	// e.g. donation AARP Foundation id 3381 0, 2014-01-29 08:14:04
 	outputDonation($pdf, $donation);
 }
 			$averageamount = 0;
