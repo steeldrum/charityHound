@@ -44,8 +44,8 @@ foreach ( $charities as $charity ) {
 ?>
       <tr<?php if ( $rowCount % 2 == 0 ) echo ' class="alt"' ?>>
         <td><a href="view_charity.php?charityId=<?php echo $charity->getValueEncoded( "id" ) ?>&amp;account=<?php echo $account ?>&amp;prior=<?php echo $from ?>&amp;current=<?php echo $to ?>&amp;start=<?php echo $start ?>&amp;order=<?php echo $order ?>&amp;back=remitted"><?php echo $charity->getValueEncoded( "charityName" ) ?></a></td>
-        <td><?php echo $charity->getValueEncoded( "baseId" ) ?></td>
-        <td><?php echo $charity->getValueEncoded( "numStars" ) ?></td>
+        <td><?php echo $charity->getValueEncoded( "baseid" ) ?></td>
+        <td><?php echo $charity->getValueEncoded( "numstars" ) ?></td>
       </tr>
 <?php
 }

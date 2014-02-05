@@ -126,6 +126,7 @@ while ($i < $num) {
 */
 
 //$query="SELECT c.charityName, c.shortName, a.id, a.baseId, a.amount, a.madeOn FROM charities c, allDonations a WHERE c.id = a.baseId  and a.madeOn BETWEEN '".$start."-01-01 00:00:00' AND '".$end."-12-31 23:59:59' ORDER BY c.charityName";
+// TODO postgres
 $query="SELECT c.charityName, c.shortName, c.isForProfit, a.id, a.baseId, a.amount, a.madeOn FROM charities c, allDonations a WHERE c.id = a.baseId  and a.madeOn BETWEEN '".$start."-01-01 00:00:00' AND '".$end."-12-31 23:59:59' ORDER BY c.charityName";
 $result=mysql_query($query);
 $num=mysql_numrows($result);

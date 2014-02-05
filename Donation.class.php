@@ -139,7 +139,9 @@ $solicitationsLoggedTheSameDay = true;
 	$conn = parent::connect();
 	// tjs 130725
 	//$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberId = ".$account." and charityId = ".$charityId." and madeOn > '".$yearStart."' and madeOn < '".$yearEnd."' order by madeOn";
-	$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberid = ".$account." and charityid = ".$charityId." and madeon > '".$yearStart."' and madeon < '".$yearEnd."' order by madeon";
+// tjs 140205
+	//$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberid = ".$account." and charityid = ".$charityId." and madeon > '".$yearStart."' and madeon < '".$yearEnd."' order by madeon";
+	$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberid = ".$account." and charityid = ".$charityId." and madeon > timestamp '".$yearStart."' and madeon < timestamp '".$yearEnd."' order by madeon";
     //echo "sql ".$sql;
     try {
       $st = $conn->prepare( $sql );
@@ -301,7 +303,9 @@ public static function getDonationsForYear($memberId, $year) {
     $conn = parent::connect();
  	// tjs 130725
      //$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberId = ".$memberId." and madeOn > '".$yearStart."' and madeOn < '".$yearEnd."' order by charityId";
-    $sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberid = ".$memberId." and madeon > '".$yearStart."' and madeon < '".$yearEnd."' order by charityid";
+// tjs 140205
+    //$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberid = ".$memberId." and madeon > '".$yearStart."' and madeon < '".$yearEnd."' order by charityid";
+    $sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberid = ".$memberId." and madeon > timestamp '".$yearStart."' and madeon < timestamp '".$yearEnd."' order by charityid";
     //echo "SQL ".$sql;
 //echo "memberId ".$memberId." yearStart ".$yearStart." yearEnd ".$yearEnd;
     try {
@@ -332,7 +336,9 @@ public static function getDonationsForYear($memberId, $year) {
     $conn = parent::connect();
     // tjs 130725
     //$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberId = ".$memberId." and madeOn > '".$yearStart."' and madeOn < '".$yearEnd."' order by charityId";
-    $sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberid = ".$memberId." and madeon > '".$yearStart."' and madeon < '".$yearEnd."' order by charityid";
+// tjs 140205
+    //$sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberid = ".$memberId." and madeon > '".$yearStart."' and madeon < '".$yearEnd."' order by charityid";
+    $sql = "SELECT * FROM " . TBL_DONATIONS . " WHERE memberid = ".$memberId." and madeon > timestamp '".$yearStart."' and madeon < timestamp '".$yearEnd."' order by charityid";
     //echo "SQL ".$sql;
 //echo "memberId ".$memberId." yearStart ".$yearStart." yearEnd ".$yearEnd;
     try {

@@ -52,6 +52,7 @@ class RatedCharity extends Charity {
 */
 
   protected $data = array(
+  /*
     "solicitations" => "",
     "blankEnvelopeAppeals" => "",
     "currencyBatedAppeals" => "",
@@ -59,6 +60,15 @@ class RatedCharity extends Charity {
     // tjs 121127 "appealPrivacyPledges" => ""
   "appealPrivacyPledges" => "",
   "lastAmount" => ""
+  */
+      "solicitations" => "",
+    "blankenvelopeappeals" => "",
+    "currencybatedappeals" => "",
+    "appealreminderschedules" => "",
+    // tjs 121127 "appealPrivacyPledges" => ""
+  "appealprivacypledges" => "",
+  "lastamount" => ""
+  
   );
 /*
   public static function getCharities( $startRow, $numRows, $order ) {
@@ -164,9 +174,11 @@ $cumRating = 0;
  if ($cumRating > 0) {
   $ratedCharity = new RatedCharity();
   $ratedCharity->data['id'] = $id;
-  $ratedCharity->data['memberId'] = $charity->data['memberId'];
-  $ratedCharity->data['charityName'] = $charity->data['charityName'];
-  $ratedCharity->data['shortName'] = $charity->data['shortName'];
+  // tjs 140205
+  //$ratedCharity->data['memberId'] = $charity->data['memberId'];
+  $ratedCharity->data['memberid'] = $charity->data['memberid'];
+  $ratedCharity->data['charityname'] = $charity->data['charityname'];
+  $ratedCharity->data['shortname'] = $charity->data['shortname'];
   //$ratedCahrity->data['dunns'] = ;
   //$ratedCahrity->data['url'] = ;
   //$ratedCahrity->data['description'] = ;
@@ -176,19 +188,19 @@ $cumRating = 0;
   //$ratedCahrity->data['baseId'] = ;
   //$ratedCahrity->data['isForProfit'] = ;
   //$ratedCharity->data['solicitations'] = $solicitations;
-  $ratedCharity->data['blankEnvelopeAppeals'] = $blankCount;
-  $ratedCharity->data['currencyBatedAppeals'] = $currencyCount;
-  $ratedCharity->data['appealReminderSchedules'] = $reminderCount;
-  $ratedCharity->data['appealPrivacyPledges'] = $confidentialCount;
+  $ratedCharity->data['blankenvelopeappeals'] = $blankCount;
+  $ratedCharity->data['currencybatedappeals'] = $currencyCount;
+  $ratedCharity->data['appealreminderschedules'] = $reminderCount;
+  $ratedCharity->data['appealprivacypledges'] = $confidentialCount;
  // $ratedCharities[] = $ratedCharity;
     //tjs 111115
     //list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $charityId );
     list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $charityId, $fromYear, $toYear );
 	//echo "charityId ".$charityId." rate ".$rate;
-    $ratedCharity->data["baseId"] = $rate;
+    $ratedCharity->data["baseid"] = $rate;
     //$charity->data["numStars"] = $donations*$average;
-    $ratedCharity->data["numStars"] = $solicitations;
-    $ratedCharity->data["lastAmount"] = $lastAmount;
+    $ratedCharity->data["numstars"] = $solicitations;
+    $ratedCharity->data["lastamount"] = $lastAmount;
     $allDesignatedCharities[] = $ratedCharity;
  }
 }
@@ -231,8 +243,10 @@ return array( $designatedCharities, $sizeOfCharities );
   
     static function cmp_blank($a, $b)
     {
-        $al = $a->data["blankEnvelopeAppeals"];
-        $bl = $b->data["blankEnvelopeAppeals"];
+        //$al = $a->data["blankEnvelopeAppeals"];
+        //$bl = $b->data["blankEnvelopeAppeals"];
+    	$al = $a->data["blankenvelopeappeals"];
+        $bl = $b->data["blankenvelopeappeals"];
         if ($al == $bl) {
             return 0;
         }
@@ -240,8 +254,8 @@ return array( $designatedCharities, $sizeOfCharities );
     }    
     static function cmp_currency($a, $b)
     {
-        $al = $a->data["currencyBatedAppeals"];
-        $bl = $b->data["currencyBatedAppeals"];
+        $al = $a->data["currencybatedappeals"];
+        $bl = $b->data["currencybatedappeals"];
         if ($al == $bl) {
             return 0;
         }
@@ -249,8 +263,8 @@ return array( $designatedCharities, $sizeOfCharities );
     } 
     static function cmp_confidential($a, $b)
     {
-        $al = $a->data["appealPrivacyPledges"];
-        $bl = $b->data["appealPrivacyPledges"];
+        $al = $a->data["appealprivacypledges"];
+        $bl = $b->data["appealprivacypledges"];
         if ($al == $bl) {
             return 0;
         }
@@ -258,8 +272,8 @@ return array( $designatedCharities, $sizeOfCharities );
     }    
         static function cmp_schedule($a, $b)
     {
-        $al = $a->data["appealReminderSchedules"];
-        $bl = $b->data["appealReminderSchedules"];
+        $al = $a->data["appealreminderschedules"];
+        $bl = $b->data["appealreminderschedules"];
         if ($al == $bl) {
             return 0;
         }
@@ -274,32 +288,32 @@ return array( $designatedCharities, $sizeOfCharities );
     return $this->data["solicitations"];
   }
     public function getBlankEnvelopeAppeals() {
-    return $this->data["blankEnvelopeAppeals"];
+    return $this->data["blankenvelopeappeals"];
   }
     public function getCurrencyBatedAppeals() {
-    return $this->data["currencyBatedAppeals"];
+    return $this->data["currencybatedappeals"];
   }
     public function getAppealReminderSchedules() {
-    return $this->data["appealReminderSchedules"];
+    return $this->data["appealreminderschedules"];
   }
     public function getAppealPrivacyPledges() {
-    return $this->data["appealPrivacyPledges"];
+    return $this->data["appealprivacypledges"];
   }
   
   public function setSolicitations($solicitations) {
     $this->data["solicitations"] = $solicitations;
   }
   public function setBlankEnvelopeAppeals($blankEnvelopeAppeals) {
-    $this->data["blankEnvelopeAppeals"] = $blankEnvelopeAppeals;
+    $this->data["blankenvelopeappeals"] = $blankEnvelopeAppeals;
   }
     public function setCurrencyBatedAppeals($currencyBatedAppeals) {
-    $this->data["currencyBatedAppeals"] = $currencyBatedAppeals;
+    $this->data["currencybatedappeals"] = $currencyBatedAppeals;
   }
     public function setAppealReminderSchedules($appealReminderSchedules) {
-    $this->data["appealReminderSchedules"] = $appealReminderSchedules;
+    $this->data["appealreminderschedules"] = $appealReminderSchedules;
   }
     public function setAppealPrivacyPledges($appealPrivacyPledges) {
-    $this->data["appealPrivacyPledges"] = $appealPrivacyPledges;
+    $this->data["appealprivacypledges"] = $appealPrivacyPledges;
   }
 
 }

@@ -35,6 +35,7 @@ class Rating extends DataObject {
   UNIQUE KEY `ratingForMemberYear` (`charityId`,`memberId`,`year`)
 */
   protected $data = array(
+  /*
     "id" => "",
     "charityId" => "",
     "memberId" => "",
@@ -45,6 +46,18 @@ class Rating extends DataObject {
       "appealReminderSchedules" => "",
       "appealPrivacyPledges" => "",
       "date" => ""
+      */
+      "id" => "",
+    "charityid" => "",
+    "memberid" => "",
+    "year" => "",
+    "solicitations" => "",
+    "blankenvelopeappeals" => "",
+      "currencybatedappeals" => "",
+      "appealreminderschedules" => "",
+      "appealprivacypledges" => "",
+      "date" => ""
+  
   );
 
   public static function getRatings( $startRow, $numRows, $order ) {
@@ -89,7 +102,9 @@ class Rating extends DataObject {
 
   public static function getCharityRatingForYear($memberId, $charityId, $year) {
     $conn = parent::connect();
-    $sql = "SELECT * FROM " . TBL_RATINGS . " WHERE memberId = ".$memberId." and year = '".$year."' and charityId = ".$charityId;
+    // tjs 140205
+    //$sql = "SELECT * FROM " . TBL_RATINGS . " WHERE memberId = ".$memberId." and year = '".$year."' and charityId = ".$charityId;
+    $sql = "SELECT * FROM " . TBL_RATINGS . " WHERE memberid = ".$memberId." and year = '".$year."' and charityid = ".$charityId;
     //echo "SQL ".$sql;
 //echo "memberId ".$memberId." yearStart ".$yearStart." yearEnd ".$yearEnd;
     try {
@@ -121,7 +136,8 @@ public static function getRatingsForYear($memberId, $year) {
   $yearEnd = $year."-12-31 11:59:00";
     $conn = parent::connect();
     //$sql = "SELECT * FROM " . TBL_RATINGS . " WHERE memberId = ".$memberId." and madeOn > '".$yearStart."' and madeOn < '".$yearEnd."' order by charityId";
-    $sql = "SELECT * FROM " . TBL_RATINGS . " WHERE memberId = ".$memberId." and year = '".$year."' order by charityId";
+    //$sql = "SELECT * FROM " . TBL_RATINGS . " WHERE memberId = ".$memberId." and year = '".$year."' order by charityId";
+    $sql = "SELECT * FROM " . TBL_RATINGS . " WHERE memberid = ".$memberId." and year = '".$year."' order by charityid";
     //echo "SQL ".$sql;
 //echo "memberId ".$memberId." yearStart ".$yearStart." yearEnd ".$yearEnd;
     try {
@@ -150,7 +166,8 @@ public static function getRatingsForYear($memberId, $year) {
   $yearStart = $fromYear."-01-01 00:00:00";
   $yearEnd = $toYear."-12-31 11:59:00";
     $conn = parent::connect();
-    $sql = "SELECT * FROM " . TBL_RATINGS . " WHERE memberId = ".$memberId." and year >= '".$fromYear."' and year <= '".$toYear."' order by charityId";
+    //$sql = "SELECT * FROM " . TBL_RATINGS . " WHERE memberId = ".$memberId." and year >= '".$fromYear."' and year <= '".$toYear."' order by charityId";
+    $sql = "SELECT * FROM " . TBL_RATINGS . " WHERE memberid = ".$memberId." and year >= '".$fromYear."' and year <= '".$toYear."' order by charityid";
     //echo "SQL ".$sql;
 //echo "memberId ".$memberId." yearStart ".$yearStart." yearEnd ".$yearEnd;
     try {
@@ -180,7 +197,8 @@ public static function getRatingsForYear($memberId, $year) {
   $yearStart = $fromYear."-01-01 00:00:00";
   $yearEnd = $toYear."-12-31 11:59:00";
     $conn = parent::connect();
-    $sql = "SELECT * FROM " . TBL_RATINGS . " WHERE memberId = ".$memberId." and charityId = ".$charityId." and year >= '".$fromYear."' and year <= '".$toYear."'";
+    //$sql = "SELECT * FROM " . TBL_RATINGS . " WHERE memberId = ".$memberId." and charityId = ".$charityId." and year >= '".$fromYear."' and year <= '".$toYear."'";
+    $sql = "SELECT * FROM " . TBL_RATINGS . " WHERE memberid = ".$memberId." and charityid = ".$charityId." and year >= '".$fromYear."' and year <= '".$toYear."'";
     //echo "SQL ".$sql;
 //echo "memberId ".$memberId." yearStart ".$yearStart." yearEnd ".$yearEnd;
     try {
@@ -223,14 +241,14 @@ public static function getRatingsForYear($memberId, $year) {
   public function insert() {
     $conn = parent::connect();
     $sql = "INSERT INTO " . TBL_RATINGS . " (
-              charityId,
-              memberId,
+              charityid,
+              memberid,
               year,
 			solicitations,
-			blankEnvelopeAppeals,
-			currencyBatedAppeals,
-			appealReminderSchedules,
-			appealPrivacyPledges
+			blankenvelopeappeals,
+			currencybatedappeals,
+			appealreminderschedules,
+			appealprivacypledges
             ) VALUES (
               :charityId,
               :memberId,
@@ -244,14 +262,14 @@ public static function getRatingsForYear($memberId, $year) {
 
     try {
       $st = $conn->prepare( $sql );
-      $st->bindValue( ":charityId", $this->data["charityId"], PDO::PARAM_STR );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_STR );
+      $st->bindValue( ":charityId", $this->data["charityid"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
       $st->bindValue( ":year", $this->data["year"], PDO::PARAM_STR );
       $st->bindValue( ":solicitations", $this->data["solicitations"], PDO::PARAM_STR );
-      $st->bindValue( ":blankEnvelopeAppeals", $this->data["blankEnvelopeAppeals"], PDO::PARAM_STR );
-      $st->bindValue( ":currencyBatedAppeals", $this->data["currencyBatedAppeals"], PDO::PARAM_STR );
-      $st->bindValue( ":appealReminderSchedules", $this->data["appealReminderSchedules"], PDO::PARAM_STR );
-      $st->bindValue( ":appealPrivacyPledges", $this->data["appealPrivacyPledges"], PDO::PARAM_STR );
+      $st->bindValue( ":blankEnvelopeAppeals", $this->data["blankenvelopeappeals"], PDO::PARAM_STR );
+      $st->bindValue( ":currencyBatedAppeals", $this->data["currencybatedappeals"], PDO::PARAM_STR );
+      $st->bindValue( ":appealReminderSchedules", $this->data["appealreminderschedules"], PDO::PARAM_STR );
+      $st->bindValue( ":appealPrivacyPledges", $this->data["appealprivacypledges"], PDO::PARAM_STR );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -263,27 +281,27 @@ public static function getRatingsForYear($memberId, $year) {
   public function update() {
     $conn = parent::connect();
     $sql = "UPDATE " . TBL_RATINGS . " SET
-              charityId = :charityId,
-              memberId = :memberId,
+              charityid = :charityId,
+              memberid = :memberId,
               year = :year,
               solicitations = :solicitations,
-              blankEnvelopeAppeals = :blankEnvelopeAppeals,
-              currencyBatedAppeals = :currencyBatedAppeals,
-              appealReminderSchedules = :appealReminderSchedules,
-              appealPrivacyPledges = :appealPrivacyPledges
+              blankenvelopeappeals = :blankEnvelopeAppeals,
+              currencybatedappeals = :currencyBatedAppeals,
+              appealreminderschedules = :appealReminderSchedules,
+              appealprivacypledges = :appealPrivacyPledges
               WHERE id = :id";
 
     try {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":id", $this->data["id"], PDO::PARAM_INT );
-      $st->bindValue( ":charityId", $this->data["charityId"], PDO::PARAM_STR );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_STR );
+      $st->bindValue( ":charityId", $this->data["charityid"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
       $st->bindValue( ":year", $this->data["year"], PDO::PARAM_STR );
       $st->bindValue( ":solicitations", $this->data["solicitations"], PDO::PARAM_STR );
-      $st->bindValue( ":blankEnvelopeAppeals", $this->data["blankEnvelopeAppeals"], PDO::PARAM_STR );
-      $st->bindValue( ":currencyBatedAppeals", $this->data["currencyBatedAppeals"], PDO::PARAM_STR );
-      $st->bindValue( ":appealReminderSchedules", $this->data["appealReminderSchedules"], PDO::PARAM_STR );
-      $st->bindValue( ":appealPrivacyPledges", $this->data["appealPrivacyPledges"], PDO::PARAM_STR );
+      $st->bindValue( ":blankEnvelopeAppeals", $this->data["blankenvelopeappeals"], PDO::PARAM_STR );
+      $st->bindValue( ":currencyBatedAppeals", $this->data["currencybatedappeals"], PDO::PARAM_STR );
+      $st->bindValue( ":appealReminderSchedules", $this->data["appealreminderschedules"], PDO::PARAM_STR );
+      $st->bindValue( ":appealPrivacyPledges", $this->data["appealprivacypledges"], PDO::PARAM_STR );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -308,7 +326,7 @@ public static function getRatingsForYear($memberId, $year) {
   }
 
   public function getCharityId() {
-    return $this->data["charityId"];
+    return $this->data["charityid"];
   }
   public function getYear() {
     return $this->data["year"];
@@ -318,32 +336,32 @@ public static function getRatingsForYear($memberId, $year) {
     return $this->data["solicitations"];
   }
     public function getBlankEnvelopeAppeals() {
-    return $this->data["blankEnvelopeAppeals"];
+    return $this->data["blankenvelopeappeals"];
   }
     public function getCurrencyBatedAppeals() {
-    return $this->data["currencyBatedAppeals"];
+    return $this->data["currencybatedappeals"];
   }
     public function getAppealReminderSchedules() {
-    return $this->data["appealReminderSchedules"];
+    return $this->data["appealreminderschedules"];
   }
     public function getAppealPrivacyPledges() {
-    return $this->data["appealPrivacyPledges"];
+    return $this->data["appealprivacypledges"];
   }
   
   public function setSolicitations($solicitations) {
     $this->data["solicitations"] = $solicitations;
   }
   public function setBlankEnvelopeAppeals($blankEnvelopeAppeals) {
-    $this->data["blankEnvelopeAppeals"] = $blankEnvelopeAppeals;
+    $this->data["blankenvelopeappeals"] = $blankEnvelopeAppeals;
   }
     public function setCurrencyBatedAppeals($currencyBatedAppeals) {
-    $this->data["currencyBatedAppeals"] = $currencyBatedAppeals;
+    $this->data["currencybatedappeals"] = $currencyBatedAppeals;
   }
     public function setAppealReminderSchedules($appealReminderSchedules) {
-    $this->data["appealReminderSchedules"] = $appealReminderSchedules;
+    $this->data["appealreminderschedules"] = $appealReminderSchedules;
   }
     public function setAppealPrivacyPledges($appealPrivacyPledges) {
-    $this->data["appealPrivacyPledges"] = $appealPrivacyPledges;
+    $this->data["appealprivacypledges"] = $appealPrivacyPledges;
   }
   
 }

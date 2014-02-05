@@ -338,7 +338,9 @@ class Charity extends DataObject {
 				//list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $laspsedYearCharityId );
 				// tjs 111115
 				list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $laspsedYearCharityId, $lapsedYear, $lapsedYear );
-				$lapsedYearCharity->data["numStars"] = $rate;
+// tjs 140205
+				//$lapsedYearCharity->data["numStars"] = $rate;
+				$lapsedYearCharity->data["numstars"] = $rate;
 				$allLapsedCharities[] = $lapsedYearCharity;
 			}
 		}
@@ -412,8 +414,11 @@ class Charity extends DataObject {
 			//list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $charityId );
 			list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $charityId, $fromYear, $toYear );
 			//echo "charityId ".$charityId." rate ".$rate;
-			$charity->data["baseId"] = $rate;
-			$charity->data["numStars"] = $donations*$average;
+			// tjs 140205
+			//$charity->data["baseId"] = $rate;
+			//$charity->data["numStars"] = $donations*$average;
+			$charity->data["baseid"] = $rate;
+			$charity->data["numstars"] = $donations*$average;
 			$allRemittedCharities[] = $charity;
 		}
 
@@ -592,10 +597,12 @@ class Charity extends DataObject {
 			list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $charityId, $fromYear, $toYear );
 			//echo "charityId ".$charityId." rate ".$rate;
 			//$charity->data["baseId"] = $rate;
-			$charity->data["baseId"] = $donations;
+			// tjs 140205
+			//$charity->data["baseId"] = $donations;
+			$charity->data["baseid"] = $donations;
 			$totalDonationsCount += $donations;
 			//$charity->data["numStars"] = $donations*$average;
-			$charity->data["numStars"] = $solicitations;
+			$charity->data["numstars"] = $solicitations;
 			$totalSolicitationsCount += $solicitations;
 			//$allOmittedCharities[] = $charity;
 			$allCharities[] = $charity;
@@ -1075,8 +1082,11 @@ class Charity extends DataObject {
 
 	static function cmp_charityName($a, $b)
 	{
-		$al = strtolower($a->data["charityName"]);
-		$bl = strtolower($b->data["charityName"]);
+		// tjs 140205
+		//$al = strtolower($a->data["charityName"]);
+		//$bl = strtolower($b->data["charityName"]);
+		$al = strtolower($a->data["charityname"]);
+		$bl = strtolower($b->data["charityname"]);
 		if ($al == $bl) {
 			return 0;
 		}
@@ -1084,8 +1094,10 @@ class Charity extends DataObject {
 	}
 	static function cmp_shortName($a, $b)
 	{
-		$al = strtolower($a->data["shortName"]);
-		$bl = strtolower($b->data["shortName"]);
+		//$al = strtolower($a->data["shortName"]);
+		//$bl = strtolower($b->data["shortName"]);
+		$al = strtolower($a->data["shortname"]);
+		$bl = strtolower($b->data["shortname"]);
 		if ($al == $bl) {
 			return 0;
 		}
@@ -1093,8 +1105,10 @@ class Charity extends DataObject {
 	}
 	static function cmp_numStars($a, $b)
 	{
-		$al = $a->data["numStars"];
-		$bl = $b->data["numStars"];
+		//$al = $a->data["numStars"];
+		//$bl = $b->data["numStars"];
+		$al = $a->data["numstars"];
+		$bl = $b->data["numstars"];
 		if ($al == $bl) {
 			return 0;
 		}
@@ -1102,8 +1116,10 @@ class Charity extends DataObject {
 	}
 	static function cmp_baseId($a, $b)
 	{
-		$al = $a->data["baseId"];
-		$bl = $b->data["baseId"];
+		//$al = $a->data["baseId"];
+		//$bl = $b->data["baseId"];
+		$al = $a->data["baseid"];
+		$bl = $b->data["baseid"];
 		if ($al == $bl) {
 			return 0;
 		}

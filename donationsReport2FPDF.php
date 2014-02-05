@@ -117,6 +117,7 @@ while ($i < $num) {
 	$isForProfit=mysql_result($result,$i,"isForProfit");
 
 	//$query="SELECT * FROM donations where memberId = ".$account." and charityId = ".$charityId." order by madeOn desc";
+	// TODO postgres
 	$query="SELECT * FROM donations where memberId = ".$account." and charityId = ".$charityId." and madeOn BETWEEN '".$start."-01-01 00:00:00' AND '".$end."-12-31 23:59:59' order by madeOn desc";
 	$result2=mysql_query($query);
 	$num2=mysql_numrows($result2);
