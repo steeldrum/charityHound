@@ -150,6 +150,37 @@ function enableOrDisableScheduledDisplayAds() {
 }
 
 function enableOrDisableSiteAdmin() {
+	//alert("index enableOrDisableSiteAdmin...");
+	var adminRequest = getXMLHTTPRequest();
+	var url = 'getAdminInfoXML.php?account=0';
+	//console.log("index enableOrDisableSiteAdmin url " + url);
+	//alert("index enableOrDisableSiteAdmin url " + url);
+	requestXMLData(adminRequest, url, function() {
+		   if(adminRequest.readyState == 4) {
+			   //alert("enableOrDisableScheduledDisplayAds loginRequest.readyState " + loginRequest.readyState);
+			if(adminRequest.status == 200) {
+			   //alert("index enableOrDisableScheduledDisplayAds loginRequest.status " + loginRequest.status);
+				var elm = document.getElementById('admin');						
+				elm.disabled="disabled";
+			    var data = adminRequest.responseXML;
+			    //$(data).find('account').each(function() {
+			    $(data).find('administrator').each(function() {
+					//console.log("index enableOrDisableSiteAdmin found admin account...");
+					//alert("index enableOrDisableSiteAdmin found admin account...");
+					//var $account = $(this);
+					var $administrator = $(this);
+					//var children = $account.children();
+					var children = $administrator.children();
+					var account = children[0].firstChild.nodeValue;
+					console.log("index enableOrDisableSiteAdmin account " + account);
+					if (account != 0) {
+						elm.disabled="";
+					}
+			    });
+			}
+		   }
+		});
+	/* tjs 140206
 //test http://localhost/~thomassoucy/philanthropy/getCustomerInfoXML.php?account=1
 	var customerRequest = getXMLHTTPRequest();
 	var url = 'getCustomerInfoXML.php?account=0';
@@ -178,5 +209,6 @@ function enableOrDisableSiteAdmin() {
 		}
 	   }
 	});
+	*/
 }
 

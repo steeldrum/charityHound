@@ -140,6 +140,32 @@ class Member extends DataObject {
     }
   }
 
+  // tjs 140206
+    public static function isMemberAdmin( $memberId ) {
+    	// hack for test:
+    	if ($memberId == 1) {
+    	return true;
+    	} else {
+    		return false;
+    	}
+    /*	
+    $conn = parent::connect();
+    $sql = "SELECT * FROM " . TBL_ADMINS . " WHERE memberid = :memberId";
+
+    try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":memberId", $memberId, PDO::PARAM_INT );
+      $st->execute();
+      $row = $st->fetch();
+      parent::disconnect( $conn );
+      if ( $row ) {return true;} else { return false;}
+    } catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    }
+    */
+  }
+  
   public static function getByUsername( $username ) {
     $conn = parent::connect();
     $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE username = :username";

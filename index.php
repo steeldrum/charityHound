@@ -161,11 +161,12 @@ function processArgs(account) {
 	//setAuthenticated();
 	var authenticated = account > 0? true : false;
 	//alert("index.html processArgs authenticated " + authenticated);
-	//alert("index.html processArgs authenticated " + authenticated + " account " + account);
+	//alert("index.php processArgs authenticated " + authenticated + " account " + account);
+	//console.log("index.html processArgs authenticated " + authenticated + " account " + account);
 	//e.g. true 1
 	var elm;
 	if (authenticated == true) {
-		//alert("index.html processArgs disable login, enable logout");
+		//alert("index.php processArgs disable login, enable logout");
 		elm = $('#login').get(0);
 		if (elm) {
 			elm.disabled="disabled";
@@ -195,8 +196,11 @@ function processArgs(account) {
 			elm.disabled="disabled";
 		}
 	}
-	enableOrDisableScheduledDisplayAds();
+	//alert("index.php admin?");
+	// tjs 140206
+	//enableOrDisableScheduledDisplayAds();
 	enableOrDisableSiteAdmin();
+	//alert("index.php admin or not established")
 }
 
 function doLogin() {
@@ -558,7 +562,9 @@ or read the iBook <i>Dead Giveaway - Sleuthing Around Nonprofits</i>.  For detai
 
 
         var account = <?php echo $account; ?>;
-
+// tjs 140206
+//console.log("index ready account " + account);
+//alert("index ready account " + account);
 		processArgs(account);
 
 		// tjs 130307
