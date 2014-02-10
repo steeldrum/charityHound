@@ -109,7 +109,7 @@ var lastDonationCharityId = 0;
 // lastAmount ACTIONS
 // function refreshCharities(torf) {
 function refreshCharities(torfLoggedIn, torfDetail) {
-	// alert("charity refreshCharities torfLoggedIn " + torfLoggedIn);
+	//alert("charity refreshCharities torfLoggedIn " + torfLoggedIn);
 	var loggedIn = false;
 	var detail = false;
 	// alert("charity refreshCharities torfLoggedIn " + torfLoggedIn + "
@@ -131,7 +131,8 @@ function refreshCharities(torfLoggedIn, torfDetail) {
 	// var url = 'getCharitiesXML.php?account=' + loginAccountNumber;
 	var url = 'getCharitiesXML.php?account=' + loginAccountNumber + '&detail='
 			+ detail;
-	// alert("charity refreshCharities url " + url);
+	//alert("charity refreshCharities url " + url);
+	// e.g. charity refreshCharities url getCharitiesXML.php?account=0&detail=false
 	// alert("charity refreshCharities loggedIn " + loggedIn + " detail " +
 	// detail + " url " + url);
 	// tjs101123
@@ -152,6 +153,7 @@ function refreshCharities(torfLoggedIn, torfDetail) {
 							$('#charityList').empty();
 						}
 						var data = charityRequest.responseXML;
+						//var debug = 1;
 						// var html = '<table
 						// id="charityTable"><thead><tr><th>ID</th><th>Charity
 						// Name</th><th>Short
@@ -190,11 +192,20 @@ function refreshCharities(torfLoggedIn, torfDetail) {
 											// html += '<tr>';
 											html += '<tr class="gradeA">';
 											var charityId = $charity.attr('id');
+											// tjs 140209
 											// tjs 130902
-											var memberId = $charity.attr('memberId');
+											//var memberId = $charity.attr('memberId');
+											var memberId = loginAccountNumber;
 											var solicitations = $charity
 													.attr('solicitations');
 											var rate = $charity.attr('rate');
+											/*
+											if (debug == 1 && rate > 0) {
+											//if (debug == 1) {
+												//console.log("charity id " + charityId + "rate " + rate);
+												alert("charity id " + charityId + "rate " + rate);
+												debug = 0;
+											}*/											
 											var donations = $charity
 													.attr('donations');
 											var average = $charity

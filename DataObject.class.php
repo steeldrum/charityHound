@@ -48,6 +48,8 @@ abstract class DataObject {
     	//$conn = new PDO( DB_DSN, DB_HOST, DB_USERNAME, DB_PASSWORD );
       $conn->setAttribute( PDO::ATTR_PERSISTENT, true );
       $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+      // tjs 140209
+      $conn->setAttribute( PDO::ATTR_TIMEOUT, 30);
     } catch ( PDOException $e ) {
       die( "Connection failed: " . $e->getMessage() );
     }
