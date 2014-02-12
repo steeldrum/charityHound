@@ -361,6 +361,9 @@ class Charity extends DataObject {
 		$sizeOfPriorYearCharities = sizeof($priorYearCharities);
 		//echo "size of priorYearCharities ".$sizeOfPriorYearCharities." size of lapsedYearCharities ".sizeof($lapsedYearCharities);
 
+	// tjs 140212
+	$conn = null;
+	$isSelectableForSite = Member::getMember( $memberId  )->getValue( "isselectableforsite" );		
 		for($i = 0, $sizeOfLapsedYearCharities = sizeof($lapsedYearCharities); $i < $sizeOfLapsedYearCharities; ++$i) {
 			$lapsedYearCharity = $lapsedYearCharities[$i];
 			$lapsedYearCharityId = $lapsedYearCharity->data["id"];
@@ -381,14 +384,17 @@ class Charity extends DataObject {
 				//list( $solicitations, $rate, $donations, $average ) = Donation::deriveDonationInfo4Charity( $memberId, $laspsedYearCharityId );
 				//list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $laspsedYearCharityId );
 				// tjs 111115
-				list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $laspsedYearCharityId, $lapsedYear, $lapsedYear );
-// tjs 140205
+				//list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $laspsedYearCharityId, $lapsedYear, $lapsedYear );
+			list( $solicitations, $rate, $donations, $average, $lastAmount, $conn  ) = Donation::deriveDonationInfo4Charity( $memberId, $isSelectableForSite, $laspsedYearCharityId, $conn, $lapsedYear, $lapsedYear );
+				// tjs 140205
 				//$lapsedYearCharity->data["numStars"] = $rate;
 				$lapsedYearCharity->data["numstars"] = $rate;
 				$allLapsedCharities[] = $lapsedYearCharity;
 			}
 		}
-
+		// tjs 140212
+	Donation::dropconnect($conn);
+		
 		// tjs 111026 sort based on order
 		if ($order == "charityName") {
 			usort($allLapsedCharities, array("Charity", "cmp_charityName"));
@@ -451,12 +457,18 @@ class Charity extends DataObject {
 		}
 		//}
 
+	// tjs 140212
+	$conn = null;
+	//$member = Member::getMember( $memberId  );
+	$isSelectableForSite = Member::getMember( $memberId  )->getValue( "isselectableforsite" );		
 		for($i = 0, $sizeOfCharities = sizeof($charities); $i < $sizeOfCharities; ++$i) {
 			$charity = $charities[$i];
 			$charityId = $charity->data["id"];
 			//tjs 111115
 			//list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $charityId );
-			list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $charityId, $fromYear, $toYear );
+			// tjs 140212
+			//list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $charityId, $fromYear, $toYear );
+			list( $solicitations, $rate, $donations, $average, $lastAmount, $conn  ) = Donation::deriveDonationInfo4Charity( $memberId, $isSelectableForSite, $charityId, $conn, $fromYear, $toYear );
 			//echo "charityId ".$charityId." rate ".$rate;
 			// tjs 140205
 			//$charity->data["baseId"] = $rate;
@@ -465,7 +477,9 @@ class Charity extends DataObject {
 			$charity->data["numstars"] = $donations*$average;
 			$allRemittedCharities[] = $charity;
 		}
-
+	// tjs 140212
+	Donation::dropconnect($conn);
+	
 		// tjs 111026 sort based on order
 		if ($order == "charityName") {
 			usort($allRemittedCharities, array("Charity", "cmp_charityName"));
@@ -537,12 +551,16 @@ class Charity extends DataObject {
 		}
 		//}
 
+	// tjs 140212
+	$conn = null;
+	$isSelectableForSite = Member::getMember( $memberId  )->getValue( "isselectableforsite" );		
 		for($i = 0, $sizeOfCharities = sizeof($charities); $i < $sizeOfCharities; ++$i) {
 			$charity = $charities[$i];
 			$charityId = $charity->data["id"];
 			//tjs 111115
 			//list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $charityId );
-			list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $charityId, $fromYear, $toYear );
+			//list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $charityId, $fromYear, $toYear );
+			list( $solicitations, $rate, $donations, $average, $lastAmount, $conn  ) = Donation::deriveDonationInfo4Charity( $memberId, $isSelectableForSite, $charityId, $conn, $fromYear, $toYear );
 			//echo "charityId ".$charityId." rate ".$rate;
 			// tjs 130902
 			//$charity->data["baseId"] = $rate;
@@ -552,6 +570,9 @@ class Charity extends DataObject {
 			$charity->data["numstars"] = $solicitations;
 			$allOmittedCharities[] = $charity;
 		}
+		// tjs 140212
+	Donation::dropconnect($conn);
+		
 
 		// tjs 111026 sort based on order
 		if ($order == "charityName") {
@@ -633,12 +654,16 @@ class Charity extends DataObject {
 		//$sizeOfCharities = sizeof($charities);
 		$totalSolicitationsCount = 0;
 		$totalDonationsCount = 0;
+	// tjs 140212
+	$conn = null;
+	$isSelectableForSite = Member::getMember( $memberId  )->getValue( "isselectableforsite" );		
 		for($i = 0, $sizeOfCharities = sizeof($charities); $i < $sizeOfCharities; ++$i) {
 			$charity = $charities[$i];
 			$charityId = $charity->data["id"];
 			//tjs111115
 			//list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $charityId );
-			list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $charityId, $fromYear, $toYear );
+			//list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $memberId, $charityId, $fromYear, $toYear );
+			list( $solicitations, $rate, $donations, $average, $lastAmount, $conn  ) = Donation::deriveDonationInfo4Charity( $memberId, $isSelectableForSite, $charityId, $conn, $fromYear, $toYear );
 			//echo "charityId ".$charityId." rate ".$rate;
 			//$charity->data["baseId"] = $rate;
 			// tjs 140205
@@ -651,7 +676,9 @@ class Charity extends DataObject {
 			//$allOmittedCharities[] = $charity;
 			$allCharities[] = $charity;
 		}
-
+		// tjs 140212
+	Donation::dropconnect($conn);
+		
 		// sort based on order
 		if ($order == "charityName") {
 			usort($allCharities, array("Charity", "cmp_charityName"));

@@ -63,8 +63,14 @@ if ($confidential == 'true')
 	
 	$id = 0;
 
-list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $account, $charityId, $year, $year );
-
+	// tjs 140212
+	$conn = null;
+	$isSelectableForSite = Member::getMember( $account  )->getValue( "isselectableforsite" );		
+	//list( $solicitations, $rate, $donations, $average, $lastAmount ) = Donation::deriveDonationInfo4Charity( $account, $charityId, $year, $year );
+			list( $solicitations, $rate, $donations, $average, $lastAmount, $conn  ) = Donation::deriveDonationInfo4Charity( $account, $isSelectableForSite, $charityId, $conn, $year, $year );
+		// tjs 140212
+	Donation::dropconnect($conn);
+			
 $rating = Rating::getCharityRatingForYear( $account, $charityId, $year );
 if ($rating == null) {
 	/*
@@ -81,7 +87,7 @@ if ($rating == null) {
   PRIMARY KEY (`id`),
   UNIQUE KEY `ratingForMemberYear` (`charityId`,`memberId`,`year`)
 */
-	
+/*	
 	  $rating = new Rating( array( 
     "charityId" => $charityId,
     "memberId" => $account,
@@ -91,6 +97,17 @@ if ($rating == null) {
     "currencyBatedAppeals" => $currencyCount,
     "appealReminderSchedules" => $reminderCount,
     "appealPrivacyPledges" => $confidentialCount
+  ) );
+  */
+		  $rating = new Rating( array( 
+    "charityid" => $charityId,
+    "memberid" => $account,
+    "year" => $year,
+    "solicitations" => $solicitations,
+    "blankenvelopeappeals" => $blankCount,
+    "currencybatedappeals" => $currencyCount,
+    "appealreminderschedules" => $reminderCount,
+    "appealprivacypledges" => $confidentialCount
   ) );
 		$rating->insert();
 } else {

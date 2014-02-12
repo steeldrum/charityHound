@@ -1307,6 +1307,7 @@ function postRatingsUpdate(donationId, charityId, memberId, date, blank,
 			+ '&date=' + date + '&blank=' + blank + '&currency=' + currency
 			+ '&reminder=' + reminder + '&confidential=' + confidential;
 	// alert ("charity postRatingsUpdate url " + url);
+	console.log("charity postRatingsUpdate url " + url);
 	// NB account = 0 means it derives using the session on server
 	// e.g. charity postRatingsUpdate url
 	// ratings.php?account=0&charityId=545&date=2012-03-16&blank=true&currency=false&reminder=false&confidential=false
@@ -1315,8 +1316,10 @@ function postRatingsUpdate(donationId, charityId, memberId, date, blank,
 			if (ratingsRequest.status == 200) {
 				// var data = ratingsRequest;
 				// alert ("charity postRatingsUpdate ratings posted!");
-				postAggregateRatingsUpdate(donationId, charityId, memberId,
-						date, blank, currency, reminder, confidential);
+				// tjs 140212 mail from firebase indicates no deal for nonprofits
+				// so we are forced to drop aggregate support for now...
+				//postAggregateRatingsUpdate(donationId, charityId, memberId,
+				//		date, blank, currency, reminder, confidential);
 			} else {
 				// issue an error message for any other HTTP response
 				alert("postRatingsUpdate An error has occurred: "
