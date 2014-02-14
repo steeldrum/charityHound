@@ -729,7 +729,24 @@ class Charity extends DataObject {
 		$this->data["charityname"] = $charityName;
 	}
 	public function setShortName( $shortName ) {
-		$this->data["charityname"] = $shortName;
+		$this->data["shortname"] = $shortName;
+	}
+
+	// tjs 140213
+	public function setUrl( $url ) {
+		$this->data["url"] = $url;
+	}
+	public function setDescription( $description ) {
+		$this->data["description"] = $description;
+	}
+	public function setNumStars( $numStars ) {
+		$this->data["numstars"] = $numStars;
+	}
+	public function setIsInactive( $isInactive ) {
+		$this->data["isinactive"] = $isInactive;
+	}
+	public function setIsForProfit( $isForProfit ) {
+		$this->data["isforprofit"] = $isForProfit;
 	}
 	
 	public static function propagateCharity( $id, $memberId ) {
@@ -1097,7 +1114,47 @@ class Charity extends DataObject {
 			die( "Query failed: " . $e->getMessage() );
 		}
 	}
+	
+	// tjs 140214
+	public function update() {
+		$conn = parent::connect();
+		$sql = "UPDATE " . TBL_CHARITIES . " SET
+              memberid = :memberId,
+              charityname = :charityName,
+              shortname = :shortName,
+              dunns = :dunns,
+              url = :url,
+              description = :description,
+              numstars = :numStars,
+              createddate = :createdDate,
+              isinactive = :isInactive,
+              baseid = :baseId,
+              isforprofit = :isForProfit
+            WHERE id = :id";
 
+		try {
+			$st = $conn->prepare( $sql );
+			$st->bindValue( ":id", $this->data["id"], PDO::PARAM_INT );
+			$st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
+			$st->bindValue( ":charityName", $this->data["charityname"], PDO::PARAM_STR );
+			$st->bindValue( ":shortName", $this->data["shortname"], PDO::PARAM_STR );
+			$st->bindValue( ":dunns", $this->data["dunns"], PDO::PARAM_STR );
+			$st->bindValue( ":url", $this->data["url"], PDO::PARAM_STR );
+			$st->bindValue( ":description", $this->data["description"], PDO::PARAM_STR );
+			$st->bindValue( ":numStars", $this->data["numstars"], PDO::PARAM_STR );
+			$st->bindValue( ":createdDate", $this->data["createddate"], PDO::PARAM_STR );
+			$st->bindValue( ":isInactive", $this->data["isinactive"], PDO::PARAM_STR );
+			$st->bindValue( ":baseId", $this->data["baseid"], PDO::PARAM_STR );
+			$st->bindValue( ":isForProfit", $this->data["isforprofit"], PDO::PARAM_STR );
+			$st->execute();
+			parent::disconnect( $conn );
+		} catch ( PDOException $e ) {
+			parent::disconnect( $conn );
+			die( "Query failed: " . $e->getMessage() );
+		}
+	}
+	
+/*
 	public function update() {
 		$conn = parent::connect();
 		$sql = "UPDATE " . TBL_CHARITIES . " SET
@@ -1135,7 +1192,7 @@ class Charity extends DataObject {
 			die( "Query failed: " . $e->getMessage() );
 		}
 	}
-
+*/
 	public function delete() {
 		$conn = parent::connect();
 		$sql = "DELETE FROM " . TBL_CHARITIES . " WHERE id = :id";

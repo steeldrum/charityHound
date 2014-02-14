@@ -43,6 +43,8 @@ if (1 == 1) { // production
 
 $id = $_GET['id'];
 $remove = $_GET['remove'];
+// tjs 140213
+$detail = $_GET['detail'];
 //echo "account $account remove $remove id $id charityName $_GET[charityName] shortName $_GET[shortName]";
 //tjs101011
 //define("MYSQL_HOST", "localhost");
@@ -69,18 +71,30 @@ $remove = $_GET['remove'];
  "isforprofit" => "",
  */
 if ($id == 0) {
+	$url = "";
+	$description == "";
+	$numStars = 0;
+	$isInactive = 0;
+	$isForProfit = 0;
+	if ($detail == 'true') {
+		$url = $_GET['url'];;
+		$description == $_GET['description'];;
+		$numStars = $_GET['numStars'];;
+		$isInactive = $_GET['isInactive'];;
+		$isForProfit = $_GET['isForProfit'];;
+	}
 	// add the new charity
 	$charity = new Charity( array(
     "memberid" => $account,
     "charityname" => $_GET[charityName],
     "shortname" => $_GET[shortName],
-    "url" => "",
-    "description" => "",
-    "numstars" =>  0,
+    "url" => $url,
+    "description" => $description,
+    "numstars" =>  $numStars,
     "createddate" => date("Y-m-d"),
-    "isinactive" =>  0,
+    "isinactive" =>  $isInactive,
     "baseid" =>  0,
-     "isforprofit" => 0     
+     "isforprofit" => $isForProfit     
 	) );
 	$charityName = $charity -> getValue('charityname');
 	//echo "inserting new charity named $charityName";
@@ -103,6 +117,19 @@ if ($id == 0) {
 		// tjs 140203
 		$charity -> setCharityName($_GET[charityName]);
 		$charity -> setShortName($_GET[shortName]);
+		//$url = "";
+		//$description == "";
+		//$numStars = 0;
+		//$isInactive = 0;
+		//$isForProfit = 0;
+		if ($detail == 'true') {
+			$charity -> setUrl($_GET['url']);
+			$charity -> setDescription($_GET['description']);
+			$charity -> setNumStars($_GET['numStars']);
+			$charity -> setIsInactive($_GET['isInactive']);
+			$charity -> setIsForProfit($_GET['isForProfit']);
+		}
+		
 		$charity -> update();
 		//$sql = "UPDATE charities SET charityName = '$_GET[charityName]', shortName = '$_GET[shortName]'
 		//WHERE id = $id";

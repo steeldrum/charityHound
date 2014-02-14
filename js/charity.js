@@ -218,6 +218,9 @@ function refreshCharities(torfLoggedIn, torfDetail) {
 													+ '</td>';
 											var children = $charity.children();
 											var name = children[0].firstChild.nodeValue;
+											// tjs 140213
+											//var encodedName = encodeURI(name);
+											var encodedName = name.replace("'","#39");;
 											var shortName = ' ';
 											if (children[1].firstChild) {
 												shortName = children[1].firstChild.nodeValue;
@@ -329,6 +332,49 @@ function refreshCharities(torfLoggedIn, torfDetail) {
 												// '\',\'' + description + '\','
 												// + rating + ')"
 												// src="images/edit.gif"';
+												// tjs 140213
+												html += '<td><input type="image" onclick="modifyCharityDetail('
+													+ charityId
+													+ ',\''
+													+ encodedName
+													+ '\',\''
+													+ shortName
+													+ '\',\''
+													+ dunns
+													+ '\',\''
+													+ isForProfit
+													+ '\',\''
+													+ isInactive
+													+ '\',\''
+													+ url
+													+ '\',\''
+													+ description
+													+ '\','
+													+ rating
+													+ ')" src="images/edit.gif"';
+											if (loggedIn == false) {
+												html += ' disabled="disabled" ';
+											}
+											html += '/>&nbsp;<input type="image" onclick="removeCharityDetail('
+													+ charityId
+													+ ',\''
+													+ encodedName
+													+ '\',\''
+													+ shortName
+													+ '\',\''
+													+ dunns
+													+ '\',\''
+													+ isForProfit
+													+ '\',\''
+													+ isInactive
+													+ '\',\''
+													+ url
+													+ '\',\''
+													+ description
+													+ '\','
+													+ rating
+													+ ')" src="images/delete.gif"';
+																/*
 												html += '<td><input type="image" onclick="modifyCharityDetail('
 														+ charityId
 														+ ',\''
@@ -370,6 +416,7 @@ function refreshCharities(torfLoggedIn, torfDetail) {
 														+ '\','
 														+ rating
 														+ ')" src="images/delete.gif"';
+												*/
 												// html += '/>&nbsp;<input
 												// type="image"
 												// onclick="removeCharityDetail('
@@ -436,10 +483,11 @@ function refreshCharities(torfLoggedIn, torfDetail) {
 												if (loggedIn == false) {
 													html += ' disabled="disabled" ';
 												}
+												// tjs 140213 use encodedName for name
 												html += '/> <input type="image" onclick="modifyCharity('
 														+ charityId
 														+ ',\''
-														+ name
+														+ encodedName
 														+ '\',\''
 														+ shortName
 														+ '\')" src="images/edit.gif"';
@@ -937,9 +985,13 @@ function addCharity() {
 // numStars) {
 function modifyCharityDetail(id, name, shortName, dunns, isForProfit,
 		isInactive, url, description, numStars) {
+	//alert("modifyCharityDetail id " + id + " name " + name);
+	//console.log("modifyCharityDetail id " + id + " name " + name);
 	document.charityDetailForm.id.value = id;
 	document.charityDetailForm.remove.value = false;
-	document.charityDetailForm.name.value = name;
+	// tjs 140213
+	//document.charityDetailForm.name.value = name;
+	document.charityDetailForm.name.value = name.replace("#39", "'");
 	document.charityDetailForm.shortname.value = shortName;
 	document.charityDetailForm.dunns.value = dunns;
 	if (isForProfit == '0') {
@@ -977,7 +1029,8 @@ function removeCharityDetail(id, name, shortName, dunns, isForProfit,
 		isInactive, url, description, numStars) {
 	document.charityDetailForm.id.value = id;
 	document.charityDetailForm.remove.value = true;
-	document.charityDetailForm.name.value = name;
+	// tjs 140213
+	document.charityDetailForm.name.value = name.replace("#39", "'");
 	document.charityDetailForm.shortname.value = shortName;
 	document.charityDetailForm.dunns.value = dunns;
 	if (isForProfit == '0') {
@@ -1014,7 +1067,9 @@ function removeCharityDetail(id, name, shortName, dunns, isForProfit,
 function modifyCharity(id, name, shortName) {
 	document.charityForm.id.value = id;
 	document.charityForm.remove.value = false;
-	document.charityForm.name.value = name;
+	// tjs 140213
+	//document.charityForm.name.value = name;
+	document.charityForm.name.value = name.replace("#39", "'");
 	document.charityForm.shortname.value = shortName;
 	// alert("charity modifyCharity name " + name);
 
@@ -1169,6 +1224,8 @@ function processCharityDetailForm() {
 	}
 	var id = document.charityDetailForm.id.value;
 	var remove = document.charityDetailForm.remove.value;
+	processCharity(id, name, shortname, remove, true, dunns, isForProfit, isInactive, url, description, numStars);
+	/*
 	var charityRequest = getXMLHTTPRequest();
 	// url = 'charitiesDetail.php?charityName=' + name + '&shortName=' +
 	// shortname + '&dunns=' + dunns + '&url=' + url + '&description=' +
@@ -1197,7 +1254,7 @@ function processCharityDetailForm() {
 			}
 		}
 	});
-
+*/
 }
 
 // tjs 101126
@@ -1211,6 +1268,8 @@ function processCharityForm() {
 	}
 	var id = document.charityForm.id.value;
 	var remove = document.charityForm.remove.value;
+	processCharity(id, name, shortname, remove, false, null, null, null, null, null, null);
+	/*
 	var charityRequest = getXMLHTTPRequest();
 	// url = 'ccCustomers.php?account=' + account + '&last=' + last + '&first='
 	// + first;
@@ -1235,8 +1294,56 @@ function processCharityForm() {
 				alert("An error has occurred: " + charityRequest.statusText);
 			}
 		}
-	});
+	});*/
+}
 
+function processCharity(id, name, shortname, remove, detail, dunns, isForProfit, isInactive, url, description, numStars) {
+	//console.log("processCharity name " + name + " shortname " + shortname);
+	//alert("processCharity name " + name + " shortname " + shortname);
+	// e.g. processCharity name Action Against Hunger shortname  AAH
+	var charityRequest = getXMLHTTPRequest();
+	// url = 'ccCustomers.php?account=' + account + '&last=' + last + '&first='
+	// + first;
+	var details = "";
+	if (detail) {
+		details = '&dunns=' + dunns + '&isForProfit=' + isForProfit
+		+ '&isInactive=' + isInactive + '&url=' + url + '&description='
+		+ description + '&numStars=' + numStars;
+	}
+
+	url = 'charities.php?charityName=' + name + '&shortName=' + shortname
+			+ '&id=' + id + '&remove=' + remove + '&detail=' + detail + details;
+	//if (detail) {
+	//	url += '&dunns=' + dunns + '&isForProfit=' + isForProfit
+	//	+ '&isInactive=' + isInactive + '&url=' + url + '&description='
+	//	+ description + '&numStars=' + numStars;
+	//}
+	//alert("processCharity url " + url);
+	// e.g. processCharity url charities.php?charityName=Action Against Hunger&shortName= AAH&id=505&remove=false&detail=true&dunns= &isForProfit=0&isInactive=0&url=&description= &numStars=5
+	// url = 'http://localhost/ccCustomers.php?account=' + account + '&last=' +
+	// last + '&first=' + first;
+	// alert("ccJobCost processForm url " + url);
+	requestXMLData(charityRequest, url, function() {
+		// requestXMLData(customerRequest, url, function(refresher) {
+		if (charityRequest.readyState == 4) {
+			// alert("ccJobCost processForm readyState 4 status " +
+			// customerRequest.status);
+			// if server HTTP response is "OK"
+			// if(customerRequest.status == 200) {
+			if (charityRequest.status == 200 || charityRequest.status == 0) {
+				$("#charityDialog").dialog("close");
+				// refreshCharities();
+				if (detail) {
+					refreshCharities('true', 'true');
+				} else {
+					refreshCharities('true');
+				}
+			} else {
+				// issue an error message for any other HTTP response
+				alert("An error has occurred: " + charityRequest.statusText);
+			}
+		}
+	});	
 }
 
 function processDonationForm() {
