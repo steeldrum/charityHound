@@ -47,7 +47,7 @@ foreach ( $tokens as $token ) {
   $rowCount++;
 ?>
       <tr<?php if ( $rowCount % 2 == 0 ) echo ' class="alt"' ?>>
-        <td><a href="view_token.php?tokenId=<?php echo $token->getValueEncoded( "id" ) ?>&amp;start=<?php echo $start ?>&amp;order=<?php echo $order ?>"><?php echo $token->getValueEncoded( "emailAddress" ) ?></a></td>
+        <td><a href="view_token.php?tokenId=<?php echo $token->getValueEncoded( "id" ) ?>&amp;start=<?php echo $start ?>&amp;order=<?php echo $order ?>"><?php echo $token->getValueEncoded( "emailaddress" ) ?></a></td>
       </tr>
 <?php
 }

@@ -99,7 +99,28 @@ function processForm() {
   $requiredFields = array( "username", "password", "emailAddress", "firstName", "lastName", "gender" );
   $missingFields = array();
   $errorMessages = array();
+  $member = new Member( array( 
+    "username" => isset( $_POST["username"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["username"] ) : "",
+    "password" => ( isset( $_POST["password1"] ) and isset( $_POST["password2"] ) and $_POST["password1"] == $_POST["password2"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["password1"] ) : "",
+    "firstname" => isset( $_POST["firstName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["firstName"] ) : "",
+    "lastname" => isset( $_POST["lastName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["lastName"] ) : "",
+    "gender" => isset( $_POST["gender"] ) ? preg_replace( "/[^mf]/", "", $_POST["gender"] ) : "",
+    "primaryskillarea" => isset( $_POST["primarySkillArea"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["primarySkillArea"] ) : "",
+    "emailaddress" => isset( $_POST["emailAddress"] ) ? preg_replace( "/[^ \@\.\-\_a-zA-Z0-9]/", "", $_POST["emailAddress"] ) : "",
+    "otherskills" => isset( $_POST["otherSkills"] ) ? preg_replace( "/[^ \'\,\.\-a-zA-Z0-9]/", "", $_POST["otherSkills"] ) : "",
+    "joindate" => date( "Y-m-d" ),
+    "cumdonationsforsites" => "0",
+    "lastdonationmadeon" => "",
+    "lastdonationforsite" => "0",
+    "lastlogindate" => "",
+    "permissionforsite" => "15",
+    "isselectableforsite" => "0",
+    "passwordmnemonicquestion" => isset( $_POST["passwordMnemonicQuestion"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["passwordMnemonicQuestion"] ) : "",
+    "passwordmnemonicanswer" => isset( $_POST["passwordMnemonicAnswer"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["passwordMnemonicAnswer"] ) : "",
+    "isinactive" => ""
 
+  ) );
+  /*
   $member = new Member( array( 
     "username" => isset( $_POST["username"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["username"] ) : "",
     "password" => ( isset( $_POST["password1"] ) and isset( $_POST["password2"] ) and $_POST["password1"] == $_POST["password2"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["password1"] ) : "",
@@ -121,7 +142,7 @@ function processForm() {
     "isInactive" => ""
 
   ) );
-
+*/
   foreach ( $requiredFields as $requiredField ) {
     if ( !$member->getValue( $requiredField ) ) {
       $missingFields[] = $requiredField;
@@ -140,7 +161,8 @@ function processForm() {
     $errorMessages[] = '<p class="error">A member with that username already exists in the database. Please choose another username.</p>';
   }
 
-  if ( Member::getByEmailAddress( $member->getValue( "emailAddress" ) ) ) {
+  //if ( Member::getByEmailAddress( $member->getValue( "emailAddress" ) ) ) {
+  if ( Member::getByEmailAddress( $member->getValue( "emailaddress" ) ) ) {
     $errorMessages[] = '<p class="error">A member with that email address already exists in the database. Please choose another email address, or contact the webmaster to retrieve your password.</p>';
   }
 

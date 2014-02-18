@@ -42,8 +42,8 @@ foreach ( $members as $member ) {
 ?>
       <tr<?php if ( $rowCount % 2 == 0 ) echo ' class="alt"' ?>>
         <td><a href="view_member.php?memberId=<?php echo $member->getValueEncoded( "id" ) ?>&amp;start=<?php echo $start ?>&amp;order=<?php echo $order ?>"><?php echo $member->getValueEncoded( "username" ) ?></a></td>
-        <td><?php echo $member->getValueEncoded( "firstName" ) ?></td>
-        <td><?php echo $member->getValueEncoded( "lastName" ) ?></td>
+        <td><?php echo $member->getValueEncoded( "firstname" ) ?></td>
+        <td><?php echo $member->getValueEncoded( "lastname" ) ?></td>
       </tr>
 <?php
 }

@@ -1318,7 +1318,7 @@ function processCharity(id, name, shortname, remove, detail, dunns, isForProfit,
 	//	+ '&isInactive=' + isInactive + '&url=' + url + '&description='
 	//	+ description + '&numStars=' + numStars;
 	//}
-	//alert("processCharity url " + url);
+	// alert("processCharity url " + url);
 	// e.g. processCharity url charities.php?charityName=Action Against Hunger&shortName= AAH&id=505&remove=false&detail=true&dunns= &isForProfit=0&isInactive=0&url=&description= &numStars=5
 	// url = 'http://localhost/ccCustomers.php?account=' + account + '&last=' +
 	// last + '&first=' + first;
