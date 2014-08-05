@@ -29,17 +29,18 @@ $.fn.mailme = function() {
         var addr = jQuery(this).text().replace(at,"@").replace(dot,".");
         //tjs 101018 temp hack
         //var addrHack = 'tandmsoucy@verizon.net';
-        var addrHack = 'collogistics.collaborator@verizon.net';
+        //var addrHack = 'collogistics.collaborator@verizon.net';
         var title = jQuery(this).attr('title');
 	//alert("mailme addr " + addr + " title " + title);
-/*        
+        
         $(this)
             .after('<a href="mailto:'+addr+'" title="'+title+'">'+ addr +'</a>')
             .remove();
-*/
+
+        /*
         $(this)
             .after('<a href="mailto:'+addrHack+'" title="'+title+'">'+ addr +'</a>')
-            .remove();
+            .remove();*/
             
     });
 };
