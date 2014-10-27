@@ -109,7 +109,7 @@ function processForm() {
 <p>
 	Thank you for logging in
 	<?php echo $firstName; ?>
-	. Please proceed to the <a href="index.php">members' area</a>.
+	. Please proceed to the <a href="javascript:newLocation('index', 'logistics')">members' area</a>.
 </p>
 <!-- p>Thank you for logging in <?php echo $firstName; ?>. Please proceed to the <a href="indexTest.php">members' area</a>.</p -->
 	<?php
