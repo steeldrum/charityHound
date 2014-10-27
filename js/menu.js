@@ -34,6 +34,12 @@ function newLocation(pageName, menuChoice) {
 			//alert("newLocation newLocation " + newLocation);
 	console.log("menu newLocation newLocation " + newLocation);
 	window.location.href = newLocation;
+	if (pageName == "index") {
+		console.log("menu newLocation reloading " + newLocation);
+		window.location.reload(true);
+	} 
+	// location.assign, replace, reload
+	
 }
 /*
  * tjs 110511
