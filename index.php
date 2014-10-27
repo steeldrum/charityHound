@@ -563,6 +563,10 @@ or read the iBook <i>Dead Giveaway - Sleuthing Around Nonprofits</i>.  For detai
             window.open("app/index.html",'','',true);		 
 		});
 
+// tjs 141027
+setTimeout(
+	function() {
+//	alert('Hello')},3000);
 
         var account = <?php echo $account; ?>;
 // tjs 140206
@@ -769,6 +773,9 @@ $("#signup").click(function() {
 		}
 	});
 }); 
+//	alert('Hello')
+},3000);
+
 	  });
 
 	</script>
