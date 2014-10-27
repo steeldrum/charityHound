@@ -564,8 +564,8 @@ or read the iBook <i>Dead Giveaway - Sleuthing Around Nonprofits</i>.  For detai
 		});
 
 // tjs 141027
-////setTimeout(
-////	function() {
+setTimeout(
+	function() {
 //	alert('Hello')},3000);
 
         var account = <?php echo $account; ?>;
@@ -774,7 +774,7 @@ $("#signup").click(function() {
 	});
 }); 
 //	alert('Hello')
-///},3000);
+},3000);
 
 	  });
 
