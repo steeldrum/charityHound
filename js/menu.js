@@ -32,6 +32,7 @@ function newLocation(pageName, menuChoice) {
 	//.html#collogistics
 	//return newLocation;
 			//alert("newLocation newLocation " + newLocation);
+	console.log("menu newLocation newLocation " + newLocation);
 	window.location.href = newLocation;
 }
 /*

@@ -110,6 +110,7 @@ var lastDonationCharityId = 0;
 // function refreshCharities(torf) {
 function refreshCharities(torfLoggedIn, torfDetail) {
 	//alert("charity refreshCharities torfLoggedIn " + torfLoggedIn);
+	console.log("charity refreshCharities torfLoggedIn " + torfLoggedIn);
 	var loggedIn = false;
 	var detail = false;
 	// alert("charity refreshCharities torfLoggedIn " + torfLoggedIn + "
@@ -132,6 +133,7 @@ function refreshCharities(torfLoggedIn, torfDetail) {
 	var url = 'getCharitiesXML.php?account=' + loginAccountNumber + '&detail='
 			+ detail;
 	//alert("charity refreshCharities url " + url);
+	console.log("charity refreshCharities url " + url);
 	// e.g. charity refreshCharities url getCharitiesXML.php?account=0&detail=false
 	// alert("charity refreshCharities loggedIn " + loggedIn + " detail " +
 	// detail + " url " + url);
@@ -144,9 +146,10 @@ function refreshCharities(torfLoggedIn, torfDetail) {
 				if (charityRequest.readyState == 4) {
 					// if server HTTP response is "OK"
 					// alert("charity refreshCharities readyState 4
-					// charityRequest.status " + charityRequest.status);
+					console.log("charity refreshCharities readyState 4 charityRequest.status " + charityRequest.status);
 					if (charityRequest.status == 200) {
 						// if (detail) {
+						console.log("charity refreshCharities detail " + detail);
 						if (detail == true) {
 							$('#charityDetailList').empty();
 						} else {
@@ -1200,12 +1203,12 @@ function removeDonation(id, memberId, charityId, amount, date) {
 
 // tjs 101213
 function processCharityDetailForm() {
-	// var refresher = refreshCustomers;
+	console.log("processCharityDetailForm...");
 	var name = document.charityDetailForm.name.value;
 	var shortname = document.charityDetailForm.shortname.value;
 	var dunns = document.charityDetailForm.dunns.value;
 	var checked = document.charityDetailForm.isForProfit.checked;
-	// alert("ccJobCost processForm checked " + checked);
+	console.log("processCharityDetailForm checked isForProfit checked " + checked + " name " + name);
 	var isForProfit = '0';
 	if (checked == true) {
 		var isForProfit = '1';
@@ -1298,7 +1301,7 @@ function processCharityForm() {
 }
 
 function processCharity(id, name, shortname, remove, detail, dunns, isForProfit, isInactive, url, description, numStars) {
-	//console.log("processCharity name " + name + " shortname " + shortname);
+	console.log("processCharity name " + name + " shortname " + shortname);
 	//alert("processCharity name " + name + " shortname " + shortname);
 	// e.g. processCharity name Action Against Hunger shortname  AAH
 	var charityRequest = getXMLHTTPRequest();
@@ -1321,6 +1324,7 @@ function processCharity(id, name, shortname, remove, detail, dunns, isForProfit,
 	// alert("processCharity url " + url);
 	// e.g. processCharity url charities.php?charityName=Action Against Hunger&shortName= AAH&id=505&remove=false&detail=true&dunns= &isForProfit=0&isInactive=0&url=&description= &numStars=5
 	// url = 'http://localhost/ccCustomers.php?account=' + account + '&last=' +
+	console.log("processCharity url " + url);
 	// last + '&first=' + first;
 	// alert("ccJobCost processForm url " + url);
 	requestXMLData(charityRequest, url, function() {
@@ -1331,6 +1335,7 @@ function processCharity(id, name, shortname, remove, detail, dunns, isForProfit,
 			// if server HTTP response is "OK"
 			// if(customerRequest.status == 200) {
 			if (charityRequest.status == 200 || charityRequest.status == 0) {
+				console.log("processCharity close dial...");
 				$("#charityDialog").dialog("close");
 				// refreshCharities();
 				if (detail) {

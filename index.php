@@ -162,7 +162,7 @@ function processArgs(account) {
 	var authenticated = account > 0? true : false;
 	//alert("index.html processArgs authenticated " + authenticated);
 	//alert("index.php processArgs authenticated " + authenticated + " account " + account);
-	//console.log("index.html processArgs authenticated " + authenticated + " account " + account);
+	console.log("index.html processArgs authenticated " + authenticated + " account " + account);
 	//e.g. true 1
 	var elm;
 	if (authenticated == true) {
@@ -204,6 +204,8 @@ function processArgs(account) {
 }
 
 function doLogin() {
+	//alert("doLogin...");
+	console.log("doLogin...");
 	// tjs 131031
 	// TODO security leak re account showing...
 	// tjs 131101
@@ -214,6 +216,7 @@ function doLogin() {
 }
 
 function doLogout() {
+	console.log("doLogout...");
 	window.location.href = "logout.php";
 }
 
@@ -396,7 +399,7 @@ Finally, we provide all collaborators an opportunity to help our cause!  Underst
 ways that help defer our costs are offered.
 <ul>
 <li>Since collaborators use our software (and/or smart phone apps) as well as storage of their data 
-it is requested that they <span class="akey">volunteer skills to mature this site (still in beta).<span></li>
+it is requested that they <span class="akey">volunteer skills to mature this site (still in beta).</span></li>
 <li>Contact us and <span class="akey">ask about becomming a "sponsor"</span>. Sponsors will benefit by means of increased visibility
 via our web site (and/or smart phone "apps").</li>
 </ul>
@@ -563,7 +566,7 @@ or read the iBook <i>Dead Giveaway - Sleuthing Around Nonprofits</i>.  For detai
 
         var account = <?php echo $account; ?>;
 // tjs 140206
-//console.log("index ready account " + account);
+console.log("index ready account " + account);
 //alert("index ready account " + account);
 		processArgs(account);
 

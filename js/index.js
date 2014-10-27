@@ -151,6 +151,7 @@ function enableOrDisableScheduledDisplayAds() {
 
 function enableOrDisableSiteAdmin() {
 	//alert("index enableOrDisableSiteAdmin...");
+	console.log("index enableOrDisableSiteAdmin...");
 	var adminRequest = getXMLHTTPRequest();
 	var url = 'getAdminInfoXML.php?account=0';
 	//console.log("index enableOrDisableSiteAdmin url " + url);
