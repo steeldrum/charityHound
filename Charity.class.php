@@ -151,7 +151,9 @@ class Charity extends DataObject {
 			$conn = parent::connect();
 			$account = 0;
 			// "SELECT * FROM charities where memberId = ".$account;
-			$sql = "SELECT * FROM " . TBL_CHARITIES . " WHERE memberid = :memberId and isInactive is null";
+			// tjs 141115
+			//$sql = "SELECT * FROM " . TBL_CHARITIES . " WHERE memberid = :memberId and isInactive is null";
+			$sql = "SELECT * FROM " . TBL_CHARITIES . " WHERE memberid = :memberId and (isInactive is null or isinactive = 0)";
 
 			try {
 				$st = $conn->prepare( $sql );
