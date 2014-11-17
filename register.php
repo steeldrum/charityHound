@@ -99,6 +99,10 @@ function processForm() {
   $requiredFields = array( "username", "password", "emailAddress", "firstName", "lastName", "gender" );
   $missingFields = array();
   $errorMessages = array();
+  // tjs 141114
+  $d=mktime(1, 1, 1, 12, 31, 1970);
+//echo "Created date is " . date("Y-m-d h:i:sa", $d);
+  
   $member = new Member( array( 
     "username" => isset( $_POST["username"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["username"] ) : "",
     "password" => ( isset( $_POST["password1"] ) and isset( $_POST["password2"] ) and $_POST["password1"] == $_POST["password2"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["password1"] ) : "",
@@ -110,14 +114,14 @@ function processForm() {
     "otherskills" => isset( $_POST["otherSkills"] ) ? preg_replace( "/[^ \'\,\.\-a-zA-Z0-9]/", "", $_POST["otherSkills"] ) : "",
     "joindate" => date( "Y-m-d" ),
     "cumdonationsforsites" => "0",
-    "lastdonationmadeon" => "",
+    "lastdonationmadeon" => date("Y-m-d h:i:sa", $d),
     "lastdonationforsite" => "0",
-    "lastlogindate" => "",
+    "lastlogindate" => date("Y-m-d h:i:sa", $d),
     "permissionforsite" => "15",
     "isselectableforsite" => "0",
     "passwordmnemonicquestion" => isset( $_POST["passwordMnemonicQuestion"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["passwordMnemonicQuestion"] ) : "",
     "passwordmnemonicanswer" => isset( $_POST["passwordMnemonicAnswer"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["passwordMnemonicAnswer"] ) : "",
-    "isinactive" => ""
+    "isinactive" => "0"
 
   ) );
   /*

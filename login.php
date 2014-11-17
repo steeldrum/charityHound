@@ -6,6 +6,8 @@
  ***************************************/
 //require_once( "../common.inc.php" );
 require_once( "common.inc.php" );
+// tjs 141031
+//require_once( "index.php" );
 session_start();
 
 if ( isset( $_POST["action"] ) and $_POST["action"] == "login" ) {
@@ -98,9 +100,18 @@ function processForm() {
 	function displayThanks() {
 		// tjs 130126
 		$firstName = "unknown";
+		// tjs 141030
+		$username = "unknown";
+		$email = "unknown";
+		$password = "unknown";
+		$id = "unknown";
 		if (isset($_SESSION['member'])) {
 			$member = $_SESSION['member'];
 			$firstName = $member->getValue( "firstName" );
+			$userName = $member->getValue( "userName" );
+			$email = $member->getValue( "emailaddress" );
+			$password = $member->getValue( "password" );
+			$id = $member->getValue( "id" );
 		}
 		displayPageHeader( "Thanks for logging in!", true );
 		?>
@@ -109,7 +120,7 @@ function processForm() {
 <p>
 	Thank you for logging in
 	<?php echo $firstName; ?>
-	. Please proceed to the <a href="javascript:newLocation('index', 'logistics')">members' area</a>.
+	. Please proceed to the <a href="javascript:loginAuthenticateUserForDomain('firebaseio.com', 'collogistics', 'charityhound.org', '<?php echo $firstName; ?>', '<?php echo $userName; ?>', '<?php echo $email; ?>', '<?php echo $password; ?>', '<?php echo $id; ?>', 'index', 'logistics');">members' area</a>.
 </p>
 <!-- p>Thank you for logging in <?php echo $firstName; ?>. Please proceed to the <a href="indexTest.php">members' area</a>.</p -->
 	<?php

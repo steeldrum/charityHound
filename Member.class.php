@@ -220,6 +220,7 @@ class Member extends DataObject {
   
   public function insert() {
     $conn = parent::connect();
+    // tjs 141114 - remove password function
     $sql = "INSERT INTO " . TBL_MEMBERS . " (
               username,
               password,
@@ -241,7 +242,7 @@ class Member extends DataObject {
 			isinactive
             ) VALUES (
               :username,
-              password(:password),
+              :password,
               :firstName,
               :lastName,
               :joinDate,
@@ -290,7 +291,9 @@ class Member extends DataObject {
 
   public function update() {
     $conn = parent::connect();
-    $passwordSql = $this->data["password"] ? "password = password(:password)," : "";
+    // tjs 141114
+    //$passwordSql = $this->data["password"] ? "password = password(:password)," : "";
+    $passwordSql = $this->data["password"] ? "password = :password," : "";
     $sql = "UPDATE " . TBL_MEMBERS . " SET
               username = :username,
               $passwordSql
@@ -345,7 +348,9 @@ class Member extends DataObject {
    public function updatePassword( $newPassword ) {
     $conn = parent::connect();
     //$passwordSql = $this->data["password"] ? "password = password(:password)," : "";
-    $passwordSql = $newPassword ? "password = password(:password)" : "";
+    // tjs 141114
+    //$passwordSql = $newPassword ? "password = password(:password)" : "";
+    $passwordSql = $newPassword ? "password = :password" : "";
     $sql = "UPDATE " . TBL_MEMBERS . " SET
               $passwordSql
             WHERE id = :id";
@@ -428,6 +433,8 @@ class Member extends DataObject {
 	  parent::disconnect( $conn );
     } catch ( PDOException $e ) {
       parent::disconnect( $conn );
+      // tjs 141114
+      echo "query failed with ".$e->getMessage();
       die( "Query failed: " . $e->getMessage() );
     }
     return null;
