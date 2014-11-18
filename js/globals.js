@@ -355,6 +355,8 @@ function refreshLoginAccountNumberAndCharities(torfLoggedIn, torfDetail) {
 		loggedIn = true;
 	}
 	if (loggedIn) {
+		enforceOrForceLogin(torfLoggedIn, torfDetail);
+/*		
 		var account = 0;
 		aggregateProvider = "firebaseIO.com";
 		aggregateDatabase = 'collogistics';
@@ -410,10 +412,72 @@ function refreshLoginAccountNumberAndCharities(torfLoggedIn, torfDetail) {
 			refreshCharities(torfLoggedIn, torfDetail);
 			// processArgs(account);
 		}
+		*/
 	} else {
+		// tjs 141118
 		console.log("globals refreshLoginAccountNumberAndCharities not logged in!");
-		refreshCharities(torfLoggedIn, torfDetail);
+		//refreshCharities(torfLoggedIn, torfDetail);
+		// though not logged in (perhaps due to race condition)...check if authorized to log in!
+		
 	}
 	//console.log("globals refreshLoginAccountNumber loginAccountNumber "
 	//		+ loginAccountNumber);
+}
+
+function enforceOrForceLogin(torfLoggedIn, torfDetail) {
+	var account = 0;
+	aggregateProvider = "firebaseIO.com";
+	aggregateDatabase = 'collogistics';
+	var authenticationReferenceURL = "https://" + aggregateDatabase + "."
+			+ aggregateProvider;
+	console.log("globals refreshLoginAccountNumberAndCharities url "
+			+ authenticationReferenceURL);
+	// var authRef = new Firebase(
+	authRef = new Firebase(authenticationReferenceURL);
+	console.log("globals refreshLoginAccountNumberAndCharities authRef " + authRef);
+	// rootRef = authRef;
+
+	var user = authRef.getAuth();
+
+	// If current user...
+	if (user) {
+		var userRef = authRef.child('users').child(user.uid);
+		// console.log("authentication authWithPassword user email " +
+		// user.email);
+		console.log("globals refreshLoginAccountNumberAndCharities userRef " + userRef);
+		console.log("globals refreshLoginAccountNumberAndCharities uid " + user.uid);
+		userRef
+				.once(
+						'value',
+						function(snap) {
+							var authUser = snap.val();
+							if (!authUser) {
+								console
+										.log("globals refreshLoginAccountNumberAndCharities NO user!");
+								refreshCharities(torfLoggedIn, torfDetail);
+							} else {
+								// the fields
+								console
+										.log("globals refreshLoginAccountNumberAndCharities name "
+												+ authUser.name);
+								console
+										.log("globals refreshLoginAccountNumberAndCharities handle "
+												+ authUser.handle);
+								console
+										.log("globals refreshLoginAccountNumberAndCharities domainID "
+												+ authUser.DomainID);
+								account = authUser.DomainID;
+								console
+								.log("globals refreshLoginAccountNumberAndCharities account "
+										+ account);
+								loginAccountNumber = account;
+								refreshCharities(torfLoggedIn, torfDetail);
+							}
+						});
+	} else {
+		console.log("globals refreshLoginAccountNumberAndCharities no user account "
+				+ account);
+		refreshCharities(torfLoggedIn, torfDetail);
+		// processArgs(account);
+	}	
 }
