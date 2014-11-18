@@ -418,7 +418,7 @@ function refreshLoginAccountNumberAndCharities(torfLoggedIn, torfDetail) {
 		console.log("globals refreshLoginAccountNumberAndCharities not logged in!");
 		//refreshCharities(torfLoggedIn, torfDetail);
 		// though not logged in (perhaps due to race condition)...check if authorized to log in!
-		
+		enforceOrForceLogin(torfLoggedIn, torfDetail);
 	}
 	//console.log("globals refreshLoginAccountNumber loginAccountNumber "
 	//		+ loginAccountNumber);
