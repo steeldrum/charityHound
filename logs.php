@@ -161,7 +161,9 @@ eventually show date added (and allow changed value)
 <!-- tjs 130126 -->
 		<!-- script type="text/javascript" src="js/jquery.js"></script -->
 
+<!-- tjs 141118 -->
 		<script type="text/javascript" src="js/jquery-1.3.2.js"></script>
+		<!-- script type="text/javascript" src="js/jquery-2.1.1.min.js"></script -->
 
    <script type="text/javascript" src="js/ui/ui.core.js"></script>
 
@@ -172,6 +174,8 @@ eventually show date added (and allow changed value)
 
     <script type="text/javascript" src="js/effects.highlight.js"></script>
      <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<!-- tjs 141118 -->
+   <script type="text/javascript" src="js/globals.js"></script>
    <script type="text/javascript" src="js/charity.js"></script>
 	<script type="text/javascript" src="js/ui/ui.resizable.js"></script>
 	<script type="text/javascript" src="js/ui/ui.dialog.js"></script>
