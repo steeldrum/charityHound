@@ -164,6 +164,7 @@ eventually show date added (and allow changed value)
 <!-- tjs 141118 -->
 		<script type="text/javascript" src="js/jquery-1.3.2.js"></script>
 		<!-- script type="text/javascript" src="js/jquery-2.1.1.min.js"></script -->
+<script src="https://cdn.firebase.com/js/client/1.1.3/firebase.js"></script>
 
    <script type="text/javascript" src="js/ui/ui.core.js"></script>
 
@@ -233,7 +234,9 @@ eventually show date added (and allow changed value)
 	//alert("logs account " + account);
 	// tjs 120618
 			//refreshCharities(authenticated);
-			refreshCharities(authenticated, 'false');
+			// tjs 141118
+			//refreshCharities(authenticated, 'false');
+			refreshLoginAccountNumberAndCharities(authenticated, 'false');
 
 	  });
 
