@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+
+.dogparkmessage {
+  /* Default height for a message. */
+  height: 400px;
+  position: relative;
+}
+
+.dogparkmessage {
+  text-align: left;
+  line-height: normal;
+}
+
+.dogparkchat {
+  /* Default height for a chat. */
+  height: 400px;
+  position: relative;
+  margin: 20;
+}
+
+.dogparkchat {
+  text-align: left;
+  line-height: normal;
+  margin: 20;
+}
