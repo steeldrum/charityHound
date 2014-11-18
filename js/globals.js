@@ -425,6 +425,7 @@ function refreshLoginAccountNumberAndCharities(torfLoggedIn, torfDetail) {
 }
 
 function enforceOrForceLogin(torfLoggedIn, torfDetail) {
+	//var maybeLoggedIn = torfLoggedIn;
 	var account = 0;
 	aggregateProvider = "firebaseIO.com";
 	aggregateDatabase = 'collogistics';
@@ -471,7 +472,8 @@ function enforceOrForceLogin(torfLoggedIn, torfDetail) {
 								.log("globals refreshLoginAccountNumberAndCharities account "
 										+ account);
 								loginAccountNumber = account;
-								refreshCharities(torfLoggedIn, torfDetail);
+								//refreshCharities(torfLoggedIn, torfDetail);
+								refreshCharities('true', torfDetail);
 							}
 						});
 	} else {
