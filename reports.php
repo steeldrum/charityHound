@@ -36,6 +36,8 @@ release version 1.00
   <link type="text/css" href="css/smoothness/jquery-ui-1.7.2.custom.css" rel="stylesheet" />	
   <!-- link rel="stylesheet" type="text/css" href="navAccordionTheme.css" -->
   <link rel="stylesheet" type="text/css" href="css/navAccordionTheme.css">
+  <!--  tjs 141120 -->
+<script src="https://cdn.firebase.com/js/client/1.1.3/firebase.js"></script>
    <script type="text/javascript" src="js/argumenturl.js"></script>
    <script type="text/javascript" src="js/menu.js"></script>
 
@@ -556,10 +558,45 @@ window.location.href = url;
 	//tjs 110511
         //alert("index account " + account);
         //e.g. account 1
-        
-		processArgs(account);
+// tjs 141119        
+		//processArgs(account);
 				//processArgs();
+       		//aggregateProvider = <?php echo json_encode($aggregateProvider); ?>;
+		//aggregateDatabase = <?php echo json_encode($aggregateDatabase); ?>;
+            	var authenticationReferenceURL = "https://" + aggregateDatabase + "." + aggregateProvider;
+    	console.log("reports ready url " + authenticationReferenceURL);
+           //var authRef = new Firebase(
+        authRef = new Firebase(
+        		authenticationReferenceURL);
+        console.log("reports ready authRef " + authRef);
+        //rootRef = authRef;
+        
+       var user = authRef.getAuth();
 
+        // If current user...
+        if (user) {
+             	var userRef = authRef.child('users').child(user.uid);
+                //console.log("authentication authWithPassword user email " + user.email);
+                console.log("reports ready userRef " + userRef);
+                console.log("reports ready uid " + user.uid);
+                userRef.once('value', function (snap) {
+                    var authUser = snap.val();
+                    if (!authUser) {
+                        console.log("reports ready NO user!");
+                    } else {
+                    // the fields
+                    console.log("reports ready name " + authUser.name);                    
+                    console.log("reports ready handle " + authUser.handle);
+                    console.log("reports ready domainID " + authUser.DomainID);
+                    account = authUser.DomainID;
+                    }
+					console.log("reports ready account " + account);
+					processArgs(account);
+               });
+        } else {
+					console.log("reports ready no user account " + account);
+					processArgs(account);
+        }
 
 	  });
 
