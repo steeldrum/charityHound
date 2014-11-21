@@ -1314,13 +1314,96 @@ function processCharity(id, name, shortname, remove, detail, dunns, isForProfit,
 		+ description + '&numStars=' + numStars;
 	}
 
+	// tjs 141121 need to use surragte authorization due to safari arce condition bug and PHP slowness
+	var account = 0;
+	aggregateProvider = "firebaseIO.com";
+	aggregateDatabase = 'collogistics';
+	var authenticationReferenceURL = "https://" + aggregateDatabase + "."
+			+ aggregateProvider;
+	console.log("charity processCharity authenticationReferenceURL "
+			+ authenticationReferenceURL);
+	authRef = new Firebase(authenticationReferenceURL);
+	console.log("charity processCharity authRef " + authRef);
+
+	var user = authRef.getAuth();
+
+	// If current user...
+	if (user) {
+		var userRef = authRef.child('users').child(user.uid);
+		// console.log("authentication authWithPassword user email " +
+		// user.email);
+		console.log("charity processCharity userRef " + userRef);
+		console.log("charity processCharity uid " + user.uid);
+		userRef
+				.once(
+						'value',
+						function(snap) {
+							var authUser = snap.val();
+							if (!authUser) {
+								console
+										.log("charity processCharity NO user!");
+								//refreshCharities(torfLoggedIn, torfDetail);
+							} else {
+								// the fields
+								console
+										.log("charity processCharity name "
+												+ authUser.name);
+								console
+										.log("charity processCharity handle "
+												+ authUser.handle);
+								console
+										.log("charity processCharity domainID "
+												+ authUser.DomainID);
+								account = authUser.DomainID;
+								console
+								.log("charity processCharity account "
+										+ account);
+								loginAccountNumber = account;
+								//refreshCharities(torfLoggedIn, torfDetail);
+								//refreshCharities('true', torfDetail);
+								url = 'charities.php?account=' + account + '&charityName=' + name + '&shortName=' + shortname
+								+ '&id=' + id + '&remove=' + remove + '&detail=' + detail + details;
+						// alert("processCharity url " + url);
+						// e.g. processCharity url charities.php?charityName=Action Against Hunger&shortName= AAH&id=505&remove=false&detail=true&dunns= &isForProfit=0&isInactive=0&url=&description= &numStars=5
+						// url = 'http://localhost/ccCustomers.php?account=' + account + '&last=' +
+						console.log("processCharity url " + url);
+						// last + '&first=' + first;
+						// alert("ccJobCost processForm url " + url);
+						requestXMLData(charityRequest, url, function() {
+							// requestXMLData(customerRequest, url, function(refresher) {
+							if (charityRequest.readyState == 4) {
+								// alert("ccJobCost processForm readyState 4 status " +
+								// customerRequest.status);
+								// if server HTTP response is "OK"
+								// if(customerRequest.status == 200) {
+								if (charityRequest.status == 200 || charityRequest.status == 0) {
+									console.log("processCharity close dial...");
+									$("#charityDialog").dialog("close");
+									// refreshCharities();
+									// tjs 141121 try:
+									//refreshLoginAccountNumberAndCharities(torfLoggedIn, torfDetail)
+									if (detail) {
+										refreshCharities('true', 'true');
+									} else {
+										refreshCharities('true');
+									}
+								} else {
+									// issue an error message for any other HTTP response
+									alert("An error has occurred: " + charityRequest.statusText);
+								}
+							}
+						});
+							}
+						});
+	} else {
+		console.log("charity processCharity no user account "
+				+ account);
+		//refreshCharities(torfLoggedIn, torfDetail);
+		// processArgs(account);
+	}
+	/*
 	url = 'charities.php?charityName=' + name + '&shortName=' + shortname
 			+ '&id=' + id + '&remove=' + remove + '&detail=' + detail + details;
-	//if (detail) {
-	//	url += '&dunns=' + dunns + '&isForProfit=' + isForProfit
-	//	+ '&isInactive=' + isInactive + '&url=' + url + '&description='
-	//	+ description + '&numStars=' + numStars;
-	//}
 	// alert("processCharity url " + url);
 	// e.g. processCharity url charities.php?charityName=Action Against Hunger&shortName= AAH&id=505&remove=false&detail=true&dunns= &isForProfit=0&isInactive=0&url=&description= &numStars=5
 	// url = 'http://localhost/ccCustomers.php?account=' + account + '&last=' +
@@ -1338,6 +1421,8 @@ function processCharity(id, name, shortname, remove, detail, dunns, isForProfit,
 				console.log("processCharity close dial...");
 				$("#charityDialog").dialog("close");
 				// refreshCharities();
+				// tjs 141121 try:
+				//refreshLoginAccountNumberAndCharities(torfLoggedIn, torfDetail)
 				if (detail) {
 					refreshCharities('true', 'true');
 				} else {
@@ -1348,7 +1433,7 @@ function processCharity(id, name, shortname, remove, detail, dunns, isForProfit,
 				alert("An error has occurred: " + charityRequest.statusText);
 			}
 		}
-	});	
+	});	*/
 }
 
 function processDonationForm() {

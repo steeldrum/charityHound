@@ -35,7 +35,10 @@ if (1 == 1) { // production
 	if (isset($_SESSION['member'])) {
 		$member = $_SESSION['member'];
 		$account = $member->getValue( "id" );
-	} 
+	} else {
+		// tjs 141121 - safari speed boost and race condition issue.  Use surrogate aurthorization...
+		$account = $_GET['account'];
+	}
 } else {
 	$account = $_GET['account'];
 }
