@@ -285,7 +285,10 @@ From year: <input id="fromtag" type="number" />&nbsp;&nbsp;To year: <input id="t
 <button id="designatedDonations">View Designated Charities (tagged as favorable or otherwise)</button>
 </p>
 <p>
-The following reports use aggregate data (based on all users' information, not just yours):
+<a href="HOUNDERCharityHoundReport2014.pdf">Discussion about Collaborators and Reporting About Nonprofits</a>
+</p>
+<p>
+The following reports use aggregate data (based on all users' information in current year, not just yours):
 <button id="designatedBlanks">Charities Who Send "Blank" Solicitations (no indication of sender)</button>
 <button id="designatedCurrencies">Charities Who Send "Currency Bated" Solicitations (money in envelope)</button>
 <button id="designatedConfidentials">Charities Who Pledge Privacy (won't sell your identity to others)</button>
