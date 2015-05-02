@@ -1,0 +1,194 @@
+/*
+ * spa.log.css
+ * Log feature styles
+*/
+
+.spa-log {
+  position      : absolute;
+  bottom        : 0;
+  right         : 0;
+  width         : 32em;
+  height        : 2em;
+  background    : #fff;
+  border-radius : 0.5em 0 0 0;
+  border-style  : solid;
+  border-width  : thin 0 0 thin;
+  border-color  : #888;
+  box-shadow    : 0 0 0.75em 0 #888;
+  z-index       : 1;
+}
+
+.spa-log-head, .spa-log-closer {
+  position      : absolute;
+  top           : 0;
+  height        : 2em;
+  line-height   : 1.8em;
+  border-bottom : thin solid #888;
+  cursor        : pointer;
+  background    : #888;
+  color         : white;
+  font-family   : arial, helvetica, sans-serif;
+  font-weight   : 800;
+  text-align    : center;
+}
+
+.spa-log-head {
+  left          : 0;
+  right         : 2em;
+  border-radius : 0.3em 0 0 0;
+}
+
+.spa-log-closer {
+  right : 0;
+  width : 2em;
+}
+  .spa-log-closer:hover {
+    background : #800;
+  }
+
+.spa-log-head-toggle {
+  position      : absolute;
+  top           : 0;
+  left          : 0;
+  width         : 2em;
+  bottom        : 0;
+  border-radius : 0.3em 0 0 0;
+}
+
+.spa-log-head-title {
+  position    : absolute;
+  left        : 50%;
+  width       : 16em;
+  margin-left : -8em;
+}
+
+.spa-log-sizer {
+  position : absolute;
+  top      : 2em;
+  left     : 0;
+  right    : 0;
+}
+
+.spa-log-list {
+  position : absolute;
+  top      : 0;
+  left     : 0;
+  bottom   : 0;
+  width    : 10em;
+}
+
+.spa-log-msg {
+  position : absolute;
+  top      : 0;
+  left     : 10em;
+  bottom   : 0;
+  right    : 0;
+}
+
+.spa-log-msg-log,
+.spa-log-list-box {
+  position   : absolute;
+  top        : 1em;
+  overflow-x : hidden;
+}
+
+.spa-log-msg-log {
+  left       : 0em;
+  right      : 1em;
+  bottom     : 4em;
+  padding    : 0.5em;
+  border     : thin solid #888;
+  overflow-y : scroll;
+}
+
+.spa-log-msg-log-msg {
+  background-color : #eee;
+}
+
+.spa-log-msg-log-me {
+  font-weight : 800;
+  color       : #484;
+}
+
+.spa-log-msg-log-alert {
+  font-style  : italic;
+  background  : #a88;
+  color       : #fff;
+}
+
+.spa-log-list-box {
+  left             : 1em;
+  right            : 1em;
+  bottom           : 1em;
+  overflow-y       : auto;
+  border-width     : thin 0 thin thin;
+  border-style     : solid;
+  border-color     : #888;
+  background-color : #888;
+  color            : #ddd;
+  border-radius    : 0.5em 0 0 0;
+}
+
+.spa-log-list-name, .spa-log-list-note {
+  width   : 100%;
+  padding : 0.1em 0.5em;
+}
+
+.spa-log-list-name {
+  cursor : pointer;
+}
+  .spa-log-list-name:hover {
+    background-color : #aaa;
+    color            : #888;
+  }
+  .spa-log-list-name.spa-x-select {
+    background-color : #fff;
+    color            : #444;
+  }
+
+.spa-log-msg-in {
+  position   : absolute;
+  height     : 2em;
+  left       : 0em;
+  right      : 1em;
+  bottom     : 1em;
+  border     : thin solid #888;
+  background : #888;
+}
+
+.spa-log-msg-in input[type=text] {
+  position    : absolute;
+  width       : 75%;
+  height      : 100%;
+  line-height : 100%;
+  padding     : 0 0.5em;
+  border      : 0;
+  background  : #ddd;
+  color       : #666;
+}
+  .spa-log-msg-in input[type=text]:focus {
+    background : #ff8;
+    color      : #222;
+  }
+
+.spa-log-msg-send {
+  position    : absolute;
+  top         : 0;
+  right       : 0;
+  width       : 25%;
+  height      : 100%;
+  line-height : 1.9em;
+  text-align  : center;
+  color       : #fff;
+  font-weight : 800;
+  cursor      : pointer;
+}
+  .spa-log-msg-send:hover,
+  .spa-log-msg-send.spa-x-select {
+    background : #444;
+    color      : #ff0;
+  }
+
+.spa-log-head:hover .spa-log-head-toggle {
+  background : #aaa;
+}
