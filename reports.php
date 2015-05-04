@@ -285,7 +285,7 @@ From year: <input id="fromtag" type="number" />&nbsp;&nbsp;To year: <input id="t
 <button id="designatedDonations">View Designated Charities (tagged as favorable or otherwise)</button>
 </p>
 <p>
-<a href="HOUNDERCharityHoundReport2014.pdf">Discussion about Collaborators and Reporting About Nonprofits</a>
+<a href="HOUNDERCharityHoundReport2014.pdf">Discussion about Collaborators and Reporting About Nonprofits (HOUNDER)</a>
 </p>
 <p>
 The following reports use aggregate data (based on all users' information in current year, not just yours):
