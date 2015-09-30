@@ -39,6 +39,8 @@ release version 1.00
   <!--  tjs 141120 -->
 <script src="https://cdn.firebase.com/js/client/1.1.3/firebase.js"></script>
    <script type="text/javascript" src="js/argumenturl.js"></script>
+   <script type="text/javascript" src="js/globals.js"></script>
+   <script type="text/javascript" src="js/charity.js"></script>
    <script type="text/javascript" src="js/menu.js"></script>
 
      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -375,7 +377,9 @@ The following reports use aggregate data (based on all users' information in cur
 				var checked = elm.checked;
 				//alert("reports view donations checked " + checked + " value " + elm.value);
 				//var url = 'donationsReport2FPDF.php?account=0&start=' + start + '&end=' + end;
-				var url = 'donationsReport2FPDF.php?account=0&start=' + start + '&end=' + end + '&hideSolicitations=' + checked;
+				// tjs 150930
+				//var url = 'donationsReport2FPDF.php?account=0&start=' + start + '&end=' + end + '&hideSolicitations=' + checked;
+				var url = 'donationsReport2FPDF.php?account=' + loginAccountNumber + '&start=' + start + '&end=' + end + '&hideSolicitations=' + checked;
 				//alert("reports view donations url " + url);
 				window.location.href = url;
 
@@ -468,6 +472,16 @@ The following reports use aggregate data (based on all users' information in cur
 				//tjs 110511
         var account = <?php echo $account; ?>;
 
+        // tjs 150930
+	var authenticated = account > 0? 'true' : 'false';
+	//tjs 120618 e.g. 0 if not logged in
+	//alert("logs account " + account);
+	// tjs 120618
+			//refreshCharities(authenticated);
+			// tjs 141118
+			//refreshCharities(authenticated, 'false');
+			refreshLoginAccountNumberAndCharities(authenticated, 'false');
+        
 		// tjs 111021
 		$("#lapsedDonations").click(function() {
 	var elm = $('#prior').get(0);
