@@ -48,6 +48,7 @@ tjs 110511
 
    <link rel="stylesheet" type="text/css" href="css/navAccordionTheme.css">
   <link rel="stylesheet" type="text/css" href="css/index.css">
+<link rel="mask-icon" color="rgba(102,0,125,1)" href="/CharityHoundSVGIconFilled.svg">
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="description" content="Collaborative rating of CHARITIES to help navigate through donation choices and act as a watch dog for inefficient ones." />
