@@ -63,8 +63,9 @@ tjs 110511
 		<!-- script type="text/javascript" src="js/jquery-1.3.2.js"></script -->
 		<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 		<!-- tjs 141031 compatibility plugin -->
-<script src="http://code.jquery.com/jquery-1.9.0.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
+<!-- tjs 160430 for SSL -->
+<script src="https://code.jquery.com/jquery-1.9.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-1.2.1.js"></script>
 		<!-- script type="text/javascript" src="js/jquery.js"></script -->
 
     <script type="text/javascript" src="js/ui/ui.core.js"></script>
@@ -116,7 +117,7 @@ tjs 110511
   <tr>
 
   <td>
-  <p>Hosted by <a href="http://www.collogistics.com">Collogistics</a>
+  <p>Hosted by <a href="https://www.collogistics.com">Collogistics</a>
   we help <span class="akey">registered collaborators manage their charitable contributions</span>.  Collaborators
   are asked to record all donor solicitations along with the amount that they donated.
   By so doing collaborators are able to produce a report after a calendar year end that <span class="akey">helps with
@@ -212,7 +213,7 @@ is enabled only for sponsors.
 
   <div class="iconControls">
 
-  <p>Hosted for incubation by: <a href="http://www.collogistics.com" target="_parent"><img src="images/favicon.ico"></a>&nbsp;&nbsp;Use <button id="key"><img src="images/key.gif" /></button> to highlight key "take-away" pointers.</p>
+  <p>Hosted for incubation by: <a href="https://www.collogistics.com" target="_parent"><img src="images/favicon.ico"></a>&nbsp;&nbsp;Use <button id="key"><img src="images/key.gif" /></button> to highlight key "take-away" pointers.</p>
 
   </div>
 
@@ -285,7 +286,7 @@ is enabled only for sponsors.
 
 </div>
 
-<div id="signupDialog" title="CharityHound Opening Details">For additional details browse the Collogistics Wiki <a href="http://www.collogistics.com/wiki/projects/pinchpennygiving/Pinch_Penny_Giving_CharityHound.html">Pinch Penny Giving </a>
+<div id="signupDialog" title="CharityHound Opening Details">For additional details browse the Collogistics Wiki <a href="https://www.collogistics.com/wiki/projects/pinchpennygiving/Pinch_Penny_Giving_CharityHound.html">Pinch Penny Giving </a>
 or read the iBook <i>Dead Giveaway - Sleuthing Around Nonprofits</i>.  For details specific to this opening provide us with:
 <br/>
 	<input type="text" id="nameInput" placeholder="Name">

@@ -166,8 +166,9 @@ eventually show date added (and allow changed value)
 		<!-- script type="text/javascript" src="js/jquery-2.1.1.min.js"></script -->
 		<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 		<!-- tjs 141031 compatibility plugin -->
-<script src="http://code.jquery.com/jquery-1.9.0.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
+		<!-- tjs 160430 for SSL -->
+<script src="https://code.jquery.com/jquery-1.9.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-1.2.1.js"></script>
 <script src="https://cdn.firebase.com/js/client/1.1.3/firebase.js"></script>
 
    <script type="text/javascript" src="js/ui/ui.core.js"></script>

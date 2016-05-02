@@ -239,7 +239,9 @@ function refreshCharities(torfLoggedIn, torfDetail) {
 												// html += '<td><a
 												// href="http://' + url + '" >'
 												// + name + '</a></td>';
-												html += '><a href="http://'
+// tjs 160430 for ssl
+												//html += '><a href="http://'
+												html += '><a href="https://'
 														+ url + '" >' + name
 														+ '</a></td>';
 											} else {
