@@ -90,7 +90,7 @@ Thomas J. Soucy, Collaborator Coordinator
 
 <table>
 
-<tr><td>Main email: <span class="mailme" title="site solicited contact">collaborators at collogistics dot com</span>
+<tr><td>Main email: <span class="mailme" title="site solicited contact">collaborator at collogistics dot com</span>
 
 </td></tr>
 
